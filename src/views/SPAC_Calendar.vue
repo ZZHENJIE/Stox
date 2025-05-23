@@ -4,17 +4,19 @@ import { ElButton, ElCalendar } from 'element-plus';
 export default {
     data() {
         return {
-            data_array: []
+            data_array: [],
+            is_loading: true,
         }
     },
     methods: {
         calendar_data() {
-            this.calendar_data = [];
+            this.data_array = [];
             fetch('https://www.spacresearch.com/calendar', {
                 method: 'GET',
             }).then((response) => {
                 response.text().then((htmlString) => {
                     const parser = new DOMParser();
+                    const now_date = new Date();
                     const doc = parser.parseFromString(htmlString, 'text/html');
 
                     // 获取日历容器
@@ -45,7 +47,7 @@ export default {
 
                             const href = link.getAttribute('href');
 
-                            this.calendar_data.push({
+                            this.data_array.push({
                                 date: date,
                                 eventType: eventType,
                                 href: href
@@ -53,11 +55,36 @@ export default {
                         });
                     });
 
+                    this.is_loading = false;
+
                 })
 
             });
 
         },
+        get_data(date) {
+            const list = [];
+            if (this.data_array.length != 0) {
+
+                const day = new Date(date).getDay().toString();
+
+
+                while (true) {
+                    if (this.data_array[0].date === day) {
+                        list.push({
+                            eventType: this.data_array[0].eventType,
+                            symbol: this.data_array[0].symbol
+                        })
+                        list.shift();
+                    } else {
+                        break;
+                    }
+                }
+
+            }
+
+            return list.toString();
+        }
     }
 }
 </script>
@@ -65,15 +92,10 @@ export default {
 
 <template>
     <ElButton @click="calendar_data()" />
-    <ElButton @click="console.log(this.calendar_data)" />
-    <ElCalendar>
+    <ElButton @click="console.log(this.data_array)" />
+    <ElCalendar v-loading="is_loading">
         <template #date-cell="{ data }">
-            <p :class="data.isSelected ? 'is-selected' : ''">
-                {{ data.day.split('-').slice(1).join('-') }}
-                {{ data.isSelected ? '✔️' : '' }}
-            </p>
-
-            <button @click="console.log(data)"></button>
+            <p>{{ this.get_data(data.day) }}</p>
         </template>
     </ElCalendar>
 </template>
