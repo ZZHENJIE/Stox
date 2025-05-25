@@ -1,7 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from './router';
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import './main.css';
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 const app = createApp(App)
 

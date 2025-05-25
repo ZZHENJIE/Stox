@@ -20,6 +20,11 @@ const routes = [
         path: '/spac_calendar',
         name: 'SPAC_Calendar',
         component: () => import('./views/SPAC_Calendar.vue')
+    },
+    {
+        path: '/finviz',
+        name: 'Finviz',
+        component: () => import('./views/Finviz.vue')
     }
 ]
 

@@ -1,0 +1,47 @@
+/* src/style.css */
+@font-face {
+    font-family: 'MyFont';
+    src: url('/Gen Jyuu Gothic Bold.ttf') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+body {
+    font-family: 'MyFont', sans-serif;
+}
+
+body {
+    margin: 0px;
+}
+
+/* 全局滚动条样式（适用于所有可滚动元素） */
+::-webkit-scrollbar {
+    width: 8px;
+    /* 垂直滚动条宽度 */
+    height: 8px;
+    /* 水平滚动条高度 */
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* 轨道颜色 */
+    border-radius: 4px;
+    /* 圆角 */
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    background: #787474;
+    /* 滑块颜色 */
+    border-radius: 4px;
+    /* 圆角 */
+    transition: background 0.3s;
+    /* 悬停动画 */
+}
+
+/* 滚动条滑块悬停效果 */
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+    /* 悬停时颜色加深 */
+}
