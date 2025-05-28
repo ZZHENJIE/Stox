@@ -1,20 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const routes = [
+export const routes = [
     {
         path: '/',
         name: 'Home',
         component: () => import('./views/Home.vue')
     },
     {
-        path: '/about',
-        name: 'About',
-        component: () => import('./views/About.vue')
-    },
-    {
-        path: '/new',
-        name: 'New',
-        component: () => import('./views/New.vue')
+        path: '/finviz',
+        name: 'Finviz',
+        component: () => import('./views/Finviz.vue')
     },
     {
         path: '/spac_calendar',
@@ -22,10 +17,15 @@ const routes = [
         component: () => import('./views/SPAC_Calendar.vue')
     },
     {
-        path: '/finviz',
-        name: 'Finviz',
-        component: () => import('./views/Finviz.vue')
-    }
+        path: '/moomoo',
+        name: 'Moomoo',
+        component: () => import('./views/Moomoo.vue')
+    },
+    {
+        path: '/about',
+        name: 'About',
+        component: () => import('./views/About.vue')
+    },
 ]
 
 const router = createRouter({

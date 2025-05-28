@@ -1,12 +1,13 @@
 <script lang="js">
 
-import { ElButton, ElCol, ElImage, ElOption, ElPagination, ElRow, ElSelect, ElSpace } from 'element-plus'
+import { ElButton, ElCol, ElImage, ElOption, ElPagination, ElRow, ElSelect, ElSpace, ElTooltip } from 'element-plus'
 import { export_screener } from '../script/finviz.js'
+import { search, get_news_list } from '../script/Moomoo'
 
 export default {
     data() {
         return {
-            current_select: {},
+            current_select: '',
             select_options: [
                 {
                     value: 'f=sh_price_o1&o=-volume',
@@ -23,22 +24,13 @@ export default {
         }
     },
     mounted() {
-        this.current_select = this.select_options[this.select_options.length - 1];
+        this.current_select = this.select_options[this.select_options.length - 1].value;
     },
     methods: {
         get_data(parameter) {
             export_screener(parameter)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text(); // 获取原始文本内容（CSV）
-                })
                 .then(csvData => {
                     this.parseCSV(csvData.replace(/"/g, ''));
-                })
-                .catch(error => {
-                    console.error('Error:', error);
                 });
         },
         current_change(currentPage) {
@@ -50,7 +42,6 @@ export default {
                 }
                 this.current_page_data.push(this.screener_data[begin + index])
             }
-            console.log(this.current_page_data);
         },
         parseCSV(csvText) {
             const lines = csvText.split('\n');
@@ -79,6 +70,20 @@ export default {
         },
         thumbnail(ticker) {
             return 'https://charts-node.finviz.com/chart.ashx?&t=' + ticker + '&tf=d&ct=candle_stick';
+        },
+        click_thumbnail(data) {
+            search(data.Ticker).then(text => {
+                const json = JSON.parse(text);
+                for (const item of json.data.stock) {
+                    if (item.market === "us") {
+                        get_news_list(item.stockId).then(text => {
+                            const json = JSON.parse(text);
+                            console.log(json);
+                        });
+                        break;
+                    }
+                }
+            })
         }
     }
 }
@@ -93,16 +98,22 @@ export default {
                     <ElOption v-for="item in select_options" :key="item.value" :label="item.label" :value="item.value">
                     </ElOption>
                 </ElSelect>
-                <ElButton @click="get_data(current_select.value)">Confirm</ElButton>
+                <ElButton @click="get_data(current_select)">确认</ElButton>
             </ElSpace>
         </ElRow>
         <ElRow>
             <div class="grid-container">
-                <ElImage v-for="item in current_page_data" @click="console.log(item)" :key="item.Ticker"
-                    :src="thumbnail(item.Ticker)" fit="contain" class="grid-image" />
+                <ElTooltip v-for="item in current_page_data" effect="dark" placement="bottom">
+                    <template #content>
+                        <p>公司:{{ item.Company }}</p>
+                        <p>国家:{{ item.Country }}</p>
+                    </template>
+                    <ElImage @click="click_thumbnail(item)" :key="item.Ticker" :src="thumbnail(item.Ticker)"
+                        fit="contain" class="grid-image" />
+                </ElTooltip>
             </div>
         </ElRow>
-        <ElRow>
+        <ElRow justify="center">
             <ElPagination @current-change="current_change" v-show="screener_data.length != 0" layout="prev, pager, next"
                 :default-page-size="20" :total="screener_data.length">
             </ElPagination>
