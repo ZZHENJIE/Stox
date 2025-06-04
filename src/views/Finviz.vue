@@ -1,6 +1,6 @@
 <script lang="js">
 
-import { export_screener } from '../script/Finviz.js'
+import { export_screener } from '../script/Finviz'
 import { search, get_news_list } from '../script/Moomoo'
 
 export default {
