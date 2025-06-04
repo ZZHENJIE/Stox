@@ -1,77 +1,100 @@
 <script lang="js">
-
-import { ElAside, ElButton, ElContainer, ElIcon, ElMain, ElMenuItem, ElMenuItemGroup } from 'element-plus';
-import { routes } from './router'
+import { routes } from './router';
+import { Home, ArrowBackCircle, RefreshCircle } from '@vicons/ionicons5';
+import { darkTheme } from 'naive-ui';
 
 export default {
-  data() {
-    return {
-      routes_list: []
-    }
-  },
-  mounted() {
-    for (let index = 0; index < routes.length; index++) {
-      const router = routes[index];
-      if (router.name === 'Home') {//不需要首页菜单栏
-        continue;
-      }
-      if (router.name === 'SPAC_Calendar') {//修改显示内容
-        router.name = 'SPAC Calendar';
-      }
-      this.routes_list.push({
-        index: index.toString(),
-        name: router.name,
-        path: router.path
-      });
-    }
-  },
-  methods: {
-    refresh() {
-      window.location.reload();
-    }
-  }
-}
+    components: {
+        Home,
+        ArrowBackCircle,
+        RefreshCircle
+    },
+    data() {
+        return {
+            menuOptions: [],
+            activeKey: '',
+            darkTheme: darkTheme
+        }
+    },
+    methods: {
+        jump(key, item) {
+            this.$router.push({
+                name: item.key
+            })
+        },
+        to_home() {
+            this.$router.push({
+                name: 'Home'
+            })
+        },
+        back() {
+            this.$router.back();
+        },
+        refresh() {
+            window.location.reload();
+        }
+    },
+    created() {
+        console.log();
+    },
+    mounted() {
+        for (const route of routes) {
+            if (route.name === 'Home') continue;
+            if (route.name === 'Macro_Small') continue;
+            if (route.name === 'Moomoo_new') continue;
 
+            this.menuOptions.push({
+                label: route.meta.title,
+                key: route.name,
+                path: route.path,
+            })
+        }
+        this.activeKey = this.$route.name;
+    },
+    watch: {
+        '$route'(to) {
+            this.activeKey = to.name
+        }
+    }
+}
 </script>
 
 <template>
-  <ElContainer>
-    <!-- 左侧菜单栏（固定宽度和位置） -->
-    <ElAside style="position: fixed;" width="150px">
-      <ElMenu>
-        <!-- 菜单内容保持不变 -->
-        <ElMenuItemGroup>
-          <div style="text-align: center;">
-            <ElButton @click="$router.push('/')" circle>
-              <ElIcon>
-                <HomeFilled />
-              </ElIcon>
-            </ElButton>
-            <ElButton @click="$router.back()" circle>
-              <ElIcon>
-                <Back />
-              </ElIcon>
-            </ElButton>
-            <ElButton @click="refresh()" circle>
-              <ElIcon>
-                <Refresh />
-              </ElIcon>
-            </ElButton>
-          </div>
-          <ElMenuItem v-for="item in routes_list" @click="$router.push(item.path)" :index="item.index">{{ item.name }}
-          </ElMenuItem>
-          <!-- <ElMenuItem @click="$router.push('/moomoo')" index="1-1">Moomoo</ElMenuItem>
-          <ElMenuItem @click="$router.push('/finviz')" index="1-4">Finviz</ElMenuItem>
-          <ElMenuItem @click="$router.push('/spac_calendar')" index="1-2">SPAC Calendar</ElMenuItem>
-          <ElMenuItem @click="$router.push('/about')" index="1-3">About</ElMenuItem> -->
-        </ElMenuItemGroup>
-      </ElMenu>
-    </ElAside>
-
-    <!-- 右侧内容区（独立滚动） -->
-    <ElMain style="margin-left: 150px;">
-
-      <RouterView />
-    </ElMain>
-  </ElContainer>
+    <n-config-provider :theme="darkTheme">
+        <n-layout style="height: 100vh;">
+            <n-layout position="absolute" has-sider>
+                <n-layout-sider v-show="$route.meta.standalone === false" style="padding-top: 5px;" width="200px"
+                    :native-scrollbar="false" bordered>
+                    <n-space justify="center">
+                        <n-button round @click="to_home">
+                            <template #icon>
+                                <n-icon>
+                                    <Home></Home>
+                                </n-icon>
+                            </template>
+                        </n-button>
+                        <n-button round @click="back">
+                            <template #icon>
+                                <n-icon>
+                                    <ArrowBackCircle></ArrowBackCircle>
+                                </n-icon>
+                            </template>
+                        </n-button>
+                        <n-button round @click="refresh">
+                            <template #icon>
+                                <n-icon>
+                                    <RefreshCircle></RefreshCircle>
+                                </n-icon>
+                            </template>
+                        </n-button>
+                    </n-space>
+                    <n-menu :options="menuOptions" :router="true" v-model:value="activeKey" @update:value="jump">
+                    </n-menu>
+                </n-layout-sider>
+                <n-layout-content :native-scrollbar="false">
+                    <RouterView style="padding: 5px;"></RouterView>
+                </n-layout-content>
+            </n-layout>
+        </n-layout>
+    </n-config-provider>
 </template>

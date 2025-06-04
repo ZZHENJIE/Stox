@@ -1,13 +1,18 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from './router';
-import './main.css';
-import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+import 'vfonts/FiraCode.css';
 
-const app = createApp(App)
+const app = createApp(App);
 
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
+app.config.globalProperties.$formatTime = (timestamp) => {
+    const date = new Date(timestamp * 1000)
+    return `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} - ${padZero(date.getHours())}:${padZero(date.getMinutes())}:${padZero(date.getSeconds())}`;
 }
+
+function padZero(num) {
+    return num < 10 ? `0${num}` : num
+}
+
 app.use(router);
 app.mount("#app");

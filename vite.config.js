@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from 'unplugin-auto-import/vite'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 const host = process.env.TAURI_DEV_HOST;
 
@@ -11,11 +11,21 @@ export default defineConfig(async () => ({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      imports: [
+        'vue',
+        {
+          'naive-ui': [
+            'useDialog',
+            'useMessage',
+            'useNotification',
+            'useLoadingBar'
+          ]
+        }
+      ]
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+      resolvers: [NaiveUiResolver()]
+    })
   ],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`

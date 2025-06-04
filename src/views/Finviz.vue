@@ -1,7 +1,6 @@
 <script lang="js">
 
-import { ElButton, ElCol, ElImage, ElOption, ElPagination, ElRow, ElSelect, ElSpace, ElTooltip } from 'element-plus'
-import { export_screener } from '../script/finviz.js'
+import { export_screener } from '../script/Finviz.js'
 import { search, get_news_list } from '../script/Moomoo'
 
 export default {
@@ -34,6 +33,8 @@ export default {
                 });
         },
         current_change(currentPage) {
+            console.log(currentPage);
+
             const begin = (currentPage - 1) * this.page_size;
             this.current_page_data = [];
             for (let index = 0; index < this.page_size; index++) {
@@ -91,49 +92,27 @@ export default {
 </script>
 
 <template>
-    <ElCol>
-        <ElRow>
-            <ElSpace :size="10">
-                <ElSelect v-model="current_select" placeholder="Select" style="width: 240px">
-                    <ElOption v-for="item in select_options" :key="item.value" :label="item.label" :value="item.value">
-                    </ElOption>
-                </ElSelect>
-                <ElButton @click="get_data(current_select)">确认</ElButton>
-            </ElSpace>
-        </ElRow>
-        <ElRow>
-            <div class="grid-container">
-                <ElTooltip v-for="item in current_page_data" effect="dark" placement="bottom">
-                    <template #content>
-                        <p>公司:{{ item.Company }}</p>
-                        <p>国家:{{ item.Country }}</p>
-                    </template>
-                    <ElImage @click="click_thumbnail(item)" :key="item.Ticker" :src="thumbnail(item.Ticker)"
-                        fit="contain" class="grid-image" />
-                </ElTooltip>
-            </div>
-        </ElRow>
-        <ElRow justify="center">
-            <ElPagination @current-change="current_change" v-show="screener_data.length != 0" layout="prev, pager, next"
-                :default-page-size="20" :total="screener_data.length">
-            </ElPagination>
-        </ElRow>
-    </ElCol>
+    <n-space vertical>
+        <n-space>
+            <n-select v-model:value="current_select" :options="select_options"></n-select>
+            <n-button @click="get_data(current_select)">确认</n-button>
+        </n-space>
+
+        <n-space justify="center">
+            <n-tooltip v-for="item in current_page_data" trigger="hover">
+                <template #trigger>
+                    <n-image @click="click_thumbnail(item)" :src="thumbnail(item.Ticker)"></n-image>
+                </template>
+                公司:{{ item.Company }}
+                国家:{{ item.Country }}
+            </n-tooltip>
+        </n-space>
+
+        <n-space justify="center">
+            <n-pagination @on-update:page="current_change" v-show="screener_data.length != 0"
+                :page-count="screener_data.length" :page-size="page_size">
+            </n-pagination>
+        </n-space>
+        <n-back-top :right="100" />
+    </n-space>
 </template>
-
-<style scoped>
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 10px;
-    width: 100%;
-}
-
-.grid-image {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
-    object-fit: contain;
-    min-height: 200px;
-}
-</style>

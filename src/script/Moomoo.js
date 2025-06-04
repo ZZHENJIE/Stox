@@ -122,3 +122,8 @@ export async function get_news_list(stock_id) {
         return response.text();
     });
 }
+
+export default {
+    search,
+    get_news_list
+}

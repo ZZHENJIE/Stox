@@ -9,6 +9,7 @@
     "core:default",
     "opener:default",
     "http:default",
+    "core:webview:allow-create-webview-window",
     {
       "identifier": "http:default",
       "allow": [
