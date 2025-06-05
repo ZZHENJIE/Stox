@@ -21,12 +21,21 @@ export const routes = [
     },
     {
         path: '/spac_calendar',
-        name: 'SPAC_Calendar',
+        name: 'SPACCalendar',
         meta: {
             title: 'SPAC 日历',
             standalone: false
         },
         component: () => import('./views/SPAC_Calendar.vue')
+    },
+    {
+        path: '/cboe_book_viewer',
+        name: 'CboeBookViewer',
+        meta: {
+            title: 'Cboe Book Viewer',
+            standalone: false
+        },
+        component: () => import('./views/CboeBookViewer.vue')
     },
     {
         path: '/macro',
@@ -39,7 +48,7 @@ export const routes = [
     },
     {
         path: '/macro_small',
-        name: 'Macro_Small',
+        name: 'MacroSmall',
         meta: {
             title: '宏观小窗口',
             standalone: true
@@ -57,7 +66,7 @@ export const routes = [
     },
     {
         path: '/moomoo_new',
-        name: 'Moomoo_new',
+        name: 'MoomooNew',
         meta: {
             title: '富途牛牛新闻',
             standalone: false

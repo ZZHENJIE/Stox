@@ -40,8 +40,8 @@ export default {
     mounted() {
         for (const route of routes) {
             if (route.name === 'Home') continue;
-            if (route.name === 'Macro_Small') continue;
-            if (route.name === 'Moomoo_new') continue;
+            if (route.name === 'MacroSmall') continue;
+            if (route.name === 'MoomooNew') continue;
 
             this.menuOptions.push({
                 label: route.meta.title,

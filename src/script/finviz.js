@@ -13,3 +13,7 @@ export async function export_screener(parameter) {
         return response.text();
     });
 }
+
+export default {
+    export_screener
+}

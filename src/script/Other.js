@@ -11,3 +11,7 @@ export async function Wallstreetcn_Calendar(start, end) {
         return response.text();
     })
 }
+
+export default {
+    Wallstreetcn_Calendar
+}
