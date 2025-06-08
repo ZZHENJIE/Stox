@@ -24,12 +24,16 @@ export default {
 </script>
 
 <template>
-    <n-space>
-        <n-card v-for="item in new_list" :title="item.stockSymbol">
-            {{ item.title }}
-            <template #action>
-                {{ item.source }} {{ FormatTime(item.time, 'yyyy-mm-dd hh:MM:ss') }}
-            </template>
-        </n-card>
-    </n-space>
+    <n-grid :x-gap="10" :y-gap="10" :cols="3">
+        <n-grid-item v-for="item in new_list">
+            <n-card :title="item.stockSymbol">
+                <n-ellipsis expand-trigger="click" line-clamp="2">
+                    {{ item.title }}
+                </n-ellipsis>
+                <template #action>
+                    {{ item.source }} {{ FormatTime(item.time, 'yyyy-mm-dd hh:MM:ss') }}
+                </template>
+            </n-card>
+        </n-grid-item>
+    </n-grid>
 </template>

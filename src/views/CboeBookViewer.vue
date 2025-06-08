@@ -7,6 +7,7 @@ export default {
     data() {
         return {
             symbol: '',
+            isWhile: true,
             Book_Data: [
                 {
                     'Market': 'BZX',
@@ -28,14 +29,51 @@ export default {
         }
     },
     mounted() {
-        // Cboe_Book_Viewer('NVDA', 'bzx').then(text => {
 
-        // })
     },
     methods: {
+        inputChange(value) {
+            this.isWhile = false;
+        },
         confirm() {
-
-        }
+            this.isWhile = true;
+            this.BZX_Get();
+            this.BYX_Get();
+            this.EDGX_Get();
+            this.EDGA_Get();
+        },
+        BZX_Get() {
+            Cboe_Book_Viewer(this.symbol, 'bzx').then(text => {
+                this.Book_Data[0].Data = JSON.parse(text);
+                if (this.isWhile) {
+                    this.BZX_Get();
+                }
+            })
+        },
+        BYX_Get() {
+            Cboe_Book_Viewer(this.symbol, 'byx').then(text => {
+                this.Book_Data[1].Data = JSON.parse(text);
+                if (this.isWhile) {
+                    this.BYX_Get();
+                }
+            })
+        },
+        EDGX_Get() {
+            Cboe_Book_Viewer(this.symbol, 'edgx').then(text => {
+                this.Book_Data[2].Data = JSON.parse(text);
+                if (this.isWhile) {
+                    this.EDGX_Get();
+                }
+            })
+        },
+        EDGA_Get() {
+            Cboe_Book_Viewer(this.symbol, 'edga').then(text => {
+                this.Book_Data[3].Data = JSON.parse(text);
+                if (this.isWhile) {
+                    this.EDGA_Get();
+                }
+            })
+        },
     }
 }
 
@@ -45,7 +83,7 @@ export default {
 <template>
     <n-space vertical>
         <n-space>
-            <n-input v-model:value="symbol" type="text" placeholder="Symbol" />
+            <n-input maxlength="10" @input="inputChange" v-model:value="symbol" type="text" placeholder="Symbol" />
             <n-button @click="confirm">确认</n-button>
         </n-space>
         <n-space justify="center">

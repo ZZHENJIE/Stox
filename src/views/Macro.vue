@@ -22,6 +22,8 @@ export default {
             this.small_window = new WebviewWindow('macro_small_window', {
                 title: '宏观',
                 url: '/macro_small',
+                width: 400,
+                height: 200,
             });
         },
         update_data(start, end) {
