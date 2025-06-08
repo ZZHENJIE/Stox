@@ -1,7 +1,7 @@
 <script lang="js">
 
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
-import { Wallstreetcn_Calendar } from '../script/Other'
+import { Wallstreetcn_Calendar, FormatTime } from '../script/Other'
 
 export default {
     data() {
@@ -17,6 +17,7 @@ export default {
         this.update_data(timestamp, timestamp + 86399);
     },
     methods: {
+        FormatTime,
         show_small_window() {
             this.small_window = new WebviewWindow('macro_small_window', {
                 title: '宏观',
@@ -28,17 +29,6 @@ export default {
                 const json = JSON.parse(text);
                 this.macro_list = json.data.items;
             })
-        },
-        timestampToTime(timestamp) {
-            // 如果是秒级时间戳，先转毫秒
-            if (timestamp < 10000000000) timestamp *= 1000;
-
-            const date = new Date(timestamp);
-            const hh = String(date.getHours()).padStart(2, '0');
-            const mm = String(date.getMinutes()).padStart(2, '0');
-            const ss = String(date.getSeconds()).padStart(2, '0');
-
-            return `${hh}:${mm}:${ss}`;
         },
         select_date(value) {
             const timestamp = value / 1000;
@@ -77,7 +67,7 @@ export default {
                 </thead>
                 <tbody>
                     <tr v-for="item in macro_list">
-                        <td>{{ timestampToTime(item.public_date) }}</td>
+                        <td>{{ FormatTime(item.public_date, 'hh:MM:ss') }}</td>
                         <td>
                             <n-image :src="item.flag_uri"></n-image>
                         </td>

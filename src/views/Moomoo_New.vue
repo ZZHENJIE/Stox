@@ -1,12 +1,16 @@
 <script lang="js">
 
 import Moomoo from '../script/Moomoo';
+import { FormatTime } from '../script/Other';
 
 export default {
     data() {
         return {
             new_list: []
         }
+    },
+    methods: {
+        FormatTime
     },
     mounted() {
         this.new_list = [];
@@ -24,7 +28,7 @@ export default {
         <n-card v-for="item in new_list" :title="item.stockSymbol">
             {{ item.title }}
             <template #action>
-                {{ item.source }} {{ $formatTime(item.time) }}
+                {{ item.source }} {{ FormatTime(item.time, 'yyyy-mm-dd hh:MM:ss') }}
             </template>
         </n-card>
     </n-space>
