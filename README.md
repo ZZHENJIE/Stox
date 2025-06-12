@@ -12,4 +12,4 @@ https://charts-node.finviz.com/chart.ashx?&t=IMNN&tf=d&ct=candle_stick
 
 i1
 
-https://www.listingtrack.io/spacs/calendar/ipo
+https://www.spacresearch.com/calendar

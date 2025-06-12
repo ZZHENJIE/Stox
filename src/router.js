@@ -5,7 +5,7 @@ export const routes = [
         path: '/',
         name: 'Home',
         meta: {
-            title: '主页',
+            title: 'Home',
             standalone: false
         },
         component: () => import('./views/Home.vue')
@@ -23,10 +23,10 @@ export const routes = [
         path: '/spac_calendar',
         name: 'SPACCalendar',
         meta: {
-            title: 'SPAC 日历',
+            title: 'SPAC Calendar',
             standalone: false
         },
-        component: () => import('./views/SPAC_Calendar.vue')
+        component: () => import('./views/SPACCalendar.vue')
     },
     {
         path: '/cboe_book_viewer',
@@ -41,7 +41,7 @@ export const routes = [
         path: '/macro',
         name: 'Macro',
         meta: {
-            title: '宏观',
+            title: 'Macro',
             standalone: false
         },
         component: () => import('./views/Macro.vue')
@@ -50,37 +50,46 @@ export const routes = [
         path: '/macro_small',
         name: 'MacroSmall',
         meta: {
-            title: '宏观小窗口',
+            title: 'Macro Small',
             standalone: true
         },
-        component: () => import('./views/Macro_Small.vue')
+        component: () => import('./views/MacroSmall.vue')
     },
     {
-        path: '/moomoo',
-        name: 'Moomoo',
+        path: '/futu',
+        name: 'Futu',
         meta: {
-            title: '富途牛牛',
+            title: 'Futu',
             standalone: false
         },
-        component: () => import('./views/Moomoo.vue')
+        component: () => import('./views/Futu.vue')
     },
     {
-        path: '/moomoo_new',
-        name: 'MoomooNew',
+        path: '/futu_new',
+        name: 'FutuNew',
         meta: {
-            title: '富途牛牛新闻',
+            title: 'Futu New',
             standalone: false
         },
-        component: () => import('./views/Moomoo_New.vue')
+        component: () => import('./views/FutuNew.vue')
     },
     {
         path: '/about',
         name: 'About',
         meta: {
-            title: '关于',
+            title: 'About',
             standalone: false
         },
         component: () => import('./views/About.vue')
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        meta: {
+            title: 'Settings',
+            standalone: false
+        },
+        component: () => import('./views/Settings.vue')
     },
 ]
 

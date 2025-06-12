@@ -1,19 +1,20 @@
 <script lang="js">
 import { routes } from './router';
-import { Home, ArrowBackCircle, RefreshCircle } from '@vicons/ionicons5';
-import { darkTheme } from 'naive-ui';
+import { Home, ArrowBackCircle, RefreshCircle, Settings } from '@vicons/ionicons5';
+import { Get_Config } from './script/config';
 
 export default {
     components: {
         Home,
         ArrowBackCircle,
-        RefreshCircle
+        RefreshCircle,
+        Settings
     },
     data() {
         return {
             menuOptions: [],
             activeKey: '',
-            darkTheme: darkTheme
+            theme: null
         }
     },
     methods: {
@@ -34,14 +35,16 @@ export default {
             window.location.reload();
         }
     },
-    created() {
-        console.log();
-    },
     mounted() {
+        Get_Config().then(config => {
+            this.theme = config.theme;
+        })
+
         for (const route of routes) {
             if (route.name === 'Home') continue;
             if (route.name === 'MacroSmall') continue;
-            if (route.name === 'MoomooNew') continue;
+            if (route.name === 'FutuNew') continue;
+            if (route.name === 'About') continue;
 
             this.menuOptions.push({
                 label: route.meta.title,
@@ -60,11 +63,11 @@ export default {
 </script>
 
 <template>
-    <n-config-provider :theme="darkTheme">
-        <n-layout style="height: 100vh;">
-            <n-layout position="absolute" has-sider>
-                <n-layout-sider v-show="$route.meta.standalone === false" style="padding-top: 5px;" width="200px"
-                    :native-scrollbar="false" bordered>
+    <n-config-provider :theme="theme">
+        <n-layout position="absolute" has-sider>
+            <n-layout-sider v-show="$route.meta.standalone === false" style="padding-top: 5px;" width="200px"
+                :native-scrollbar="false" bordered>
+                <n-space vertical>
                     <n-space justify="center">
                         <n-button round @click="to_home">
                             <template #icon>
@@ -88,13 +91,13 @@ export default {
                             </template>
                         </n-button>
                     </n-space>
-                    <n-menu :options="menuOptions" :router="true" v-model:value="activeKey" @update:value="jump">
+                    <n-menu :options="menuOptions" v-model:value="activeKey" @update:value="jump">
                     </n-menu>
-                </n-layout-sider>
-                <n-layout-content :native-scrollbar="false">
-                    <RouterView style="padding: 5px;"></RouterView>
-                </n-layout-content>
-            </n-layout>
+                </n-space>
+            </n-layout-sider>
+            <n-layout-content :native-scrollbar="false" style="padding: 5px;">
+                <RouterView></RouterView>
+            </n-layout-content>
         </n-layout>
     </n-config-provider>
 </template>

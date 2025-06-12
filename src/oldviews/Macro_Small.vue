@@ -70,7 +70,7 @@ export default {
 <template>
     <n-space vertical>
         <n-space justify="center">
-            <n-gradient-text>
+            <n-gradient-text :class="{ 'animated-gradient': hint_macro_list.length != 0 }" :size="24">
                 {{ FormatTime(this.timestamp, 'hh:MM:ss') }}
             </n-gradient-text>
         </n-space>
@@ -81,3 +81,25 @@ export default {
         </n-space>
     </n-space>
 </template>
+
+
+<style>
+.animated-gradient {
+    animation: gradientShift 2s ease infinite;
+    background-size: 200% auto;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-image: linear-gradient(to right, #ff0000, #0000ff);
+    }
+
+    50% {
+        background-image: linear-gradient(to right, #00ff00, #ff00ff);
+    }
+
+    100% {
+        background-image: linear-gradient(to right, #ff0000, #0000ff);
+    }
+}
+</style>

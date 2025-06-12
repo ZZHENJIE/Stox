@@ -1,3 +1,3 @@
 <template>
-    <p>Home</p>
+    <p v-for="item in 200">{{ item }}</p>
 </template>
