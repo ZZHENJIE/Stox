@@ -354,13 +354,6 @@
     "@tauri-apps/cli-win32-ia32-msvc" "2.5.0"
     "@tauri-apps/cli-win32-x64-msvc" "2.5.0"
 
-"@tauri-apps/plugin-fs@~2":
-  version "2.3.0"
-  resolved "https://registry.npmmirror.com/@tauri-apps/plugin-fs/-/plugin-fs-2.3.0.tgz#f75258385b61b19bb22d7d94d01f156fc594e20e"
-  integrity sha512-G9gEyYVUaaxhdRJBgQTTLmzAe0vtHYxYyN1oTQzU3zwvb8T+tVLcAqCdFMWHq0qGeGbmynI5whvYpcXo5LvZ1w==
-  dependencies:
-    "@tauri-apps/api" "^2.0.0"
-
 "@tauri-apps/plugin-http@~2":
   version "2.4.4"
   resolved "https://registry.npmmirror.com/@tauri-apps/plugin-http/-/plugin-http-2.4.4.tgz#b1a56a217e6b27cb403ab7637b67ac66a2f95a22"
@@ -368,10 +361,10 @@
   dependencies:
     "@tauri-apps/api" "^2.0.0"
 
-"@tauri-apps/plugin-opener@^2":
-  version "2.2.7"
-  resolved "https://registry.npmmirror.com/@tauri-apps/plugin-opener/-/plugin-opener-2.2.7.tgz#2fccf081e8bd32b61cfc31640845d81a0bf8ed06"
-  integrity sha512-uduEyvOdjpPOEeDRrhwlCspG/f9EQalHumWBtLBnp3fRp++fKGLqDOyUhSIn7PzX45b/rKep//ZQSAQoIxobLA==
+"@tauri-apps/plugin-window-state@~2":
+  version "2.2.2"
+  resolved "https://registry.npmmirror.com/@tauri-apps/plugin-window-state/-/plugin-window-state-2.2.2.tgz#e3eb01a4ebda01e09aef2dc2859163ca986929dc"
+  integrity sha512-7pFwmMtGhhhE/WgmM7PUrj0BSSWVAQMfDdYbRalphIqqF1tWBvxtlxclx8bTutpXHLJTQoCpIeWtBEIXsoAlGw==
   dependencies:
     "@tauri-apps/api" "^2.0.0"
 
@@ -918,6 +911,11 @@ treemate@^0.3.11:
   version "0.3.11"
   resolved "https://registry.npmmirror.com/treemate/-/treemate-0.3.11.tgz#7d52f8f69ab9ce326f8d139e0a3d1ffb25e48222"
   integrity sha512-M8RGFoKtZ8dF+iwJfAJTOH/SM4KluKOKRJpjCMhI8bG3qB74zrFoArKZ62ll0Fr3mqkMJiQOmWYkdYgDeITYQg==
+
+typescript@^5.8.3:
+  version "5.8.3"
+  resolved "https://registry.npmmirror.com/typescript/-/typescript-5.8.3.tgz#92f8a3e5e3cf497356f4178c34cd65a7f5e8440e"
+  integrity sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==
 
 ufo@^1.5.4:
   version "1.6.1"

@@ -8,6 +8,7 @@ export default {
     data() {
         return {
             small_window: null,
+            isLoading: true,
             macro_list: []
         }
     },
@@ -20,7 +21,7 @@ export default {
     methods: {
         Format_Time,
         show_small_window() {
-            this.small_window = new WebviewWindow('macro_small_window', {
+            this.small_window = new WebviewWindow('macro_small', {
                 title: '宏观',
                 url: '/macro_small',
                 width: 400,
@@ -31,6 +32,7 @@ export default {
             Wallstreetcn_Calendar(start, end).then(text => {
                 const json = JSON.parse(text);
                 this.macro_list = json.data.items;
+                this.isLoading = false;
             })
         },
         select_date(value) {
@@ -55,7 +57,7 @@ export default {
             <n-date-picker @update:value="select_date" :default-value="Date.now()" type="date" />
             <n-button @click="show_small_window">小窗口显示</n-button>
         </n-space>
-        <n-space justify="center">
+        <n-spin :show="isLoading">
             <n-table>
                 <thead>
                     <tr>
@@ -82,6 +84,6 @@ export default {
                     </tr>
                 </tbody>
             </n-table>
-        </n-space>
+        </n-spin>
     </n-space>
 </template>

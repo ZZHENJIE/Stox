@@ -8,7 +8,8 @@ export default {
             timestamp: null,
             timer: null,
             macro_list: [],
-            hint_macro_list: []
+            hint_macro_list: [],
+            isLoading: true,
         }
     },
     mounted() {
@@ -16,6 +17,7 @@ export default {
         Akamai_Timestamp().then(text => {
             this.timestamp = parseInt(text);
             this.startTimer();
+            this.isLoading = false;
         }).catch(error => {
             console.error('获取时间戳失败:', error);
             this.timestamp = Math.floor(Date.now() / 1000);
@@ -71,16 +73,18 @@ export default {
 
 <template>
     <n-space vertical>
-        <n-space justify="center">
-            <n-gradient-text :class="{ 'animated-gradient': hint_macro_list.length != 0 }" :size="24">
-                {{ Format_Time(this.timestamp, 'hh:MM:ss') }}
-            </n-gradient-text>
-        </n-space>
-        <n-space justify="center">
-            <n-alert v-show="hint_macro_list.length != 0" type="warning">
-                将要有{{ hint_macro_list.length }}条宏观数据,最大影响力 {{ maxImportance() }}
-            </n-alert>
-        </n-space>
+        <n-spin :show="isLoading">
+            <n-space justify="center">
+                <n-gradient-text :class="{ 'animated-gradient': hint_macro_list.length != 0 }" :size="24">
+                    {{ Format_Time(this.timestamp, 'hh:MM:ss') }}
+                </n-gradient-text>
+            </n-space>
+            <n-space justify="center">
+                <n-alert v-show="hint_macro_list.length != 0" type="warning">
+                    将要有{{ hint_macro_list.length }}条宏观数据,最大影响力 {{ maxImportance() }}
+                </n-alert>
+            </n-space>
+        </n-spin>
     </n-space>
 </template>
 

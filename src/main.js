@@ -2,8 +2,10 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from './router';
 import 'vfonts/FiraCode.css';
+import { listenEvent } from './tauri';
 
-const app = createApp(App);
+const vueApp = createApp(App);
+vueApp.use(router);
+vueApp.mount('#app');
 
-app.use(router);
-app.mount("#app");
+await listenEvent();
