@@ -12,7 +12,7 @@ export interface AppConfig {
 
 export const DEFAULT_CONFIG: AppConfig = {
     isLightTheme: false,
-    finviz_token: '',
+    finviz_token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
     finviz_screener_parameter_list: [{
         label: '成交量排行',
         value: '&o=-volume'

@@ -2,7 +2,7 @@
 import { Home, ArrowBackCircle, RefreshCircle, Settings } from '@vicons/ionicons5';
 import { MenuData } from './Router';
 import { Get_Config, type AppConfig } from './Config';
-import { darkTheme, lightTheme, NButton, NIcon, NMenu, NSpace, NConfigProvider } from 'naive-ui';
+import { darkTheme, lightTheme, NMessageProvider, NModalProvider } from 'naive-ui';
 
 export default {
     components: {
@@ -45,38 +45,42 @@ export default {
 
 <template>
     <NConfigProvider :theme="theme">
-        <NLayout position="absolute" has-sider>
-            <NLayoutSider v-show="$route.meta.standalone === false" style="padding-top: 5px;" width="200px"
-                :native-scrollbar="false" bordered>
-                <NSpace justify="center">
-                    <NButton round @click="$router.push({ name: 'Home' })">
-                        <template #icon>
-                            <NIcon>
-                                <Home></Home>
-                            </NIcon>
-                        </template>
-                    </NButton>
-                    <NButton round @click="$router.back();">
-                        <template #icon>
-                            <NIcon>
-                                <ArrowBackCircle></ArrowBackCircle>
-                            </NIcon>
-                        </template>
-                    </NButton>
-                    <NButton round @click="refresh">
-                        <template #icon>
-                            <NIcon>
-                                <RefreshCircle></RefreshCircle>
-                            </NIcon>
-                        </template>
-                    </NButton>
-                </NSpace>
-                <NMenu :options="menuOptions" v-model:value="activeKey" @update:value="jump">
-                </NMenu>
-            </NLayoutSider>
-            <NLayoutContent :native-scrollbar="false" style="padding: 5px;">
-                <RouterView></RouterView>
-            </NLayoutContent>
-        </NLayout>
+        <NModalProvider>
+            <NMessageProvider>
+                <NLayout position="absolute" has-sider>
+                    <NLayoutSider v-show="$route.meta.standalone === false" style="padding-top: 5px;" width="200px"
+                        :native-scrollbar="false" bordered>
+                        <NSpace justify="center">
+                            <NButton round @click="$router.push({ name: 'Home' })">
+                                <template #icon>
+                                    <NIcon>
+                                        <Home></Home>
+                                    </NIcon>
+                                </template>
+                            </NButton>
+                            <NButton round @click="$router.back();">
+                                <template #icon>
+                                    <NIcon>
+                                        <ArrowBackCircle></ArrowBackCircle>
+                                    </NIcon>
+                                </template>
+                            </NButton>
+                            <NButton round @click="refresh">
+                                <template #icon>
+                                    <NIcon>
+                                        <RefreshCircle></RefreshCircle>
+                                    </NIcon>
+                                </template>
+                            </NButton>
+                        </NSpace>
+                        <NMenu :options="menuOptions" v-model:value="activeKey" @update:value="jump">
+                        </NMenu>
+                    </NLayoutSider>
+                    <NLayoutContent :native-scrollbar="false" style="padding: 5px;">
+                        <RouterView></RouterView>
+                    </NLayoutContent>
+                </NLayout>
+            </NMessageProvider>
+        </NModalProvider>
     </NConfigProvider>
 </template>

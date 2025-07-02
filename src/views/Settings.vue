@@ -1,6 +1,6 @@
 <script lang="ts">
 
-import { NButton, NForm, NFormItemGi, NGrid, NSpace, NSwitch } from 'naive-ui';
+import { NButton } from 'naive-ui';
 import { Reset_Config, Save_Config, Get_Config, DEFAULT_CONFIG } from '../Config';
 
 export default {
@@ -39,7 +39,7 @@ export default {
             </NFormItemGi>
 
             <NFormItemGi :span="18" label="Finviz API Token">
-                <n-input v-model:value="config.finviz_token" type="text" />
+                <NInput v-model:value="config.finviz_token" type="text" />
             </NFormItemGi>
 
             <NFormItemGi :span="24">
