@@ -29,12 +29,10 @@ export default {
     },
     methods: {
         async confirm() {
-            // this.data = await Finviz_Export_Screener(this.parameter, this.token);
-            console.log(this.parameter_list);
-            const list = (await Get_Config()).finviz_screener_parameter_list;
-            console.log(list);
-
-
+            this.data = await Finviz_Export_Screener(this.parameter, this.token);
+            //console.log(this.parameter_list);
+            //const list = (await Get_Config()).finviz_screener_parameter_list;
+            //console.log(list);
         },
         async add_parameter() {
             this.showAddDialog = true;
