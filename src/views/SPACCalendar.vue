@@ -1,7 +1,11 @@
-<script lang="js">
-
+<script lang="ts">
 import { Document, CheckmarkCircle, Calendar, Warning } from '@vicons/ionicons5'
-import { Spac_Research_Calendar } from '../script/request'
+import { Spac_Research_Calendar, type SPACItem } from '../Request'
+
+interface GroupedItem {
+    date: string | undefined;
+    array: SPACItem[];
+}
 
 export default {
     components: {
@@ -12,13 +16,13 @@ export default {
     },
     data() {
         return {
-            calendar_data: [],
+            calendar_data: [] as GroupedItem[],
             isLoading: true,
         }
     },
     mounted() {
-        Spac_Research_Calendar().then(array => {
-            this.calendar_data = array.reduce((acc, current) => {
+        Spac_Research_Calendar().then((array: SPACItem[]) => {
+            const groupedData = array.reduce((acc: GroupedItem[], current: SPACItem) => {
                 const existingGroup = acc.find(item => item.date === current.date);
 
                 if (existingGroup) {
@@ -32,12 +36,18 @@ export default {
 
                 return acc;
             }, []);
+
+            this.calendar_data = groupedData;
             this.isLoading = false;
-        })
+        }).catch(error => {
+            console.error('Error fetching calendar data:', error);
+            this.isLoading = false;
+        });
     },
     methods: {
-        getButtonType(eventType) {
-            const typeMap = {
+        getButtonType(eventType: string | undefined) {
+            if (!eventType) return 'default';
+            const typeMap: Record<string, string> = {
                 'amendment-vote': 'warning',
                 'approval-vote': 'success',
                 'ipo-date': 'info',
@@ -45,8 +55,9 @@ export default {
             }
             return typeMap[eventType] || 'default'
         },
-        getEventIcon(eventType) {
-            const iconMap = {
+        getEventIcon(eventType: string | undefined) {
+            if (!eventType) return Document;
+            const iconMap: Record<string, any> = {
                 'amendment-vote': Document,
                 'approval-vote': CheckmarkCircle,
                 'ipo-date': Calendar,
@@ -56,7 +67,6 @@ export default {
         }
     }
 }
-
 </script>
 
 <template>
@@ -86,7 +96,7 @@ export default {
                         <Calendar />
                     </n-icon>
                 </template>
-                SPAC上市日
+                上市日
             </n-button>
 
             <n-button strong secondary block size="small" type="error">
@@ -99,7 +109,8 @@ export default {
             </n-button>
         </n-space>
         <n-spin :show="isLoading">
-            <n-grid :x-gap="12" :y-gap="12" :cols="6" responsive="screen" :collapsed="false">
+            <n-grid v-if="calendar_data.length > 0" :x-gap="12" :y-gap="12" :cols="6" responsive="screen"
+                :collapsed="false">
                 <n-grid-item v-for="item in calendar_data" :key="item.date">
                     <n-card :title="`Date: ${item.date}`" hoverable :style="{
                         height: '100%',
@@ -108,7 +119,7 @@ export default {
                     }" size="small" header-style="padding: 12px">
                         <template #header-extra>
                             <n-tag :bordered="false" type="info" size="small">
-                                {{ item.array.length }} Item
+                                {{ item.array.length }} Item{{ item.array.length > 1 ? 's' : '' }}
                             </n-tag>
                         </template>
 
@@ -130,6 +141,17 @@ export default {
                     </n-card>
                 </n-grid-item>
             </n-grid>
+            <div v-else-if="!isLoading" class="empty-state">
+                No calendar data available
+            </div>
         </n-spin>
     </n-space>
 </template>
+
+<style scoped>
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+</style>

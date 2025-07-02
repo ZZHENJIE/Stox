@@ -1,3 +1,11 @@
+<script lang="ts">
+
+export default{
+
+}
+
+</script>
+
 <template>
-    <p v-for="item in 200">{{ item }}</p>
+
 </template>

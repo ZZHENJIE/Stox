@@ -1,12 +1,22 @@
 
-interface AppConfig {
+export interface FinvizScreenerParameterItem {
+    label: string,
+    value: string
+}
+
+export interface AppConfig {
     isLightTheme: boolean;
-    finviz_token: string
+    finviz_token: string,
+    finviz_screener_parameter_list: FinvizScreenerParameterItem[],
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
     isLightTheme: false,
-    finviz_token: ''
+    finviz_token: '',
+    finviz_screener_parameter_list: [{
+        label: '成交量排行',
+        value: '&o=-volume'
+    }]
 };
 
 const APP_NAME = 'Stox';

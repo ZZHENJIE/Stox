@@ -6,7 +6,7 @@ import CryptoJS from 'crypto-js';
  * @param {string} [key] - 可选密钥
  * @returns {string} 哈希结果
  */
-function generateSHA256(text, key) {
+function generateSHA256(text: string, key?: string): string {
     return CryptoJS.SHA256(text, key).toString();
 }
 
@@ -15,8 +15,8 @@ function generateSHA256(text, key) {
  * @param {Object} obj - 要序列化的对象
  * @returns {string} JSON字符串
  */
-function safeStringify(obj) {
-    const result = {};
+function safeStringify(obj: Record<string, any>): string {
+    const result: Record<string, string> = {};
     Object.keys(obj).forEach(key => {
         if (Object.prototype.hasOwnProperty.call(obj, key) && obj[key] !== undefined) {
             result[key] = String(obj[key]);
@@ -31,7 +31,7 @@ function safeStringify(obj) {
  * @param {string} key - 密钥
  * @returns {string} 签名结果
  */
-function generateHMAC(text, key) {
+function generateHMAC(text: string, key: string): string {
     return CryptoJS.HmacSHA512(text, key).toString();
 }
 
@@ -40,14 +40,42 @@ function generateHMAC(text, key) {
  * @param {string} data - 原始数据
  * @returns {string} 10字符的令牌
  */
-function generateShortToken(data) {
+function generateShortToken(data: string): string {
     const input = data || "{}";
     const hmac = generateHMAC(input, "quote_web");
     return generateSHA256(hmac.slice(0, 10)).slice(0, 10);
 }
 
+// 定义请求配置类型
+interface RequestConfig {
+    transitional: {
+        silentJSONParsing: boolean;
+        forcedJSONParsing: boolean;
+        clarifyTimeoutError: boolean;
+    };
+    adapter: string[];
+    transformRequest: (null | ((data: any, headers?: any) => any))[];
+    transformResponse: (null | ((data: any) => any))[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+    maxBodyLength: number;
+    env: Record<string, any>;
+    headers: {
+        Accept: string;
+        "futu-x-csrf-token": string;
+        [key: string]: any;
+    };
+    baseURL: string;
+    params: Record<string, any>;
+    method: string;
+    url: string;
+    data?: any;
+}
+
 // 请求配置常量（冻结对象防止修改）
-const REQUEST_CONFIG = Object.freeze({
+const REQUEST_CONFIG: Readonly<RequestConfig> = Object.freeze({
     transitional: {
         silentJSONParsing: true,
         forcedJSONParsing: true,
@@ -77,8 +105,8 @@ const REQUEST_CONFIG = Object.freeze({
  * @param {Object} params - 请求参数
  * @returns {string} 生成的令牌
  */
-export function Futu_Get_API_Token(params) {
-    const config = { ...REQUEST_CONFIG };
+export function Futu_Get_API_Token(params: Record<string, any>): string {
+    const config: RequestConfig = { ...REQUEST_CONFIG };
     config.params = { ...config.params, ...params };
 
     const inputData = config.data ?
@@ -88,7 +116,14 @@ export function Futu_Get_API_Token(params) {
     return generateShortToken(inputData);
 }
 
-export function Format_Time(timestamp, format, timezone = 8) {
+/**
+ * 格式化时间
+ * @param {number} timestamp - 时间戳
+ * @param {string} format - 格式字符串
+ * @param {number} [timezone=8] - 时区（默认东八区）
+ * @returns {string} 格式化后的时间字符串
+ */
+export function Format_Time(timestamp: number, format: string, timezone: number = 8): string {
     const ts = timestamp < 10000000000 ? timestamp * 1000 : timestamp;
 
     const date = new Date(ts);
@@ -97,7 +132,7 @@ export function Format_Time(timestamp, format, timezone = 8) {
     const timezoneMs = timezone * 3600 * 1000;
     const adjustedDate = new Date(date.getTime() + timezoneOffset + timezoneMs);
 
-    const pad = (n) => n.toString().padStart(2, '0');
+    const pad = (n: number): string => n.toString().padStart(2, '0');
 
     const year = adjustedDate.getFullYear();
     const month = pad(adjustedDate.getMonth() + 1);
@@ -106,7 +141,7 @@ export function Format_Time(timestamp, format, timezone = 8) {
     const minutes = pad(adjustedDate.getMinutes());
     const seconds = pad(adjustedDate.getSeconds());
 
-    const formatMap = {
+    const formatMap: Record<string, string | number> = {
         'yyyy': year,
         'mm': month,
         'dd': day,
@@ -115,13 +150,10 @@ export function Format_Time(timestamp, format, timezone = 8) {
         'ss': seconds
     };
 
-    return format.replace(/(yyyy|mm|dd|hh|MM|ss)/g, (match) => formatMap[match]);
+    return format.replace(/(yyyy|mm|dd|hh|MM|ss)/g, (match) => String(formatMap[match]));
 }
-
-export const Finviz_Api_Token = '1e3ab083-4d40-48cd-9218-ea042376b56e';
 
 export default {
-    Finviz_Api_Token,
     Futu_Get_API_Token,
     Format_Time
-}
+};

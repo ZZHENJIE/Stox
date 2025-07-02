@@ -1,6 +1,7 @@
-<script lang="js">
+<script lang="ts">
 
-import { Reset_Config, Save_Config, Get_Config, DEFAULT_CONFIG } from '../script/config'
+import { NButton, NForm, NFormItemGi, NGrid, NSpace, NSwitch } from 'naive-ui';
+import { Reset_Config, Save_Config, Get_Config, DEFAULT_CONFIG } from '../Config';
 
 export default {
     data() {
@@ -24,34 +25,34 @@ export default {
 </script>
 
 <template>
-    <n-form>
-        <n-grid :cols="24" :x-gap="24">
-            <n-form-item-gi :span="6" label="Theme Change">
-                <n-switch v-model:value="config.isLightTheme">
+    <NForm>
+        <NGrid :cols="24" :x-gap="24">
+            <NFormItemGi :span="6" label="Theme Change">
+                <NSwitch v-model:value="config.isLightTheme">
                     <template #checked>
                         Dark
                     </template>
                     <template #unchecked>
                         Light
                     </template>
-                </n-switch>
-            </n-form-item-gi>
+                </NSwitch>
+            </NFormItemGi>
 
-            <n-form-item-gi :span="18" label="Finviz API Token">
+            <NFormItemGi :span="18" label="Finviz API Token">
                 <n-input v-model:value="config.finviz_token" type="text" />
-            </n-form-item-gi>
+            </NFormItemGi>
 
-            <n-form-item-gi :span="24">
-                <n-space>
-                    <n-button round type="info" @click="Reset_Config">
+            <NFormItemGi :span="24">
+                <NSpace>
+                    <NButton round type="info" @click="Reset_Config">
                         Reset
-                    </n-button>
-                    <n-button round type="primary" @click="save">
+                    </NButton>
+                    <NButton round type="primary" @click="save">
                         Save
-                    </n-button>
-                </n-space>
-            </n-form-item-gi>
-        </n-grid>
-    </n-form>
+                    </NButton>
+                </NSpace>
+            </NFormItemGi>
+        </NGrid>
+    </NForm>
 
 </template>

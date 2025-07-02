@@ -1,8 +1,51 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import { Futu_Get_API_Token, Finviz_Api_Token } from "../script/miscellaneous";
+import { Futu_Get_API_Token } from './Miscellaneous';
 
-export async function Finviz_Export_Screener(parameter) {
-    const url = 'https://elite.finviz.com/export.ashx?v=111&' + parameter + '&auth=' + Finviz_Api_Token;
+export interface FinvizScreenerItem {
+    Ticker: string,
+    Company: string,
+    Sector: string,
+    Industry: string,
+    Country: string,
+    MarketCap: string,
+    PriceEarningsRatio: string,
+    Price: string,
+    Change: string,
+    Volume: string,
+}
+
+export async function Finviz_Export_Screener(parameter: string, token: string) {
+    const url = `https://elite.finviz.com/export.ashx?v=111&${parameter}&auth=${token}`;
+    return fetch(url, {
+        method: 'GET'
+    }).then(async response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const CSV = await response.text();
+        const Lines = CSV.split('\n');
+        const Result: FinvizScreenerItem[] = [];
+        for (let line = 1; line < Lines.length - 2; line++) {
+            const items = Lines[line].split(',');
+            Result.push({
+                Ticker: items[1].replace(/"/g, ''),
+                Company: items[2].replace(/"/g, ''),
+                Sector: items[3].replace(/"/g, ''),
+                Industry: items[4].replace(/"/g, ''),
+                Country: items[5].replace(/"/g, ''),
+                MarketCap: items[6].replace(/"/g, ''),
+                PriceEarningsRatio: items[7].replace(/"/g, ''),
+                Price: items[8].replace(/"/g, ''),
+                Change: items[9].replace(/"/g, ''),
+                Volume: items[10].replace(/"/g, '')
+            })
+        }
+        return Result;
+    });
+}
+
+export async function Futu_Search(symbol: string) {
+    const url = `https://www.futunn.com/search-stock/predict?keyword=${symbol}`;
     return fetch(url, {
         method: 'GET'
     }).then(response => {
@@ -13,26 +56,14 @@ export async function Finviz_Export_Screener(parameter) {
     });
 }
 
-export async function Futu_Search(params) {
-    const url = 'https://www.futunn.com/search-stock/predict?keyword=' + symbol;
-    return fetch(url, {
-        method: 'GET'
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-    });
-}
-
-export async function Futu_Get_News_List(stock_id) {
+export async function Futu_Get_News_List(stock_id: string) {
     const params = {
         stock_id: stock_id,
         market_type: 2,
         type: 0,
         subType: 0,
     };
-    const url = 'https://www.futunn.com/quote-api/quote-v2/get-news-list?stock_id=' + stock_id + '&market_type=2&type=0&subType=0';
+    const url = `https://www.futunn.com/quote-api/quote-v2/get-news-list?stock_id=${stock_id}&market_type=2&type=0&subType=0`;
     const token = Futu_Get_API_Token(params);
     return fetch(url, {
         method: 'GET',
@@ -47,8 +78,8 @@ export async function Futu_Get_News_List(stock_id) {
     });
 }
 
-export async function Wallstreetcn_Calendar(start, end) {
-    const url = 'https://api-one-wscn.awtmt.com/apiv1/finance/macrodatas?start=' + start + '&end=' + end;
+export async function Wallstreetcn_Calendar(start: number, end: number) {
+    const url = `https://api-one-wscn.awtmt.com/apiv1/finance/macrodatas?start=${start}&end=${end}`;
     return fetch(url, {
         method: 'GET'
     }).then(response => {
@@ -59,8 +90,8 @@ export async function Wallstreetcn_Calendar(start, end) {
     })
 }
 
-export async function Cboe_Book_Viewer(symbol, market) {
-    const url = 'https://www.cboe.com/json/' + market + '/book/' + symbol;
+export async function Cboe_Book_Viewer(symbol: string, market: string) {
+    const url = `https://www.cboe.com/json/${market}/book/${symbol}`;
     return fetch(url, {
         method: 'GET',
         headers: {
@@ -86,6 +117,12 @@ export async function Akamai_Timestamp() {
     })
 }
 
+export interface SPACItem {
+    date: string | undefined,
+    eventType: string | undefined,
+    href: string | undefined
+}
+
 export async function Spac_Research_Calendar() {
     const url = 'https://www.spacresearch.com/calendar';
     const response = await fetch(url, {
@@ -93,7 +130,7 @@ export async function Spac_Research_Calendar() {
     });
     const html = await response.text();
     const parser = new DOMParser();
-    const result = [];
+    const result: SPACItem[] = [];
     const doc = parser.parseFromString(html, 'text/html');
 
     const calendar = doc.getElementById('calendar');
@@ -110,7 +147,7 @@ export async function Spac_Research_Calendar() {
                 return
             };
 
-            const date = dateElement.textContent.trim();
+            const date = dateElement.textContent?.trim();
 
             const eventElements = day.querySelectorAll('.event');
 
@@ -126,7 +163,7 @@ export async function Spac_Research_Calendar() {
                 result.push({
                     date: date,
                     eventType: eventType,
-                    href: href.split('/').pop()
+                    href: href?.split('/').pop()
                 });
             });
         }
