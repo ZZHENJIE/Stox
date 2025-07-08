@@ -33,6 +33,36 @@ const Futu: RouteRecordRaw[] = [
     },
 ];
 
+const Calendar: RouteRecordRaw[] = [
+    {
+        path: '/macro_calendar',
+        name: 'Macro Calendar',
+        meta: {
+            menu_enable: true,
+            standalone: false
+        },
+        component: () => import('./views/Calendar/MacroCalendar.vue')
+    },
+    {
+        path: '/spac_calendar',
+        name: 'SPAC Calendar',
+        meta: {
+            menu_enable: true,
+            standalone: false
+        },
+        component: () => import('./views/Calendar/SPACCalendar.vue')
+    },
+    {
+        path: '/ipo_calendar',
+        name: 'IPO Calendar',
+        meta: {
+            menu_enable: true,
+            standalone: false
+        },
+        component: () => import('./views/Calendar/IPOCalendar.vue')
+    },
+];
+
 const Viewer: RouteRecordRaw[] = [
     {
         path: '/cboe_book_viewer',
@@ -42,24 +72,6 @@ const Viewer: RouteRecordRaw[] = [
             standalone: false
         },
         component: () => import('./views/CboeBookViewer.vue')
-    },
-    {
-        path: '/macro',
-        name: 'Macro',
-        meta: {
-            menu_enable: true,
-            standalone: false
-        },
-        component: () => import('./views/Macro.vue')
-    },
-    {
-        path: '/spac_calendar',
-        name: 'SPAC Calendar',
-        meta: {
-            menu_enable: true,
-            standalone: false
-        },
-        component: () => import('./views/SPACCalendar.vue')
     },
     {
         path: '/',
@@ -89,15 +101,6 @@ const Viewer: RouteRecordRaw[] = [
         component: () => import('./views/Settings.vue')
     },
     {
-        path: '/macro_small',
-        name: 'Macro Small',
-        meta: {
-            menu_enable: false,
-            standalone: true
-        },
-        component: () => import('./views/MacroSmall.vue')
-    },
-    {
         path: '/settings',
         name: 'Settings',
         meta: {
@@ -106,12 +109,22 @@ const Viewer: RouteRecordRaw[] = [
         },
         component: () => import('./views/Settings.vue')
     },
+    {
+        path: '/macro_small',
+        name: 'Macro Small',
+        meta: {
+            menu_enable: false,
+            standalone: true
+        },
+        component: () => import('./views/MacroSmall.vue')
+    },
 ];
 
 const Routers: RouteRecordRaw[] = [
     ...Viewer,
     ...Finviz,
     ...Futu,
+    ...Calendar
 ];
 
 export function MenuData() {
@@ -130,6 +143,16 @@ export function MenuData() {
             label: 'Futu',
             key: 'futu',
             children: Futu.filter(r => r.meta?.menu_enable).map(r => ({
+                label: r.name,
+                key: r.name as string,
+                path: r.path,
+                standalone: r.meta?.standalone
+            }))
+        },
+        {
+            label: 'Calendar',
+            key: 'calendar',
+            children: Calendar.filter(r => r.meta?.menu_enable).map(r => ({
                 label: r.name,
                 key: r.name as string,
                 path: r.path,
