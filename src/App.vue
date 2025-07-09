@@ -16,7 +16,8 @@ export default {
             menuOptions: MenuData(),
             config: {} as AppConfig,
             activeKey: null as any,
-            theme: null as any
+            theme: null as any,
+            menu_collapsed: false
         }
     },
     methods: {
@@ -49,8 +50,9 @@ export default {
             <NMessageProvider>
                 <NLayout position="absolute" has-sider>
                     <NLayoutSider v-show="$route.meta.standalone === false" style="padding-top: 5px;" width="200px"
-                        :native-scrollbar="false" bordered>
-                        <NSpace justify="center">
+                        :native-scrollbar="false" bordered :collapsed="menu_collapsed" show-trigger
+                        :collapsed-width="32" @collapse="menu_collapsed = true" @expand="menu_collapsed = false">
+                        <NSpace v-show="menu_collapsed === false" justify="center">
                             <NButton round @click="$router.push({ name: 'Home' })">
                                 <template #icon>
                                     <NIcon>

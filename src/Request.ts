@@ -15,6 +15,15 @@ export interface FinvizScreenerItem {
 }
 
 export async function Finviz_Export_Screener(parameter: string, token: string) {
+    const VolumeFormat = (volume: number): string => {
+        if (volume >= 1000000) {
+            return (volume / 1000000).toFixed(2) + 'M';
+        } else if (volume >= 1000) {
+            return (volume / 1000).toFixed(2) + 'K';
+        } else {
+            return volume.toString();
+        }
+    };
     const url = `https://elite.finviz.com/export.ashx?v=111&${parameter}&auth=${token}`;
     return fetch(url, {
         method: 'GET'
@@ -37,7 +46,7 @@ export async function Finviz_Export_Screener(parameter: string, token: string) {
                 PriceEarningsRatio: items[7].replace(/"/g, ''),
                 Price: items[8].replace(/"/g, ''),
                 Change: items[9].replace(/"/g, ''),
-                Volume: items[10].replace(/"/g, '')
+                Volume: VolumeFormat(parseInt(items[10]))
             })
         }
         return Result;

@@ -111,5 +111,6 @@ export default {
                 </template>
             </NCard>
         </NModal>
+        <NBackTop :right="100" :bottom="100" />
     </NSpace>
 </template>

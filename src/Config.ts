@@ -13,10 +13,24 @@ export interface AppConfig {
 export const DEFAULT_CONFIG: AppConfig = {
     isLightTheme: false,
     finviz_token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
-    finviz_screener_parameter_list: [{
-        label: '成交量排行',
-        value: '&o=-volume'
-    }]
+    finviz_screener_parameter_list: [
+        {
+            label: '超0.7$交易量',
+            value: '&f=sh_price_0.7to20&o=-volume'
+        },
+        {
+            label: '异常交易量',
+            value: '&s=ta_unusualvolume&f=sh_price_0.5to30&o=-volume'
+        },
+        {
+            label: '10$手续费',
+            value: '&f=ind_shellcompanies%2Csh_curvol_o200%2Csh_price_5to20&o=-volume'
+        },
+        {
+            label: '稳票',
+            value: '&f=sh_curvol_o200,sh_price_1to20,ta_change_-3to3&ft=4&o=-volume'
+        }
+    ]
 };
 
 const APP_NAME = 'Stox';

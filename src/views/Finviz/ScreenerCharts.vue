@@ -17,22 +17,33 @@ export default {
             interval_list: [
                 {
                     label: 'Day',
-                    value: 'd'
+                    value: 'd',
+                    width: 324,
                 },
                 {
                     label: '1 Minute',
-                    value: 'i1'
+                    value: 'i1',
+                    width: 844,
                 },
                 {
                     label: '3 Minute',
-                    value: 'i3'
+                    value: 'i3',
+                    width: 584,
                 },
                 {
                     label: '5 Minute',
-                    value: 'i5'
+                    value: 'i5',
+                    width: 376,
                 }
             ],
-            interval: 'd'
+            widths: {
+                d: 324,
+                i1: 844,
+                i3: 584,
+                i5: 376,
+            },
+            interval: 'd' as 'd' | 'i1' | 'i3' | 'i5',
+            loadedImages: {} as Record<string, boolean> // 记录图片加载状态
         }
     },
     computed: {
@@ -48,6 +59,24 @@ export default {
     methods: {
         thumbnail(ticker: string) {
             return `https://charts-node.finviz.com/chart.ashx?&t=${ticker}&tf=${this.interval}&ct=candle_stick`;
+        },
+        handleImageLoad(ticker: string) {
+            this.loadedImages[ticker] = true;
+        },
+        handleImageError(ticker: string) {
+            this.loadedImages[ticker] = true;
+        }
+    },
+    watch: {
+        interval() {
+            this.loadedImages = {};
+        },
+        page() {
+            const newLoaded: Record<string, boolean> = {};
+            this.currentPageData.forEach(item => {
+                newLoaded[item.Ticker] = false;
+            });
+            this.loadedImages = newLoaded;
         }
     }
 }
@@ -56,14 +85,17 @@ export default {
 <template>
     <NSpace justify="center">
         <NCard v-for="item in currentPageData" :key="item.Ticker">
-            <NTooltip trigger="hover">
-                <template #trigger>
-                    <n-image :src="thumbnail(item.Ticker)" style="width: 50%;" />
-                </template>
-                公司: {{ item.Company }}
-                <br />
-                国家: {{ item.Country }}
-            </NTooltip>
+
+            <n-skeleton v-if="!loadedImages[item.Ticker]" height="180px" :width="widths[interval]" :sharp="false" />
+            <n-image v-show="loadedImages[item.Ticker]" :src="thumbnail(item.Ticker)"
+                @load="handleImageLoad(item.Ticker)" @error="handleImageError(item.Ticker)" />
+
+            <template #footer>
+                {{ item.Company }}
+            </template>
+            <template #action>
+                {{ item.Country }} {{ item.Volume }}
+            </template>
         </NCard>
     </NSpace>
     <NSpace justify="center" style="margin-top: 8px;">

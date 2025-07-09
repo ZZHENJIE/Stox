@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 const Finviz: RouteRecordRaw[] = [
     {
         path: '/finviz_screener',
-        name: 'Finviz Screener',
+        name: 'Screener',
         meta: {
             menu_enable: true,
             standalone: false
@@ -15,7 +15,7 @@ const Finviz: RouteRecordRaw[] = [
 const Futu: RouteRecordRaw[] = [
     {
         path: '/futu_search',
-        name: 'Futu Search',
+        name: 'Search',
         meta: {
             menu_enable: true,
             standalone: false
@@ -24,7 +24,7 @@ const Futu: RouteRecordRaw[] = [
     },
     {
         path: '/futu_news',
-        name: 'Futu News',
+        name: 'News',
         meta: {
             menu_enable: true,
             standalone: false
@@ -36,7 +36,7 @@ const Futu: RouteRecordRaw[] = [
 const Calendar: RouteRecordRaw[] = [
     {
         path: '/macro_calendar',
-        name: 'Macro Calendar',
+        name: 'Macro',
         meta: {
             menu_enable: true,
             standalone: false
@@ -45,7 +45,7 @@ const Calendar: RouteRecordRaw[] = [
     },
     {
         path: '/spac_calendar',
-        name: 'SPAC Calendar',
+        name: 'SPAC',
         meta: {
             menu_enable: true,
             standalone: false
@@ -54,7 +54,7 @@ const Calendar: RouteRecordRaw[] = [
     },
     {
         path: '/ipo_calendar',
-        name: 'IPO Calendar',
+        name: 'IPO',
         meta: {
             menu_enable: true,
             standalone: false
