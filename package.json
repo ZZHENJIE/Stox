@@ -1,0 +1,35 @@
+{
+  "name": "stox",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-http": "~2",
+    "@tauri-apps/plugin-window-state": "~2",
+    "@vicons/ionicons5": "^0.13.0",
+    "add": "^2.0.6",
+    "crypto-js": "^4.2.0",
+    "naive-ui": "^2.41.0",
+    "vfonts": "^0.0.3",
+    "vue": "^3.5.17",
+    "vue-router": "4",
+    "yarn": "^1.22.22"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "unplugin-auto-import": "^19.2.0",
+    "unplugin-vue-components": "^28.5.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.0",
+    "vue-tsc": "^2.2.10"
+  }
+}
