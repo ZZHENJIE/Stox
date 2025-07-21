@@ -1,19 +1,16 @@
-import { darkTheme } from "naive-ui";
-import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
-
 export interface FinvizScreenerParameterItem {
     label: string,
     value: string
 }
 
 export interface AppConfig {
-    theme: BuiltInGlobalTheme;
+    is_dark_theme: boolean;
     finviz: {
         token: string,
         screener_parameter_list: FinvizScreenerParameterItem[],
     },
     kimi: {
-        token: string | null,
+        login_status: object | null,
         is_show_button: boolean,
     }
     macro_small: {
@@ -23,7 +20,7 @@ export interface AppConfig {
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
-    theme: darkTheme,
+    is_dark_theme: true,
     finviz: {
         token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
         screener_parameter_list: [
@@ -47,7 +44,7 @@ export const DEFAULT_CONFIG: AppConfig = {
     },
     kimi: {
         is_show_button: false,
-        token: null
+        login_status: null
     },
     macro_small: {
         time_font_size: 30,

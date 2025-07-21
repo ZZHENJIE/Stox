@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Iposcoop_Calendar, type IPOItem } from '../../Request';
+import { Iposcoop_Calendar, type IPOItem } from '../utils/Request';
 
 export default {
     data() {
@@ -37,13 +37,13 @@ export default {
                 <tbody>
                     <tr v-for="item in calendar_data">
                         <td>
-                            <n-ellipsis style="max-width: 100px">
+                            <n-ellipsis :line-clamp="1">
                                 {{ item.Company }}
                             </n-ellipsis>
                         </td>
                         <td>{{ item.Symbol }}</td>
                         <td>
-                            <n-ellipsis style="max-width: 100px">
+                            <n-ellipsis :line-clamp="1">
                                 {{ item.Managers }}
                             </n-ellipsis>
                         </td>
@@ -51,7 +51,11 @@ export default {
                         <td>{{ item.Price_Low }}</td>
                         <td>{{ item.Price_High }}</td>
                         <td>{{ item.Estimated_Dollar_Volume }}</td>
-                        <td>{{ item.Expected_Date }}</td>
+                        <td>
+                            <n-ellipsis :line-clamp="1">
+                                {{ item.Expected_Date }}
+                            </n-ellipsis>
+                        </td>
                     </tr>
                 </tbody>
             </n-table>

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Format_Time } from '../../Miscellaneous';
-import { Futu_Flash_News } from '../../Request';
+import { Format_Time } from '../../utils/Miscellaneous';
+import { Futu_Flash_News } from '../../utils/Request';
 
 export default {
     data() {

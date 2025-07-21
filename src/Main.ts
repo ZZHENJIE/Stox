@@ -1,9 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { router } from './Router';
-import { listenEvent } from './Tauri';
-import Stox from './Stox';
-import 'vfonts/FiraCode.css';
+import { router } from './utils/Router';
+import { listenEvent } from './utils/Tauri';
+import Stox from './utils/Stox';
+// @ts-ignore
+import 'vfonts/FiraSans.css'
 
 const app = createApp(App);
 app.use(Stox);

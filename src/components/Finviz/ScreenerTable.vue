@@ -1,7 +1,7 @@
 <script lang="ts">
 import { h, type PropType } from 'vue';
 import { NDataTable, type DataTableColumns, NTooltip } from 'naive-ui';
-import type { FinvizScreenerItem } from '../../Request';
+import type { FinvizScreenerItem } from '../../utils/Request';
 
 export default {
   props: {

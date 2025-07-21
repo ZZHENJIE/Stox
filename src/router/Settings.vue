@@ -1,22 +1,7 @@
 <script lang="ts">
-import { darkTheme, lightTheme } from 'naive-ui';
 
 export default {
-    data() {
-        return {
-            lightTheme: lightTheme,
-            darkTheme: darkTheme,
-            theme: false,//light true,dark false
-        }
-    },
-    mounted() {
-        this.theme = this.$Config().theme.name === 'light' ? true : false;
-    },
-    methods: {
-        theme_handle_change(value: boolean) {
-            this.$Config().theme = value ? lightTheme : darkTheme;
-        }
-    }
+
 }
 
 </script>
@@ -26,12 +11,12 @@ export default {
         <NGrid :cols="24" :x-gap="24">
 
             <NFormItemGi :span="4" label="Theme Change">
-                <NSwitch @update:value="theme_handle_change" v-model:value="theme">
+                <NSwitch v-model:value="$Config().is_dark_theme">
                     <template #checked>
-                        Light
+                        Dark
                     </template>
                     <template #unchecked>
-                        Dark
+                        Light
                     </template>
                 </NSwitch>
             </NFormItemGi>

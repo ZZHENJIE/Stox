@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Document, CheckmarkCircle, Calendar, Warning } from '@vicons/ionicons5'
-import { Spac_Research_Calendar, type SPACItem } from '../../Request'
+import { Spac_Research_Calendar, type SPACItem } from '../utils/Request';
 
 interface GroupedItem {
     date: string | undefined;

@@ -1,8 +1,9 @@
 <script lang="ts">
 import { Home as HomeIcon, ArrowBackCircle, RefreshCircle } from '@vicons/ionicons5';
-import { MenuData } from './Router';
-import Kimi from './components/Kimi/Main.vue';
+import { MenuData } from './utils/Router';
+import Kimi from './components/Kimi/Kimi.vue';
 import Start from './components/Start.vue';
+import { darkTheme, lightTheme } from "naive-ui";
 
 export default {
     components: {
@@ -18,7 +19,9 @@ export default {
             activeKey: null as any,
             menu_collapsed: false,
             is_show: false,
-            load_time: 1000
+            load_time: 1000,
+            darkTheme,
+            lightTheme
         }
     },
     methods: {
@@ -53,7 +56,7 @@ export default {
 </script>
 
 <template>
-    <NConfigProvider v-if="is_show" :theme="$Config().theme">
+    <NConfigProvider v-if="is_show" :theme="$Config().is_dark_theme ? darkTheme : lightTheme">
         <NLayout position="absolute" has-sider>
             <NLayoutSider :native-scrollbar="false" v-show="$route.meta.standalone === false" style="padding-top: 5px;"
                 width="200px" bordered :collapsed="menu_collapsed" show-trigger :on-update:collapsed="collapsed_change"

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { PlayCircle } from '@vicons/ionicons5';
-import { Finviz_Candlestick, Finviz_Export_Screener, type FinvizScreenerItem } from '../../Request';
-import ScreenerCharts from './ScreenerCharts.vue';
+import { Finviz_Candlestick, Finviz_Export_Screener, type FinvizScreenerItem } from '../utils/Request';
+import ScreenerCharts from '../components/Finviz/ScreenerCharts.vue';
 
 export default {
     components: { PlayCircle, ScreenerCharts },

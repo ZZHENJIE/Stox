@@ -1,5 +1,5 @@
 <script lang="js">
-import { Cboe_Book_Viewer } from '../Request';
+import { Cboe_Book_Viewer } from '../utils/Request';
 
 function handle_item(data) {
     const result = data;

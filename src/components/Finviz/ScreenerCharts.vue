@@ -1,6 +1,6 @@
 <script lang="ts">
 import { type PropType } from 'vue';
-import { Futu_Search, type FinvizScreenerItem } from '../../Request';
+import { Futu_Search, type FinvizScreenerItem } from '../../utils/Request';
 import StockNews from '../Futu/StockNews.vue';
 import { NScrollbar } from 'naive-ui';
 import { h } from 'vue';

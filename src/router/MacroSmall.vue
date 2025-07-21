@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Format_Time } from '../Miscellaneous';
-import { Akamai_Timestamp, Wallstreetcn_Calendar } from '../Request';
+import { Format_Time } from '../utils/Miscellaneous';
+import { Akamai_Timestamp, Wallstreetcn_Calendar } from '../utils/Request';
 
 export default {
     data() {
@@ -71,23 +71,6 @@ export default {
             }
             return `将要有${this.hint_macro_list.length}条宏观数据, 最大影响力${icon}`;
         },
-        getComplementaryColor(hexColor: string) {
-            // 如果是类似 'red' 的颜色名，先转换成 HEX
-            if (!hexColor.startsWith('#')) {
-                const ctx = document.createElement('canvas').getContext('2d');
-                if (ctx) {
-                    ctx.fillStyle = hexColor;
-                    hexColor = ctx.fillStyle;
-                }
-            }
-
-            // 计算补色（反转 RGB）
-            const r = (255 - parseInt(hexColor.slice(1, 3), 16)).toString(16).padStart(2, '0');
-            const g = (255 - parseInt(hexColor.slice(3, 5), 16)).toString(16).padStart(2, '0');
-            const b = (255 - parseInt(hexColor.slice(5, 7), 16)).toString(16).padStart(2, '0');
-
-            return `#${r}${g}${b}`;
-        }
     },
     beforeUnmount() {
         clearInterval(this.timer);
@@ -99,12 +82,9 @@ export default {
     <n-flex vertical>
         <n-spin :show="isLoading">
             <n-flex justify="center">
-                <n-gradient-text :class="{ 'animated-gradient': hint_macro_list.length != 0 }"
-                    :size="$Config().macro_small.time_font_size" :style="{
-                        'color': $Config().macro_small.time_font_color,
-                        '--gradient-start': $Config().macro_small.time_font_color,
-                        '--gradient-end': getComplementaryColor($Config().macro_small.time_font_color)
-                    }">
+                <n-gradient-text :class="{ 'breathing-element': hint_macro_list.length != 0 }"
+                    :size="$Config().macro_small.time_font_size"
+                    :style="{ 'color': $Config().macro_small.time_font_color }">
                     {{ Format_Time(timestamp, 'hh:MM:ss') }}
                 </n-gradient-text>
             </n-flex>
@@ -122,23 +102,27 @@ export default {
 
 
 <style>
-.animated-gradient {
-    animation: gradientShift 2s ease infinite;
-    background-size: 200% auto;
-    background-image: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+.breathing-element {
+    animation: breathing 2s infinite ease-in-out;
 }
 
-@keyframes gradientShift {
+@keyframes breathing {
     0% {
-        background-position: 0% center;
+        transform: scale(0.9);
+        opacity: 1;
+        color: steelblue;
     }
 
     50% {
-        background-position: 100% center;
+        transform: scale(1.1);
+        opacity: 1.4;
+        color: cadetblue;
     }
 
     100% {
-        background-position: 0% center;
+        transform: scale(0.9);
+        opacity: 1;
+        color: slateblue;
     }
 }
 </style>

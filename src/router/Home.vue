@@ -1,6 +1,6 @@
 <script lang="ts">
-import FinancialCalendar from './Futu/FinancialCalendar.vue';
-import FlashNews from './Futu/FlashNews.vue';
+import FinancialCalendar from '../components/Futu/FinancialCalendar.vue';
+import FlashNews from '../components/Futu/FlashNews.vue';
 
 export default {
     components: {

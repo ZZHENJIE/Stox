@@ -1,6 +1,6 @@
 import { ComponentCustomProperties } from 'vue'
 import type { DiscreteApi } from 'naive-ui'
-import type { AppConfig } from './Config'
+import type { AppConfig } from './utils/Config'
 
 declare module 'vue' {
     interface ComponentCustomProperties {

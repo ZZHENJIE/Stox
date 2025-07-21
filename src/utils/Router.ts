@@ -8,7 +8,7 @@ const Finviz: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/Finviz/Screener.vue')
+        component: () => import('../router/FinvizScreener.vue')
     },
     {
         path: '/finviz_analysis',
@@ -17,7 +17,7 @@ const Finviz: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/Finviz/Analysis.vue')
+        component: () => import('../router/FinvizAnalysis.vue')
     }
 ];
 
@@ -29,7 +29,7 @@ const Calendar: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/Calendar/MacroCalendar.vue')
+        component: () => import('../router/MacroCalendar.vue')
     },
     {
         path: '/spac_calendar',
@@ -38,7 +38,7 @@ const Calendar: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/Calendar/SPACCalendar.vue')
+        component: () => import('../router/SPACCalendar.vue')
     },
     {
         path: '/ipo_calendar',
@@ -47,7 +47,7 @@ const Calendar: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/Calendar/IPOCalendar.vue')
+        component: () => import('../router/IPOCalendar.vue')
     },
 ];
 
@@ -59,7 +59,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import('./components/Home.vue')
+        component: () => import('../router/Home.vue')
     },
     {
         path: '/cboe_book_viewer',
@@ -68,7 +68,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/CboeBookViewer.vue')
+        component: () => import('../router/CboeBookViewer.vue')
     },
     {
         path: '/about',
@@ -77,7 +77,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import('./components/About.vue')
+        component: () => import('../router/About.vue')
     },
     {
         path: '/settings',
@@ -86,7 +86,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('./components/Settings.vue')
+        component: () => import('../router/Settings.vue')
     },
     {
         path: '/macro_small',
@@ -95,7 +95,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: true
         },
-        component: () => import('./components/MacroSmall.vue')
+        component: () => import('../router/MacroSmall.vue')
     },
 ];
 
