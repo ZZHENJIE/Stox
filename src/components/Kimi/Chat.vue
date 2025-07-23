@@ -45,6 +45,16 @@ export default {
                 this.is_create_chat = false;
                 this.new_chat_name = '';
             })
+        },
+        delete_chat(id: string) {
+            console.log(id);
+
+        },
+        select_chat: (id: string) => {
+            console.log(id);
+        },
+        sned_question(question: string) {
+            console.log(question);
         }
     }
 }
@@ -81,9 +91,9 @@ export default {
                 </n-flex>
             </template>
 
-            <n-tabs type="line" animated>
+            <n-tabs type="card" animated @close="delete_chat" closable @update:value="select_chat">
                 <n-tab-pane v-for="item in chat_list" :name="item.id" :tab="item.name">
-                    <n-scrollbar style="max-height: 140px">
+                    <n-scrollbar style="max-height: 165px">
                         <p v-for="item in 100">
                             Wonderwall
                         </p>
@@ -92,9 +102,13 @@ export default {
             </n-tabs>
             <template #action>
                 <n-input type="textarea" :autosize="{
-                    minRows: 2,
-                    maxRows: 4,
-                }" />
+                    minRows: 3,
+                    maxRows: 3,
+                }" @change="sned_question">
+                    <n-button>
+                        aaa
+                    </n-button>
+                </n-input>
             </template>
         </n-card>
     </n-flex>

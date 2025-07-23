@@ -131,7 +131,7 @@ export default {
                                 <template #trigger>
                                     <n-button>Viewer</n-button>
                                 </template>
-                                <n-flex>
+                                <n-space>
                                     <n-table>
                                         <thead>
                                             <tr>
@@ -160,13 +160,13 @@ export default {
                     </tr>
                 </tbody>
             </n-table>
-        </n-flex>
+            </n-space>
 
-        </n-tooltip>
-        </td>
-        </tr>
-        </tbody>
-        </n-table>
-    </n-flex>
+            </n-tooltip>
+            </td>
+            </tr>
+            </tbody>
+            </n-table>
+        </n-flex>
     </n-flex>
 </template>
