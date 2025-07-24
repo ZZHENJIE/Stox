@@ -83,7 +83,8 @@ export default {
                             },
                             content: () => {
                                 const stockPage = h(StockNews, {
-                                    stockId: i.stockId
+                                    stockId: i.stockId,
+                                    keywords: this.$Config().keywords
                                 });
                                 return h(NScrollbar, {
                                     style: {

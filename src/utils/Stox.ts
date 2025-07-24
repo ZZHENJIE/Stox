@@ -1,5 +1,5 @@
 import { reactive, watch, type App } from "vue";
-import { Get_Config, Reset_Config, Save_Config } from "./Config";
+import { DEFAULT_CONFIG, Get_Config, Save_Config } from "./Config";
 import { createDiscreteApi, darkTheme, lightTheme } from "naive-ui";
 
 export default {
@@ -10,9 +10,7 @@ export default {
             Save_Config(value);
         }, { deep: true });
 
-        app.config.globalProperties.$ResetConfig = () => {
-            return Reset_Config();
-        }
+        app.config.globalProperties.$ResetConfig = () => Save_Config(DEFAULT_CONFIG);
 
         app.config.globalProperties.$DiscreteApi = () => {
             return createDiscreteApi(['dialog', 'loadingBar', 'message', 'modal', 'notification'], {

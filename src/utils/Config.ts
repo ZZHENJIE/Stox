@@ -3,16 +3,24 @@ export interface FinvizScreenerParameterItem {
     value: string
 }
 
+type Finviz_Refresh_Time = 10000 | 60000;
+type Language = 'zh' | 'en';
+
 export interface AppConfig {
     is_dark_theme: boolean;
+    main_menu_collapsed: boolean,
+    keywords: string[],
+    language: Language,
     finviz: {
         token: string,
+        refresh_time: Finviz_Refresh_Time,
+        not_to_see_list: string[],
         screener_parameter_list: FinvizScreenerParameterItem[],
     },
     kimi: {
         login_status: object | null,
         is_show_button: boolean,
-    }
+    },
     macro_small: {
         time_font_size: number,
         time_font_color: string
@@ -21,8 +29,13 @@ export interface AppConfig {
 
 export const DEFAULT_CONFIG: AppConfig = {
     is_dark_theme: true,
+    main_menu_collapsed: false,
+    keywords: [],
+    language: 'en',
     finviz: {
         token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
+        refresh_time: 10000,
+        not_to_see_list: [],
         screener_parameter_list: [
             {
                 label: '超0.7$交易量',
@@ -90,22 +103,8 @@ export async function Save_Config(config: AppConfig): Promise<boolean> {
     }
 }
 
-/**
- * 重置为默认配置
- */
-export async function Reset_Config(): Promise<boolean> {
-    try {
-        localStorage.setItem(CONFIG_KEY, JSON.stringify(DEFAULT_CONFIG));
-        return true;
-    } catch (error) {
-        console.error('Failed to reset config:', error);
-        return false;
-    }
-}
-
 export default {
     DEFAULT_CONFIG,
     Get_Config,
-    Save_Config,
-    Reset_Config
+    Save_Config
 };

@@ -17,9 +17,8 @@ export default {
         return {
             menuOptions: MenuData(),
             activeKey: null as any,
-            menu_collapsed: false,
             is_show: false,
-            load_time: 1000,
+            load_time: 500,
             darkTheme,
             lightTheme
         }
@@ -34,7 +33,7 @@ export default {
             window.location.reload();
         },
         collapsed_change(value: boolean) {
-            this.menu_collapsed = value;
+            this.$Config().main_menu_collapsed = value;
         }
     },
     mounted() {
@@ -59,8 +58,8 @@ export default {
     <NConfigProvider v-if="is_show" :theme="$Config().is_dark_theme ? darkTheme : lightTheme">
         <NLayout position="absolute" has-sider>
             <NLayoutSider :native-scrollbar="false" v-show="$route.meta.standalone === false" style="padding-top: 5px;"
-                width="200px" bordered :collapsed="menu_collapsed" show-trigger :on-update:collapsed="collapsed_change"
-                :collapsed-width="18">
+                width="200px" bordered :collapsed="$Config().main_menu_collapsed" show-trigger
+                :on-update:collapsed="collapsed_change" :collapsed-width="18">
                 <n-flex justify="center">
                     <NButton round @click="$router.push({ name: 'Home' })">
                         <template #icon>
@@ -90,7 +89,7 @@ export default {
             <NLayoutContent :native-scrollbar="false" style="padding: 5px;">
                 <RouterView>
                 </RouterView>
-                <Kimi v-if="menu_collapsed && $Config().kimi.is_show_button" />
+                <Kimi v-if="$Config().main_menu_collapsed && $Config().kimi.is_show_button" />
             </NLayoutContent>
         </NLayout>
     </NConfigProvider>

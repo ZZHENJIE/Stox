@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { PropType } from 'vue';
 import { Format_Time } from '../../utils/Miscellaneous';
 import { Futu_Stock_News } from '../../utils/Request';
 
@@ -7,6 +8,10 @@ export default {
         stockId: {
             type: String,
             required: true,
+        },
+        keywords: {
+            type: Array as PropType<String[]>,
+            required: false,
         }
     },
     data() {
@@ -32,10 +37,11 @@ export default {
         <n-list-item v-for="item in info_list">
             <n-card :title="item.stockSymbol">
                 <n-ellipsis expand-trigger="click" line-clamp="2">
-                    {{ item.title }}
+                    <n-highlight :text="item.title" :patterns="keywords" />
                 </n-ellipsis>
                 <template #action>
-                    {{ item.source }} {{ Format_Time(item.time, 'yyyy-mm-dd hh:MM:ss') }}
+                    {{ item.source }}
+                    {{ Format_Time(item.time, 'yyyy-mm-dd hh:MM:ss') }}
                 </template>
             </n-card>
         </n-list-item>
