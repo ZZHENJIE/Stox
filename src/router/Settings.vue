@@ -1,6 +1,6 @@
 <script lang="ts">
 import { AddCircle, CloseCircle } from '@vicons/ionicons5';
-import { NButton, NFlex, NFormItemGi, NInputGroup, NScrollbar, NSpace, } from 'naive-ui';
+import { NButton, NFlex, NFormItemGi, NInputGroup, NRadioGroup, NScrollbar, NSpace, } from 'naive-ui';
 import { h } from 'vue';
 
 export default {
@@ -68,6 +68,9 @@ export default {
                     })
                 }
             })
+        },
+        language_change(value: string) {
+            this.$i18n.locale = value;
         }
     }
 }
@@ -79,14 +82,14 @@ export default {
         <NGrid :cols="24" :x-gap="24">
 
             <NFormItemGi :span="4" label="Language">
-                <n-radio-group v-model:value="$Config().language">
+                <NRadioGroup v-model:onUpdateValue="language_change" v-model:value="$Config().language">
                     <n-radio-button value="zh">
                         简体中文
                     </n-radio-button>
                     <n-radio-button value="en">
                         English
                     </n-radio-button>
-                </n-radio-group>
+                </NRadioGroup>
             </NFormItemGi>
 
             <NFormItemGi :span="4" label="Theme Change">
@@ -141,7 +144,7 @@ export default {
                 <div style="display: flex; justify-content: flex-end">
                     <NFlex>
                         <NButton round type="info" @click="$router.push({ name: 'About' })">
-                            About
+                            {{ $t('message.about') }}
                         </NButton>
                         <NButton round type="info" @click="reset_config">
                             Reset

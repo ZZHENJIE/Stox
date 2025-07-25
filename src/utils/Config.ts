@@ -4,7 +4,7 @@ export interface FinvizScreenerParameterItem {
 }
 
 type Finviz_Refresh_Time = 10000 | 60000;
-type Language = 'zh' | 'en';
+type Language = 'zh-cn' | 'en-us';
 
 export interface AppConfig {
     is_dark_theme: boolean;
@@ -31,7 +31,7 @@ export const DEFAULT_CONFIG: AppConfig = {
     is_dark_theme: true,
     main_menu_collapsed: false,
     keywords: [],
-    language: 'en',
+    language: 'en-us',
     finviz: {
         token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
         refresh_time: 10000,

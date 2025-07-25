@@ -11,6 +11,7 @@ export default {
         }, { deep: true });
 
         app.config.globalProperties.$ResetConfig = () => Save_Config(DEFAULT_CONFIG);
+        app.config.globalProperties.$i18n.locale = Config.language;
 
         app.config.globalProperties.$DiscreteApi = () => {
             return createDiscreteApi(['dialog', 'loadingBar', 'message', 'modal', 'notification'], {
