@@ -1,5 +1,6 @@
 import { saveWindowState, restoreStateCurrent, StateFlags } from '@tauri-apps/plugin-window-state';
 import { listen } from '@tauri-apps/api/event';
+import { invoke } from '@tauri-apps/api/core';
 
 export async function initializeTauri() {
     try {
@@ -26,6 +27,8 @@ export async function cleanupBeforeExit() {
 }
 
 export async function listenEvent() {
+    invoke('set_complete', { finish: true });
+
     listen('tauri://window-created', async () => {
         await initializeTauri();
     });

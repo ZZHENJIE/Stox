@@ -3,20 +3,19 @@ import { DEFAULT_CONFIG, Get_Config, Save_Config } from "./Config";
 import { createDiscreteApi, darkTheme, lightTheme } from "naive-ui";
 
 export default {
-    async install(app: App) {
-        const Config = reactive(await Get_Config());
+    install(app: App) {
+        const Config = reactive(Get_Config());
         app.config.globalProperties.$Config = () => Config;
         watch(() => Config, (value) => {
             Save_Config(value);
         }, { deep: true });
 
         app.config.globalProperties.$ResetConfig = () => Save_Config(DEFAULT_CONFIG);
-        app.config.globalProperties.$i18n.locale = Config.language;
 
         app.config.globalProperties.$DiscreteApi = () => {
             return createDiscreteApi(['dialog', 'loadingBar', 'message', 'modal', 'notification'], {
                 configProviderProps: {
-                    theme: app.config.globalProperties.$Config().is_dark_theme ? darkTheme : lightTheme
+                    theme: Config.is_dark_theme ? darkTheme : lightTheme
                 }
             });
         };

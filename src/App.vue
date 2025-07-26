@@ -1,24 +1,21 @@
 <script lang="ts">
 import { Home as HomeIcon, ArrowBackCircle, RefreshCircle } from '@vicons/ionicons5';
 import { MenuData } from './utils/Router';
-import Kimi from './components/Kimi/Kimi.vue';
-import Start from './components/Start.vue';
 import { darkTheme, lightTheme } from "naive-ui";
+import Kimi from './components/Kimi/Kimi.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
     components: {
         HomeIcon,
         ArrowBackCircle,
         RefreshCircle,
-        Kimi,
-        Start
+        Kimi
     },
     data() {
         return {
             menuOptions: MenuData(),
             activeKey: null as any,
-            is_show: false,
-            load_time: 500,
             darkTheme,
             lightTheme
         }
@@ -26,7 +23,7 @@ export default {
     methods: {
         jump(_: string, item: any) {
             this.$router.push({
-                name: item.label
+                name: item.key
             });
         },
         refresh() {
@@ -38,24 +35,19 @@ export default {
     },
     mounted() {
         this.activeKey = this.$route.name;
-        setTimeout(() => {
-            this.is_show = true;
-        }, this.load_time);
-    },
-    beforeUnmount() {
-        this.$SaveConfig();
+        this.$i18n.locale = this.$Config().language;
     },
     watch: {
         '$route'(to) {
             this.activeKey = to.name
         },
     }
-}
+})
 
 </script>
 
 <template>
-    <NConfigProvider v-if="is_show" :theme="$Config().is_dark_theme ? darkTheme : lightTheme">
+    <NConfigProvider :theme="$Config().is_dark_theme ? darkTheme : lightTheme">
         <NLayout position="absolute" has-sider>
             <NLayoutSider :native-scrollbar="false" v-show="$route.meta.standalone === false" style="padding-top: 5px;"
                 width="200px" bordered :collapsed="$Config().main_menu_collapsed" show-trigger
@@ -93,5 +85,4 @@ export default {
             </NLayoutContent>
         </NLayout>
     </NConfigProvider>
-    <Start :load_time="load_time" v-else></Start>
 </template>

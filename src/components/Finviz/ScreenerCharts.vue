@@ -5,7 +5,7 @@ import StockNews from '../Futu/StockNews.vue';
 import { NScrollbar } from 'naive-ui';
 import { h } from 'vue';
 
-const PAGE_SIZE = 36;
+const PAGE_SIZE = 12;
 
 export default {
     props: {
@@ -45,18 +45,19 @@ export default {
                 i3: 584,
                 i5: 376,
             },
+            value: this.modelValue,
             interval: 'd' as 'd' | 'i1' | 'i3' | 'i5',
-            loadedImages: {} as Record<string, boolean>, // 记录图片加载状态
+            loadedImages: {} as Record<string, boolean>,
         }
     },
     computed: {
         pageCount() {
-            return Math.ceil(this.modelValue.length / PAGE_SIZE);
+            return Math.ceil(this.value.length / PAGE_SIZE);
         },
         currentPageData() {
             const start = (this.page - 1) * PAGE_SIZE;
             const end = start + PAGE_SIZE;
-            return this.modelValue.slice(start, end);
+            return this.value.slice(start, end);
         }
     },
     methods: {
@@ -97,7 +98,20 @@ export default {
                     }
                 }
             })
+        },
+        ignore_value() {
+            const ignoreList = this.$Config().finviz.ignore;
+            this.value = this.value.filter(item => !ignoreList.includes(item.Ticker));
+        },
+        add_ignore(ticker: string) {
+            this.$Config().finviz.ignore.push(ticker);
+            this.ignore_value();
         }
+    },
+    mounted() {
+        setTimeout(() => {
+            this.ignore_value();
+        });
     },
     watch: {
         interval() {
@@ -115,25 +129,28 @@ export default {
 </script>
 
 <template>
-    <n-space justify="center">
-        <NCard v-for="item in currentPageData" :key="item.Ticker">
-            <n-skeleton v-if="!loadedImages[item.Ticker]" height="180px" :width="widths[interval]" :sharp="false" />
-            <n-image @contextmenu.prevent="click_thumbnail(item)" v-show="loadedImages[item.Ticker]"
-                :src="thumbnail(item.Ticker)" @load="handleImageLoad(item.Ticker)"
-                @error="handleImageError(item.Ticker)" />
+    <div>
+        <n-space justify="center">
+            <NCard v-for="item in currentPageData" :key="item.Ticker">
+                <n-skeleton v-if="!loadedImages[item.Ticker]" height="180px" :width="widths[interval]" :sharp="false" />
+                <n-image @contextmenu.prevent="click_thumbnail(item)" v-show="loadedImages[item.Ticker]"
+                    :src="thumbnail(item.Ticker)" @load="handleImageLoad(item.Ticker)"
+                    @error="handleImageError(item.Ticker)" />
 
-            <template #footer>
-                <n-ellipsis :style="{ maxWidth: widths[interval] + 'px' }">
-                    {{ item.Company }}
-                </n-ellipsis>
-            </template>
-            <template #action>
-                {{ item.Country }} {{ item.Volume }}
-            </template>
-        </NCard>
-    </n-space>
-    <n-flex justify="center" style="margin-top: 8px;">
-        <NPagination size="large" v-model:page="page" :page-count="pageCount" simple />
-        <NSelect v-model:value="interval" :options="interval_list" style="width: 130px;"></NSelect>
-    </n-flex>
+                <template #footer>
+                    <n-ellipsis :style="{ maxWidth: widths[interval] + 'px' }">
+                        {{ item.Company }}
+                    </n-ellipsis>
+                </template>
+                <template #action>
+                    <NButton size="small" @click="add_ignore(item.Ticker)">Ignore</NButton>
+                    {{ item.Country }} {{ item.Volume }}
+                </template>
+            </NCard>
+        </n-space>
+        <n-flex justify="center" style="margin-top: 8px;">
+            <NPagination size="large" v-model:page="page" :page-count="pageCount" simple />
+            <NSelect v-model:value="interval" :options="interval_list" style="width: 130px;"></NSelect>
+        </n-flex>
+    </div>
 </template>

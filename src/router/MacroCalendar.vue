@@ -7,7 +7,7 @@ import { Format_Time } from '../utils/Miscellaneous';
 export default {
     data() {
         return {
-            small_window: null as any,
+            small_window: null as WebviewWindow | null,
             isLoading: true,
             macro_list: [] as any[]
         }
@@ -22,8 +22,8 @@ export default {
         Format_Time,
         show_small_window() {
             this.small_window = new WebviewWindow('macro_small', {
-                title: '宏观',
-                url: '/macro_small',
+                title: "Macro",
+                url: "/macro_small",
                 width: 400,
                 height: 150,
                 alwaysOnTop: true

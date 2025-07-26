@@ -3,8 +3,7 @@ import { AddCircle } from '@vicons/ionicons5';
 import { Finviz_Export_Screener, type FinvizScreenerItem } from '../utils/Request';
 import ScreenerTable from '../components/Finviz/ScreenerTable.vue';
 import ScreenerCharts from '../components/Finviz/ScreenerCharts.vue';
-import { h } from 'vue';
-import { NButton, NFlex, NInput } from 'naive-ui';
+import { NButton, NFlex } from 'naive-ui';
 
 export default {
     components: {
@@ -18,11 +17,25 @@ export default {
             parameter: '',
             token: this.$Config().finviz.token,
             data: [] as FinvizScreenerItem[],
-            newParameter: {
-                label: '',
-                value: ''
-            },
-            isLoading: false
+            isLoading: false,
+            refresh_options: [
+                {
+                    label: '10秒',
+                    value: 10000
+                },
+                {
+                    label: '30秒',
+                    value: 30000
+                },
+                {
+                    label: '1分钟',
+                    value: 60000
+                },
+                {
+                    label: '3分钟',
+                    value: 180000
+                }
+            ]
         }
     },
     methods: {
@@ -33,57 +46,8 @@ export default {
                 this.isLoading = false;
             });
         },
-        handleAddConfirm() {
-            if (!this.newParameter.label.trim() || !this.newParameter.value.trim()) {
-                this.$DiscreteApi().message.warning('Please fill in both fields');
-                return;
-            }
-            this.parameter_list.push({
-                label: this.newParameter.label,
-                value: this.newParameter.value
-            });
-
-            this.newParameter = { label: '', value: '' };
-        },
-        add_parameter() {
-            this.$DiscreteApi().modal.create({
-                preset: 'card',
-                title: 'Add New Parameter',
-                style: {
-                    maxWidth: '600px'
-                },
-                onBeforeLeave: () => {
-                    this.newParameter = { label: '', value: '' };
-                },
-                content: () => {
-                    const labelInput = h(NInput, {
-                        onUpdateValue: (value: string) => {
-                            this.newParameter.label = value;
-                        },
-                        placeholder: 'Enter Label',
-                        clearable: true
-                    });
-                    const valueInput = h(NInput, {
-                        onUpdateValue: (value: string) => {
-                            this.newParameter.value = value;
-                        },
-                        placeholder: 'Enter Value',
-                        clearable: true
-                    });
-                    return h(NFlex, { vertical: true }, () => [
-                        labelInput, valueInput
-                    ])
-                },
-                action: () => {
-                    return h(NButton, {
-                        type: 'primary',
-                        onClick: () => this.handleAddConfirm()
-                    }, () => 'Confirm')
-                },
-            })
-        },
     },
-    async mounted() {
+    mounted() {
         this.parameter = this.parameter_list[0].value;
     }
 }
@@ -92,11 +56,6 @@ export default {
 <template>
     <n-flex vertical>
         <n-flex>
-            <NButton circle @click="add_parameter" type="success">
-                <NIcon>
-                    <AddCircle />
-                </NIcon>
-            </NButton>
             <NSelect style="width: 240px;" v-model:value="parameter" :options="parameter_list"></NSelect>
             <NButton @click="confirm">Confirm</NButton>
         </n-flex>

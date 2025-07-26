@@ -4,7 +4,7 @@ export interface FinvizScreenerParameterItem {
 }
 
 type Finviz_Refresh_Time = 10000 | 60000;
-type Language = 'zh-cn' | 'en-us';
+type Language = 'zh-CN' | 'en-US';
 
 export interface AppConfig {
     is_dark_theme: boolean;
@@ -14,7 +14,7 @@ export interface AppConfig {
     finviz: {
         token: string,
         refresh_time: Finviz_Refresh_Time,
-        not_to_see_list: string[],
+        ignore: string[],
         screener_parameter_list: FinvizScreenerParameterItem[],
     },
     kimi: {
@@ -31,11 +31,11 @@ export const DEFAULT_CONFIG: AppConfig = {
     is_dark_theme: true,
     main_menu_collapsed: false,
     keywords: [],
-    language: 'en-us',
+    language: 'en-US',
     finviz: {
         token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
         refresh_time: 10000,
-        not_to_see_list: [],
+        ignore: [],
         screener_parameter_list: [
             {
                 label: '超0.7$交易量',
@@ -68,21 +68,18 @@ export const DEFAULT_CONFIG: AppConfig = {
 const APP_NAME = 'Stox';
 const CONFIG_KEY = `${APP_NAME}_config`;
 
-/**
- * 获取配置（自动合并默认值）
- */
-export async function Get_Config(): Promise<AppConfig> {
+export function Get_Config(): AppConfig {
     try {
         const configStr = localStorage.getItem(CONFIG_KEY);
         if (!configStr) {
-            await Save_Config(DEFAULT_CONFIG);
+            Save_Config(DEFAULT_CONFIG); // 同步保存默认配置
             return { ...DEFAULT_CONFIG };
         }
 
         const parsed = JSON.parse(configStr);
         return {
             ...DEFAULT_CONFIG,
-            ...parsed,
+            ...parsed, // 合并默认值和存储值
         };
     } catch (error) {
         console.error('Failed to get config:', error);
@@ -90,10 +87,7 @@ export async function Get_Config(): Promise<AppConfig> {
     }
 }
 
-/**
- * 保存配置（自动合并默认值）
- */
-export async function Save_Config(config: AppConfig): Promise<boolean> {
+export function Save_Config(config: AppConfig): boolean {
     try {
         localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
         return true;

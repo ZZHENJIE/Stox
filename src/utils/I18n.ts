@@ -1,22 +1,13 @@
 import { createI18n } from "vue-i18n";
+import enUS from './locales/en-us.json'
+import zhCN from './locales/zh-cn.json'
 
-export const i18n = createI18n({
+type MessageSchema = typeof enUS | typeof zhCN
+
+export const i18n = createI18n<[MessageSchema], 'en-US' | 'zh-CN'>({
     legacy: false,
     messages: {
-        en: {
-            message: {
-                router: {
-                    screener: 'Screener',
-                    analysis: 'Analysis',
-                    macro: 'Macro',
-                },
-                about: 'About'
-            }
-        },
-        zh: {
-            message: {
-                about: '关于'
-            }
-        }
+        'en-US': enUS,
+        'zh-CN': zhCN
     }
 })
