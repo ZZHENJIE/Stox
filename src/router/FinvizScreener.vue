@@ -3,7 +3,7 @@ import { AddCircle } from '@vicons/ionicons5';
 import { Finviz_Export_Screener, type FinvizScreenerItem } from '../utils/Request';
 import ScreenerTable from '../components/Finviz/ScreenerTable.vue';
 import ScreenerCharts from '../components/Finviz/ScreenerCharts.vue';
-import { NButton, NFlex } from 'naive-ui';
+import { NButton, NFlex, NSwitch, NTooltip } from 'naive-ui';
 
 export default {
     components: {
@@ -18,6 +18,9 @@ export default {
             token: this.$Config().finviz.token,
             data: [] as FinvizScreenerItem[],
             isLoading: false,
+            is_auto_refresh: false,
+            refresh: 10000,
+            refresh_timeout_id: 0,
             refresh_options: [
                 {
                     label: '10秒',
@@ -39,12 +42,29 @@ export default {
         }
     },
     methods: {
-        confirm() {
+        update_data() {
             this.isLoading = true;
             Finviz_Export_Screener(this.parameter, this.token).then(data => {
                 this.data = data;
                 this.isLoading = false;
+                if (this.is_auto_refresh) {
+                    this.refresh_timeout_id = setTimeout(() => {
+                        this.update_data();
+                    }, this.refresh);
+                }
             });
+        },
+        refresh_switch_update(value: boolean) {
+            if (value) {
+                this.update_data();
+            } else {
+                if (this.refresh_timeout_id) {
+                    clearTimeout(this.refresh_timeout_id);
+                }
+            }
+        },
+        confirm() {
+            this.update_data();
         },
     },
     mounted() {
@@ -58,9 +78,18 @@ export default {
         <n-flex>
             <NSelect style="width: 240px;" v-model:value="parameter" :options="parameter_list"></NSelect>
             <NButton @click="confirm">Confirm</NButton>
+            <NTooltip>
+                <template #trigger>
+                    <NSwitch v-model:onUpdateValue="refresh_switch_update" style="padding-top: 4px;" size="large"
+                        v-model:value="is_auto_refresh" />
+                </template>
+                Auto Refresh
+            </NTooltip>
+            <NSelect v-show="is_auto_refresh" style="width: 100px;" v-model:value="refresh" :options="refresh_options">
+            </NSelect>
         </n-flex>
-        <n-spin :show="isLoading">
-            <n-flex v-if="data.length != 0" justify="center">
+        <n-flex justify="center">
+            <n-spin :show="isLoading">
                 <n-tabs type="segment" animated>
                     <n-tab-pane name="table" tab="Table">
                         <ScreenerTable v-model="data"></ScreenerTable>
@@ -69,8 +98,8 @@ export default {
                         <ScreenerCharts v-model="data"></ScreenerCharts>
                     </n-tab-pane>
                 </n-tabs>
-            </n-flex>
-            <NBackTop :right="50" :bottom="50" />
-        </n-spin>
+            </n-spin>
+        </n-flex>
+        <NBackTop :right="50" :bottom="50" />
     </n-flex>
 </template>
