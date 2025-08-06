@@ -17,7 +17,8 @@ export default defineComponent({
             menuOptions: MenuData(),
             activeKey: null as any,
             darkTheme,
-            lightTheme
+            lightTheme,
+            viewKey: 0
         }
     },
     methods: {
@@ -25,9 +26,6 @@ export default defineComponent({
             this.$router.push({
                 name: item.key
             });
-        },
-        refresh() {
-            window.location.reload();
         },
         collapsed_change(value: boolean) {
             this.$Config().main_menu_collapsed = value;
@@ -67,7 +65,7 @@ export default defineComponent({
                             </NIcon>
                         </template>
                     </NButton>
-                    <NButton round @click="refresh">
+                    <NButton round @click="viewKey += 1">
                         <template #icon>
                             <NIcon>
                                 <RefreshCircle></RefreshCircle>
@@ -79,7 +77,7 @@ export default defineComponent({
                 </NMenu>
             </NLayoutSider>
             <NLayoutContent :native-scrollbar="false" style="padding: 5px;">
-                <RouterView>
+                <RouterView :key="viewKey">
                 </RouterView>
                 <Kimi v-if="$Config().main_menu_collapsed && $Config().kimi.is_show_button" />
             </NLayoutContent>

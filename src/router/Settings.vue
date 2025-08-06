@@ -15,8 +15,12 @@ export default {
         reset_config() {
             if (this.$ResetConfig()) {
                 this.$DiscreteApi().notification.create({
-                    title: '重置设置成功 刷新后才能正常使用🥳'
-                })
+                    title: '重置设置成功 刷新后才能正常使用🥳',
+                    content: () => '5秒后自动刷新!'
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000);
             }
         },
         keywords_manager() {
