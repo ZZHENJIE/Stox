@@ -1,6 +1,6 @@
 <script lang="ts">
 import { AddCircle, Exit } from '@vicons/ionicons5';
-import { Kimi_Chat_List, Kimi_Create_Chat } from '../../utils/Request';
+import Kimi from '../../api/Kimi';
 
 export default {
     components: {
@@ -30,15 +30,13 @@ export default {
     },
     methods: {
         refresh() {
-            Kimi_Chat_List(this.modelValue.access_token).then(text => {
-                const json = JSON.parse(text);
+            Kimi.Chat_List(this.modelValue.access_token).then(json => {
                 this.chat_list = json.items;
                 console.log(json);
             })
         },
         create_chat() {
-            Kimi_Create_Chat(this.modelValue.access_token, this.new_chat_name).then(text => {
-                const json = JSON.parse(text);
+            Kimi.Create_Chat(this.modelValue.access_token, this.new_chat_name).then(json => {
                 console.log(json);
 
                 this.refresh();

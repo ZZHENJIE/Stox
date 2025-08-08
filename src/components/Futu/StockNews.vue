@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { Format_Time } from '../../utils/Miscellaneous';
-import { Futu_Stock_News } from '../../utils/Request';
+import { Futu_Stock_News } from '../../api/Request';
 
 export default {
     props: {

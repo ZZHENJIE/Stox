@@ -1,9 +1,10 @@
+import './Tauri';
 import { createApp } from 'vue';
 import App from './App.vue';
-import { router } from './utils/Router';
-import { listenEvent } from './utils/Tauri';
-import Stox from './utils/Stox';
-import { i18n } from './utils/I18n';
+// Plugins
+import Stox from './plugins/Stox';
+import { router } from './plugins/Router';
+import { i18n } from './plugins/I18n';
 // @ts-ignore
 import 'vfonts/FiraSans.css'
 
@@ -13,4 +14,3 @@ app.use(Stox);
 app.use(router);
 app.mount('#app');
 
-await listenEvent();

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Format_Time } from '../../utils/Miscellaneous';
-import { Futu_Flash_News } from '../../utils/Request';
+import Tool from '../../api/Tool';
+import Futu from '../../api/Futu';
 
 export default {
     data() {
@@ -8,16 +8,16 @@ export default {
             news_data: [] as any[],
             timeoutId: 0,
             isMounted: false,
-            level: ['default', 'warning', 'error']
+            level: ['default', 'warning', 'error'],
+            Format_Time: Tool.Format_Time
         };
     },
     methods: {
-        Format_Time,
         update() {
-            Futu_Flash_News()
-                .then(text => {
+            Futu.Flash_News()
+                .then(json => {
                     if (this.isMounted) {
-                        this.news_data = JSON.parse(text).data.data.news;
+                        this.news_data = json.data.data.news;
                         this.timeoutId = setTimeout(() => this.update(), 10000);
                     }
                 })

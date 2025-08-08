@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Futu_Financial_Calendar } from '../../utils/Request';
-import { Format_Time } from '../../utils/Miscellaneous';
+import Futu from '../../api/Futu';
+import Tool from '../../api/Tool';
 import { ArrowBackCircle, ArrowForwardCircle } from '@vicons/ionicons5';
 
 export default {
@@ -12,10 +12,10 @@ export default {
         return {
             calendar_data: [] as any[],
             timestamp: 0,
+            Format_Time: Tool.Format_Time
         }
     },
     methods: {
-        Format_Time,
         change_timestamp(isNext: boolean) {
             this.timestamp = this.timestamp + (isNext ? +86400000 : -86400000);
         }
@@ -25,8 +25,8 @@ export default {
     },
     watch: {
         timestamp() {
-            Futu_Financial_Calendar(this.timestamp).then(text => {
-                this.calendar_data = JSON.parse(text).data.list;
+            Futu.Financial_Calendar(this.timestamp).then(json => {
+                this.calendar_data = json.data.list;
             });
         }
     }

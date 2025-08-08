@@ -6,7 +6,7 @@ import CryptoJS from 'crypto-js';
  * @param {string} [key] - 可选密钥
  * @returns {string} 哈希结果
  */
-function generateSHA256(text: string, key?: string): string {
+function generateSHA256(text: string, key?: object): string {
     return CryptoJS.SHA256(text, key).toString();
 }
 
@@ -101,11 +101,11 @@ const REQUEST_CONFIG: Readonly<RequestConfig> = Object.freeze({
 });
 
 /**
- * 获取API请求令牌
- * @param {Object} params - 请求参数
- * @returns {string} 生成的令牌
- */
-export function Futu_Get_API_Token(params: Record<string, any>): string {
+     * 获取API请求令牌
+     * @param {Object} params - 请求参数
+     * @returns {string} 生成的令牌
+     */
+export function Generate_Token(params: Record<string, any>): string {
     const config: RequestConfig = { ...REQUEST_CONFIG };
     config.params = { ...config.params, ...params };
 
@@ -115,45 +115,3 @@ export function Futu_Get_API_Token(params: Record<string, any>): string {
 
     return generateShortToken(inputData);
 }
-
-/**
- * 格式化时间
- * @param {number} timestamp - 时间戳
- * @param {string} format - 格式字符串
- * @param {number} [timezone=8] - 时区（默认东八区）
- * @returns {string} 格式化后的时间字符串
- */
-export function Format_Time(timestamp: number, format: string, timezone: number = 8): string {
-    const ts = timestamp < 10000000000 ? timestamp * 1000 : timestamp;
-
-    const date = new Date(ts);
-
-    const timezoneOffset = date.getTimezoneOffset() * 60000;
-    const timezoneMs = timezone * 3600 * 1000;
-    const adjustedDate = new Date(date.getTime() + timezoneOffset + timezoneMs);
-
-    const pad = (n: number): string => n.toString().padStart(2, '0');
-
-    const year = adjustedDate.getFullYear();
-    const month = pad(adjustedDate.getMonth() + 1);
-    const day = pad(adjustedDate.getDate());
-    const hours = pad(adjustedDate.getHours());
-    const minutes = pad(adjustedDate.getMinutes());
-    const seconds = pad(adjustedDate.getSeconds());
-
-    const formatMap: Record<string, string | number> = {
-        'yyyy': year,
-        'mm': month,
-        'dd': day,
-        'hh': hours,
-        'MM': minutes,
-        'ss': seconds
-    };
-
-    return format.replace(/(yyyy|mm|dd|hh|MM|ss)/g, (match) => String(formatMap[match]));
-}
-
-export default {
-    Futu_Get_API_Token,
-    Format_Time
-};

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { h, type PropType } from 'vue';
-import { NDataTable, type DataTableColumns, NTooltip } from 'naive-ui';
-import type { FinvizScreenerItem } from '../../utils/Request';
+import { NDataTable, type DataTableColumns, NEllipsis } from 'naive-ui';
+import type { FinvizScreenerItem } from '../../api/Request';
 
 export default {
   props: {
@@ -11,79 +11,69 @@ export default {
     }
   },
   setup() {
-    const renderEllipsis = (text: string, width: string = '150px') => {
-      return h('div', {
-        style: {
-          width: width,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }
-      }, [
-        h(NTooltip, {
-          trigger: 'hover'
-        }, {
-          trigger: () => text,
-          default: () => text
-        })
-      ]);
-    };
     const renderChange = (value: number) => {
       const color = value > 0 ? '#90EE90' : '#DB7093';
-      return h('span', {
+      return h(NEllipsis, {
         style: {
           color: color
-        }
-      }, value + '%');
+        },
+        lineClamp: 1
+      }, () => value + '%');
     };
 
     const columns: DataTableColumns<FinvizScreenerItem> = [
       {
-        title: 'Ticker',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Ticker'),
         key: 'Ticker',
-        width: 80,
+        width: '80px',
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.Ticker)
       },
       {
-        title: 'Company',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Company'),
         key: 'Company',
-        width: 150,
-        render: (row) => renderEllipsis(row.Company, '150px')
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.Company)
       },
       {
-        title: 'Sector/Industry',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Sector/Industry'),
         key: 'SectorIndustry',
-        width: 200,
-        render: (row) => renderEllipsis(`${row.Sector} / ${row.Industry}`, '200px')
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => `${row.Sector} / ${row.Industry}`)
       },
       {
-        title: 'Market Cap',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Market Cap'),
         key: 'MarketCap',
-        render: (row) => row.MarketCap || 'N/A'
+        width: '100px',
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.MarketCap || 'N/A'),
       },
       {
-        title: 'P/E',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'P/E'),
         key: 'PriceEarningsRatio',
-        render: (row) => row.PriceEarningsRatio || 'N/A'
+        width: '100px',
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.PriceEarningsRatio || 'N/A'),
       },
       {
-        title: 'Price',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Price'),
         key: 'Price',
+        width: '100px',
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.Price),
       },
       {
-        title: 'Change',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Change'),
         key: 'Change',
-        render: (row) => renderChange(parseFloat(row.Change))
+        width: '100px',
+        render: (row) => renderChange(parseFloat(row.Change)),
       },
       {
-        title: 'Volume',
+        title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Volume'),
         key: 'Volume',
+        width: '100px',
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.Volume)
       }
     ];
 
     const pagination = {
       pageSize: 50,
-      showSizePicker: true,
       pageSizes: [10, 20, 50],
+      showSizePicker: true,
       showQuickJumper: true
     };
 
@@ -93,5 +83,5 @@ export default {
 </script>
 
 <template>
-  <n-data-table :columns="columns" :data="modelValue" :pagination="pagination" />
+  <NDataTable :columns="columns" :data="modelValue" :pagination="pagination" />
 </template>

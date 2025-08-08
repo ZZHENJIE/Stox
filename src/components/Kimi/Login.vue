@@ -1,8 +1,8 @@
 <script lang="ts">
 
 import { defineComponent, type PropType } from 'vue';
-import { Kimi_Create_QRCode, Kimi_QRCode_Status } from '../../utils/Request';
 import { LogoWechat } from '@vicons/ionicons5';
+import Kimi from '../../api/Kimi';
 
 export default defineComponent({
     components: {
@@ -25,15 +25,13 @@ export default defineComponent({
     },
     methods: {
         create_qrcode() {
-            Kimi_Create_QRCode().then(text => {
-                const json = JSON.parse(text);
+            Kimi.Create_QRCode().then(json => {
                 this.id = json.id;
                 this.refresh_status();
             });
         },
         refresh_status() {
-            Kimi_QRCode_Status(this.id).then(text => {
-                const json = JSON.parse(text);
+            Kimi.QRCode_Status(this.id).then(json => {
                 switch (json.status) {
                     case 'pending': {
                         if (this.is_refresh) {

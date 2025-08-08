@@ -7,7 +7,7 @@
   ],
   "windows": [
     "main",
-    "macro_small"
+    "time"
   ],
   "permissions": [
     "window-state:default"
