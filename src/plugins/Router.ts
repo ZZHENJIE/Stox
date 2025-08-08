@@ -114,7 +114,7 @@ const Viewer: RouteRecordRaw[] = [
 
 const Routers: RouteRecordRaw[] = [
     ...Viewer,
-    // ...Finviz,
+    ...Finviz,
     // ...Calendar
 ];
 

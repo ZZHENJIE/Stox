@@ -10,13 +10,13 @@ export interface IPOItem {
 };
 
 export interface SpacResearchItem {
-    date: string | undefined,
-    eventType: string | undefined,
-    symbol: string | undefined
+    Date: string | undefined,
+    EventType: string | undefined,
+    Symbol: string | undefined
 };
 
 export interface FinvizScreenerItem {
-    Ticker: string,
+    Symbol: string,
     Company: string,
     Sector: string,
     Industry: string,
@@ -29,10 +29,10 @@ export interface FinvizScreenerItem {
 };
 
 export interface FinvizCandlestickParams {
-    aftermarket?: boolean,
-    barsCount: number,
-    instrument: 'stock',
-    premarket?: boolean,
-    ticker: string,
-    timeframe: 'd' | 'i1',
+    Aftermarket?: boolean,
+    BarsCount: number,
+    Instrument: 'stock',
+    Premarket?: boolean,
+    Symbol: string,
+    Timeframe: 'd' | 'i1',
 };

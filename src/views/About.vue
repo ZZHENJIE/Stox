@@ -1,22 +1,18 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, h, type VNode } from 'vue';
+import Discrete from '../components/Discrete';
 
 
 export default defineComponent({
     methods: {
-        async test() {
-            const func = async () => {
-                return new Promise((resolve, reject) => {
-                    this.$DiscreteApi().modal.create({
-                        preset: 'card',
-                        onClose: () => {
-                            resolve('done')
-                        }
-                    })
-                })
-            }
-
-            console.log(await func());
+        test() {
+            const array: VNode[] = [];
+            for (let i = 0; i < 100; i++) {
+                array.push(h('p', null, i.toString()));
+            };
+            Discrete.Modal(this.$Config(), {
+                content: () => h('div', null, array)
+            });
 
         }
     },

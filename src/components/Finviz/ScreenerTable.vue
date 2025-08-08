@@ -1,7 +1,8 @@
 <script lang="ts">
 import { h, type PropType } from 'vue';
 import { NDataTable, type DataTableColumns, NEllipsis } from 'naive-ui';
-import type { FinvizScreenerItem } from '../../api/Request';
+import type { FinvizScreenerItem } from '../../api/Type';
+
 
 export default {
   props: {
@@ -26,7 +27,7 @@ export default {
         title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Ticker'),
         key: 'Ticker',
         width: '80px',
-        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.Ticker)
+        render: (row) => h(NEllipsis, { lineClamp: 1 }, () => row.Symbol)
       },
       {
         title: () => h(NEllipsis, { lineClamp: 1 }, () => 'Company'),

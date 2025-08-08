@@ -1,9 +1,11 @@
 <script lang="ts">
 import { type PropType } from 'vue';
-import { Futu_Search, type FinvizScreenerItem } from '../../api/Request';
 import StockNews from '../Futu/StockNews.vue';
 import { NScrollbar } from 'naive-ui';
 import { h } from 'vue';
+import FutuApi from '../../api/Futu';
+import Futu from '../Futu'
+import type { FinvizScreenerItem } from '../../api/Type';
 
 const PAGE_SIZE = 12;
 
@@ -48,6 +50,7 @@ export default {
             value: this.modelValue,
             interval: 'd' as 'd' | 'i1' | 'i3' | 'i5',
             loadedImages: {} as Record<string, boolean>,
+            StockNews: Futu.StockNews
         }
     },
     computed: {
@@ -61,50 +64,51 @@ export default {
         }
     },
     methods: {
-        thumbnail(ticker: string) {
-            return `https://charts-node.finviz.com/chart.ashx?&t=${ticker}&tf=${this.interval}&ct=candle_stick`;
+        thumbnail(symbol: string) {
+            return `https://charts-node.finviz.com/chart.ashx?&t=${symbol}&tf=${this.interval}&ct=candle_stick`;
         },
-        handleImageLoad(ticker: string) {
-            this.loadedImages[ticker] = true;
+        handleImageLoad(symbol: string) {
+            this.loadedImages[symbol] = true;
         },
-        handleImageError(ticker: string) {
-            this.loadedImages[ticker] = true;
+        handleImageError(symbol: string) {
+            this.loadedImages[symbol] = true;
         },
-        click_thumbnail(item: FinvizScreenerItem) {
-            Futu_Search(item.Ticker).then(text => {
-                const json = JSON.parse(text);
-                for (const i of json.data.stock) {
-                    if (i.market === "us") {
-                        this.$DiscreteApi().modal.create({
-                            preset: 'card',
-                            title: item.Company,
-                            style: {
-                                width: '800px',
-                                height: '500px'
-                            },
-                            content: () => {
-                                const stockPage = h(StockNews, {
-                                    stockId: i.stockId,
-                                    keywords: this.$Config().keywords
-                                });
-                                return h(NScrollbar, {
-                                    style: {
-                                        'max-height': '400px'
-                                    }
-                                }, () => [stockPage])
-                            },
-                        })
-                        break;
-                    }
-                }
-            })
-        },
+        // click_thumbnail(item: FinvizScreenerItem) {
+
+        //     FutuApi.Search(item.Symbol).then(json => {
+        //         for (const i of json.data.stock) {
+        //             if (i.market === "us") {
+        //                 // Futu.StockNews(this.$Config(), i.stockId)
+        //                 // this.$DiscreteApi().modal.create({
+        //                 //     preset: 'card',
+        //                 //     title: item.Company,
+        //                 //     style: {
+        //                 //         width: '800px',
+        //                 //         height: '500px'
+        //                 //     },
+        //                 //     content: () => {
+        //                 //         const stockPage = h(StockNews, {
+        //                 //             stockId: i.stockId,
+        //                 //             keywords: this.$Config().keywords
+        //                 //         });
+        //                 //         return h(NScrollbar, {
+        //                 //             style: {
+        //                 //                 'max-height': '400px'
+        //                 //             }
+        //                 //         }, () => [stockPage])
+        //                 //     },
+        //                 // })
+        //                 break;
+        //             }
+        //         }
+        //     })
+        // },
         ignore_value() {
             const ignoreList = this.$Config().finviz.ignore;
-            this.value = this.value.filter(item => !ignoreList.includes(item.Ticker));
+            this.value = this.value.filter(item => !ignoreList.includes(item.Symbol));
         },
-        add_ignore(ticker: string) {
-            this.$Config().finviz.ignore.push(ticker);
+        add_ignore(symbol: string) {
+            this.$Config().finviz.ignore.push(symbol);
             this.ignore_value();
         }
     },
@@ -120,7 +124,7 @@ export default {
         page() {
             const newLoaded: Record<string, boolean> = {};
             this.currentPageData.forEach(item => {
-                newLoaded[item.Ticker] = false;
+                newLoaded[item.Symbol] = false;
             });
             this.loadedImages = newLoaded;
         }
@@ -131,11 +135,11 @@ export default {
 <template>
     <div>
         <n-space justify="center">
-            <NCard v-for="item in currentPageData" :key="item.Ticker">
-                <n-skeleton v-if="!loadedImages[item.Ticker]" height="180px" :width="widths[interval]" :sharp="false" />
-                <n-image @contextmenu.prevent="click_thumbnail(item)" v-show="loadedImages[item.Ticker]"
-                    :src="thumbnail(item.Ticker)" @load="handleImageLoad(item.Ticker)"
-                    @error="handleImageError(item.Ticker)" />
+            <NCard v-for="item in currentPageData" :key="item.Symbol">
+                <n-skeleton v-if="!loadedImages[item.Symbol]" height="180px" :width="widths[interval]" :sharp="false" />
+                <n-image @contextmenu.prevent="StockNews($Config(), item.Symbol)" v-show="loadedImages[item.Symbol]"
+                    :src="thumbnail(item.Symbol)" @load="handleImageLoad(item.Symbol)"
+                    @error="handleImageError(item.Symbol)" />
 
                 <template #footer>
                     <n-ellipsis :style="{ maxWidth: widths[interval] + 'px' }">
@@ -143,7 +147,7 @@ export default {
                     </n-ellipsis>
                 </template>
                 <template #action>
-                    <NButton size="small" @click="add_ignore(item.Ticker)">Ignore</NButton>
+                    <NButton size="small" @click="add_ignore(item.Symbol)">Ignore</NButton>
                     {{ item.Country }} {{ item.Volume }}
                 </template>
             </NCard>

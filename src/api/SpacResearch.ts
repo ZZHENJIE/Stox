@@ -36,9 +36,9 @@ async function Calendar() {
                 const href = link.getAttribute('href');
 
                 result.push({
-                    date: date,
-                    eventType: eventType,
-                    symbol: href?.split('/').pop()
+                    Date: date,
+                    EventType: eventType,
+                    Symbol: href?.split('/').pop()
                 });
             });
         }

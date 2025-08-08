@@ -1,9 +1,10 @@
 <script lang="ts">
 import { AddCircle } from '@vicons/ionicons5';
-import { Finviz_Export_Screener, type FinvizScreenerItem } from '../api/Request';
 import ScreenerTable from '../components/Finviz/ScreenerTable.vue';
 import ScreenerCharts from '../components/Finviz/ScreenerCharts.vue';
 import { NButton, NFlex, NSwitch, NTooltip } from 'naive-ui';
+import Finviz from '../api/Finviz';
+import type { FinvizScreenerItem } from '../api/Type';
 
 export default {
     components: {
@@ -44,7 +45,7 @@ export default {
     methods: {
         update_data() {
             this.isLoading = true;
-            Finviz_Export_Screener(this.parameter, this.token).then(data => {
+            Finviz.Export_Screener(this.parameter, this.token).then(data => {
                 this.data = data;
                 this.isLoading = false;
                 if (this.is_auto_refresh) {

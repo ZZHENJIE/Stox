@@ -3,6 +3,7 @@ import { Chatbox } from '@vicons/ionicons5';
 import Login from './Login.vue';
 import Chat from './Chat.vue';
 import { h } from 'vue';
+import Discrete from '../Discrete';
 
 export default {
     components: {
@@ -19,12 +20,7 @@ export default {
         },
         start() {
             const app = this;
-            this.$DiscreteApi().modal.create({
-                preset: 'card',
-                style: {
-                    height: '500px',
-                    width: '800px'
-                },
+            Discrete.Modal(this.$Config(), {
                 content() {
                     const login_status = app.$Config().kimi.login_status;
                     if (login_status != null) {

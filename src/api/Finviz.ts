@@ -1,8 +1,7 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import Tool from "./Tool";
 import { type FinvizScreenerItem, type FinvizCandlestickParams } from './Type'
-
-export async function Finviz_Export_Screener(parameter: string, token: string) {
+async function Export_Screener(parameter: string, token: string) {
     const VolumeFormat = (volume: number): string => {
         if (volume >= 1000000) {
             return (volume / 1000000).toFixed(2) + 'M';
@@ -23,7 +22,7 @@ export async function Finviz_Export_Screener(parameter: string, token: string) {
         for (let line = 1; line < Lines.length - 2; line++) {
             const items = Lines[line].split(',');
             Result.push({
-                Ticker: items[1].replace(/"/g, ''),
+                Symbol: items[1].replace(/"/g, ''),
                 Company: items[2].replace(/"/g, ''),
                 Sector: items[3].replace(/"/g, ''),
                 Industry: items[4].replace(/"/g, ''),
@@ -39,7 +38,7 @@ export async function Finviz_Export_Screener(parameter: string, token: string) {
     });
 }
 
-export async function Finviz_Candlestick(params: FinvizCandlestickParams) {
+async function Candlestick(params: FinvizCandlestickParams) {
     const url = Tool.Url_Params_Insert('https://api.finviz.com/api/quote.ashx', params);
     return fetch(url, { method: 'GET' }).then(response => {
         if (!response.ok) {
@@ -47,4 +46,9 @@ export async function Finviz_Candlestick(params: FinvizCandlestickParams) {
         }
         return response.json();
     })
+}
+
+export default {
+    Export_Screener,
+    Candlestick,
 }

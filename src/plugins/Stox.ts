@@ -1,13 +1,10 @@
 import { reactive, watch, type App } from 'vue'
 import { DEFAULT_CONFIG, Get_Config, Save_Config } from '../utils/Config'
-import { createDiscreteApi, darkTheme, lightTheme } from 'naive-ui';
-import { type DiscreteApi } from 'naive-ui';
 
 declare module 'vue' {
     interface ComponentCustomProperties {
         $Config: () => import('../utils/ConfigType').AppConfig,
         $ResetConfig: () => boolean,
-        $DiscreteApi: () => DiscreteApi,
     }
 }
 
@@ -25,11 +22,5 @@ export default {
             },
             { deep: true }
         )
-
-        app.config.globalProperties.$DiscreteApi = () => createDiscreteApi(['dialog', 'loadingBar', 'message', 'modal', 'notification'], {
-            configProviderProps: {
-                theme: config.is_dark_theme ? darkTheme : lightTheme
-            }
-        })
     }
 }
