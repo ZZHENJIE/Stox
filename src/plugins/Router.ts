@@ -1,7 +1,6 @@
+import type { MenuMixedOption } from 'naive-ui/es/menu/src/interface';
 import { useI18n } from 'vue-i18n';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-
-const router_views_path = '../views/';
 
 const Finviz: RouteRecordRaw[] = [
     {
@@ -12,7 +11,7 @@ const Finviz: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import(router_views_path + 'FinvizScreener.vue')
+        component: () => import('../views/FinvizScreener.vue')
     },
     {
         path: '/finviz_analysis',
@@ -22,7 +21,7 @@ const Finviz: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import(router_views_path + 'FinvizAnalysis.vue')
+        component: () => import('../views/FinvizAnalysis.vue')
     }
 ];
 
@@ -35,7 +34,7 @@ const Calendar: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import(router_views_path + 'MacroCalendar.vue')
+        component: () => import('../views/MacroCalendar.vue')
     },
     {
         path: '/spac_calendar',
@@ -45,7 +44,7 @@ const Calendar: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import(router_views_path + 'SPACCalendar.vue')
+        component: () => import('../views/SPACCalendar.vue')
     },
     {
         path: '/ipo_calendar',
@@ -55,7 +54,7 @@ const Calendar: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import(router_views_path + 'IPOCalendar.vue')
+        component: () => import('../views/IPOCalendar.vue')
     },
 ];
 
@@ -68,7 +67,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import(router_views_path + 'Home.vue')
+        component: () => import('../views/Home.vue')
     },
     {
         path: '/cboe_book_viewer',
@@ -78,7 +77,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import(router_views_path + 'CboeBookViewer.vue')
+        component: () => import('../views/CboeBookViewer.vue')
     },
     {
         path: '/about',
@@ -88,17 +87,17 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import(router_views_path + 'About.vue')
+        component: () => import('../views/About.vue')
     },
     {
         path: '/settings',
         name: 'Settings',
         meta: {
             title: () => useI18n().t('settings'),
-            menu_enable: true,
+            menu_enable: false,
             standalone: false
         },
-        component: () => import(router_views_path + 'Settings.vue')
+        component: () => import('../views/Settings.vue')
     },
     {
         path: '/time',
@@ -108,7 +107,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: true
         },
-        component: () => import(router_views_path + 'Time.vue')
+        component: () => import('../views/Time.vue')
     },
 ];
 
@@ -119,33 +118,36 @@ const Routers: RouteRecordRaw[] = [
 ];
 
 export function Menu() {
-    const Result = [
+    const Result: MenuMixedOption[] = [
         {
             label: () => useI18n().t('finviz'),
             key: 'finviz',
-            children: Finviz.filter(r => r.meta?.menu_enable).map(r => ({
-                title: r.meta?.title,
-                key: r.name,
-                path: r.path,
-                standalone: r.meta?.standalone
-            }))
+            children: Finviz.filter(r => r.meta?.menu_enable)
+                .map(r => ({
+                    label: r.meta?.title as () => string,
+                    key: r.name as string,
+                    path: r.path,
+                    standalone: r.meta?.standalone
+                }))
         },
         {
             label: () => useI18n().t('calendar'),
             key: 'calendar',
-            children: Calendar.filter(r => r.meta?.menu_enable).map(r => ({
-                title: r.meta?.title,
-                key: r.name,
+            children: Calendar.filter(r => r.meta?.menu_enable)
+                .map(r => ({
+                    label: r.meta?.title as () => string,
+                    key: r.name as string,
+                    path: r.path,
+                    standalone: r.meta?.standalone
+                }))
+        },
+        ...Viewer.filter(r => r.meta?.menu_enable)
+            .map(r => ({
+                label: r.meta?.title as () => string,
+                key: r.name as string,
                 path: r.path,
                 standalone: r.meta?.standalone
             }))
-        },
-        ...Viewer.filter(r => r.meta?.menu_enable).map(r => ({
-            title: r.meta?.title,
-            key: r.name,
-            path: r.path,
-            standalone: r.meta?.standalone
-        }))
     ];
     return Result
 }

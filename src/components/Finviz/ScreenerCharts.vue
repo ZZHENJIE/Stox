@@ -1,9 +1,6 @@
 <script lang="ts">
 import { type PropType } from 'vue';
 import StockNews from '../Futu/StockNews.vue';
-import { NScrollbar } from 'naive-ui';
-import { h } from 'vue';
-import FutuApi from '../../api/Futu';
 import Futu from '../Futu'
 import type { FinvizScreenerItem } from '../../api/Type';
 
@@ -73,36 +70,6 @@ export default {
         handleImageError(symbol: string) {
             this.loadedImages[symbol] = true;
         },
-        // click_thumbnail(item: FinvizScreenerItem) {
-
-        //     FutuApi.Search(item.Symbol).then(json => {
-        //         for (const i of json.data.stock) {
-        //             if (i.market === "us") {
-        //                 // Futu.StockNews(this.$Config(), i.stockId)
-        //                 // this.$DiscreteApi().modal.create({
-        //                 //     preset: 'card',
-        //                 //     title: item.Company,
-        //                 //     style: {
-        //                 //         width: '800px',
-        //                 //         height: '500px'
-        //                 //     },
-        //                 //     content: () => {
-        //                 //         const stockPage = h(StockNews, {
-        //                 //             stockId: i.stockId,
-        //                 //             keywords: this.$Config().keywords
-        //                 //         });
-        //                 //         return h(NScrollbar, {
-        //                 //             style: {
-        //                 //                 'max-height': '400px'
-        //                 //             }
-        //                 //         }, () => [stockPage])
-        //                 //     },
-        //                 // })
-        //                 break;
-        //             }
-        //         }
-        //     })
-        // },
         ignore_value() {
             const ignoreList = this.$Config().finviz.ignore;
             this.value = this.value.filter(item => !ignoreList.includes(item.Symbol));
@@ -137,7 +104,7 @@ export default {
         <n-space justify="center">
             <NCard v-for="item in currentPageData" :key="item.Symbol">
                 <n-skeleton v-if="!loadedImages[item.Symbol]" height="180px" :width="widths[interval]" :sharp="false" />
-                <n-image @contextmenu.prevent="StockNews($Config(), item.Symbol)" v-show="loadedImages[item.Symbol]"
+                <n-image @contextmenu.prevent="StockNews($Config(), item)" v-show="loadedImages[item.Symbol]"
                     :src="thumbnail(item.Symbol)" @load="handleImageLoad(item.Symbol)"
                     @error="handleImageError(item.Symbol)" />
 

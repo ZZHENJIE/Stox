@@ -3,7 +3,6 @@ import { h, type PropType } from 'vue';
 import { NDataTable, type DataTableColumns, NEllipsis } from 'naive-ui';
 import type { FinvizScreenerItem } from '../../api/Type';
 
-
 export default {
   props: {
     modelValue: {

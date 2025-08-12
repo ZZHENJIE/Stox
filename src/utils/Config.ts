@@ -38,10 +38,9 @@ export const DEFAULT_CONFIG: AppConfig = {
     }
 };
 
-const APP_NAME = 'Stox';
-const CONFIG_KEY = `${APP_NAME}_config`;
+const CONFIG_KEY = `DTBox_config`;
 
-export function Get_Config(): AppConfig {
+function Get_Config(): AppConfig {
     try {
         const configStr = localStorage.getItem(CONFIG_KEY);
         if (!configStr) {
@@ -60,7 +59,7 @@ export function Get_Config(): AppConfig {
     }
 }
 
-export function Save_Config(config: AppConfig): boolean {
+function Save_Config(config: AppConfig): boolean {
     try {
         localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
         return true;

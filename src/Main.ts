@@ -1,6 +1,6 @@
 import './Tauri';
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from './App';
 // Plugins
 import Stox from './plugins/Stox';
 import { router } from './plugins/Router';
@@ -13,4 +13,3 @@ app.use(i18n);
 app.use(Stox);
 app.use(router);
 app.mount('#app');
-

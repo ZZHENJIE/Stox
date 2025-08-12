@@ -12,12 +12,23 @@ async function Search(symbol: string) {
     });
 }
 
-async function Stock_News(stock_id: string) {
+async function Stock_Id_CSV() {
+    const url = 'https://raw.githubusercontent.com/ZZHENJIE/FutuStockId/main/stock_id.csv';
+    return fetch(url, { method: 'GET' }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    });
+}
+
+async function Stock_News(stock_id: string, lang: string = 'en-us') {
     const params = {
         stock_id: stock_id,
         market_type: 2,
         type: 0,
         subType: 0,
+        lang: lang,
     };
     const url = Tool.Url_Params_Insert('https://www.futunn.com/quote-api/quote-v2/get-news-list', params);
     const token = Generate_Token(params);
@@ -59,12 +70,12 @@ async function Financial_Calendar(timestamp: number) {
     });
 }
 
-async function Flash_News() {
+async function Flash_News(lang: string = 'en-us') {
     const url = 'https://news.futunn.com/news-site-api/main/get-flash-list?pageSize=30';
     return fetch(url, {
         method: 'GET',
         headers: {
-            'Cookie': 'locale=zh-cn;'
+            'Cookie': `locale=${lang};`
         }
     }).then(response => {
         if (!response.ok) {
@@ -78,5 +89,6 @@ export default {
     Search,
     Stock_News,
     Financial_Calendar,
-    Flash_News
+    Flash_News,
+    Stock_Id_CSV
 }

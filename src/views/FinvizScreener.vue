@@ -2,9 +2,10 @@
 import { AddCircle } from '@vicons/ionicons5';
 import ScreenerTable from '../components/Finviz/ScreenerTable.vue';
 import ScreenerCharts from '../components/Finviz/ScreenerCharts.vue';
-import { NButton, NFlex, NSwitch, NTooltip } from 'naive-ui';
+import { NButton, NFlex, NSelect, NSwitch, NTooltip } from 'naive-ui';
 import Finviz from '../api/Finviz';
 import type { FinvizScreenerItem } from '../api/Type';
+import { h } from 'vue';
 
 export default {
     components: {
@@ -70,11 +71,32 @@ export default {
     },
     mounted() {
         this.parameter = this.parameter_list[0].value;
-    }
+    },
+
+    setup() {
+
+
+        const finviz_parameter = ref('111');
+        const render = () => {
+            const header_select = h(NSelect, {
+                value: finviz_parameter,
+                options: this.parameter_list
+            })
+            const header_confirm = h(NButton, {
+                onClick: () => this.confirm()
+            }, () => 'Confirm')
+            const header = h(NFlex, null, [header_select, header_confirm])
+            return h(NFlex, {
+                vertical: true
+            }, [header]);
+        };
+
+        return render;
+    },
 }
 </script>
 
-<template>
+<!-- <template>
     <n-flex vertical>
         <n-flex>
             <NSelect style="width: 240px;" v-model:value="parameter" :options="parameter_list"></NSelect>
@@ -89,18 +111,16 @@ export default {
             <NSelect v-show="is_auto_refresh" style="width: 100px;" v-model:value="refresh" :options="refresh_options">
             </NSelect>
         </n-flex>
-        <n-flex justify="center">
-            <n-spin :show="isLoading">
-                <n-tabs type="segment" animated>
-                    <n-tab-pane name="table" tab="Table">
-                        <ScreenerTable v-model="data"></ScreenerTable>
-                    </n-tab-pane>
-                    <n-tab-pane name="Charts" tab="Charts">
-                        <ScreenerCharts v-model="data"></ScreenerCharts>
-                    </n-tab-pane>
-                </n-tabs>
-            </n-spin>
-        </n-flex>
+        <n-spin :show="isLoading">
+            <n-tabs type="segment" animated>
+                <n-tab-pane name="table" tab="Table">
+                    <ScreenerTable v-model="data"></ScreenerTable>
+                </n-tab-pane>
+                <n-tab-pane name="Charts" tab="Charts">
+                    <ScreenerCharts v-model="data"></ScreenerCharts>
+                </n-tab-pane>
+            </n-tabs>
+        </n-spin>
         <NBackTop :right="50" :bottom="50" />
     </n-flex>
-</template>
+</template> -->

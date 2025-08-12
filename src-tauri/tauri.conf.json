@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Stox",
+  "productName": "DTBox",
   "version": "0.1.0",
   "identifier": "com.stox.app",
   "build": {
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Stox",
+        "title": "DTBox",
         "width": 1000,
         "height": 750,
         "minWidth": 800,

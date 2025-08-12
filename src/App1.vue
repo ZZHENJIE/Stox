@@ -10,15 +10,14 @@ export default defineComponent({
         HomeIcon,
         ArrowBackCircle,
         RefreshCircle,
-        Kimi
     },
     data() {
         return {
-            menuOptions: Menu(),
-            activeKey: null as any,
+            menu_options: Menu(),
+            active_key: null as any,
+            view_key: 0,
             darkTheme,
             lightTheme,
-            viewKey: 0
         }
     },
     methods: {
@@ -26,18 +25,15 @@ export default defineComponent({
             this.$router.push({
                 name: item.key
             });
-        },
-        CollapsedChange(value: boolean) {
-            this.$Config().main_menu_collapsed = value;
         }
     },
     mounted() {
-        this.activeKey = this.$route.name;
+        this.active_key = this.$route.name;
         this.$i18n.locale = this.$Config().language;
     },
     watch: {
         '$route'(to) {
-            this.activeKey = to.name
+            this.active_key = to.name
         },
     }
 })
@@ -47,9 +43,8 @@ export default defineComponent({
 <template>
     <NConfigProvider :theme="$Config().is_dark_theme ? darkTheme : lightTheme">
         <NLayout position="absolute" has-sider>
-            <NLayoutSider :native-scrollbar="false" v-show="$route.meta.standalone === false" width="200px" bordered
-                :collapsed="$Config().main_menu_collapsed" show-trigger :on-update:collapsed="CollapsedChange"
-                :collapsed-width="18">
+            <NLayoutSider :native-scrollbar="false" v-show="$route.meta.standalone === false" width="200px"
+                v-model:collapsed="$Config().main_menu_collapsed" show-trigger style="padding-top: 5px;">
                 <n-flex justify="center">
                     <NButton round @click="$router.push({ name: 'Home' })">
                         <template #icon>
@@ -65,7 +60,7 @@ export default defineComponent({
                             </NIcon>
                         </template>
                     </NButton>
-                    <NButton round @click="viewKey += 1">
+                    <NButton round @click="view_key += 1">
                         <template #icon>
                             <NIcon>
                                 <RefreshCircle></RefreshCircle>
@@ -73,11 +68,11 @@ export default defineComponent({
                         </template>
                     </NButton>
                 </n-flex>
-                <NMenu :options="menuOptions" v-model:value="activeKey" @update:value="Jump">
+                <NMenu :options="menu_options" v-model:value="active_key" @update:value="Jump">
                 </NMenu>
             </NLayoutSider>
             <NLayoutContent :native-scrollbar="false">
-                <RouterView :key="viewKey">
+                <RouterView style="padding: 5px;" :key="view_key">
                 </RouterView>
                 <Kimi v-if="$Config().main_menu_collapsed && $Config().kimi.is_show_button" />
             </NLayoutContent>
