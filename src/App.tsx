@@ -59,11 +59,11 @@ export default defineComponent(() => {
 
     const kimi_button = () => h('div');
 
-    const router_view = () => h(RouterView, {
+    const router_view = () => h('div', {
         style: {
             'padding': '5px'
         }
-    })
+    }, h(RouterView))
 
     const layout_content = () => h(NLayoutContent, {
         nativeScrollbar: false,

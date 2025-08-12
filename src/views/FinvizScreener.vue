@@ -2,10 +2,8 @@
 import { AddCircle } from '@vicons/ionicons5';
 import ScreenerTable from '../components/Finviz/ScreenerTable.vue';
 import ScreenerCharts from '../components/Finviz/ScreenerCharts.vue';
-import { NButton, NFlex, NSelect, NSwitch, NTooltip } from 'naive-ui';
 import Finviz from '../api/Finviz';
 import type { FinvizScreenerItem } from '../api/Type';
-import { h } from 'vue';
 
 export default {
     components: {
@@ -71,27 +69,6 @@ export default {
     },
     mounted() {
         this.parameter = this.parameter_list[0].value;
-    },
-
-    setup() {
-
-
-        const finviz_parameter = ref('111');
-        const render = () => {
-            const header_select = h(NSelect, {
-                value: finviz_parameter,
-                options: this.parameter_list
-            })
-            const header_confirm = h(NButton, {
-                onClick: () => this.confirm()
-            }, () => 'Confirm')
-            const header = h(NFlex, null, [header_select, header_confirm])
-            return h(NFlex, {
-                vertical: true
-            }, [header]);
-        };
-
-        return render;
     },
 }
 </script>

@@ -11,7 +11,7 @@ const Finviz: RouteRecordRaw[] = [
             menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/FinvizScreener.vue')
+        component: () => import('../views/FinvizScreener.tsx')
     },
     {
         path: '/finviz_analysis',
@@ -71,7 +71,7 @@ const Viewer: RouteRecordRaw[] = [
     },
     {
         path: '/cboe_book_viewer',
-        name: 'Cboe Book Viewer',
+        name: 'Cboe_Book_Viewer',
         meta: {
             title: () => useI18n().t('cboe_book_viewer'),
             menu_enable: true,
