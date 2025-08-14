@@ -1,6 +1,6 @@
 <script lang="ts">
 import Futu from '../../api/Futu';
-import Tool from '../../api/Tool';
+import Tool from '../../utils/Tool';
 import { ArrowBackCircle, ArrowForwardCircle } from '@vicons/ionicons5';
 
 export default {

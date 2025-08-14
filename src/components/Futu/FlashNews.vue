@@ -1,5 +1,5 @@
 <script lang="ts">
-import Tool from '../../api/Tool';
+import Tool from '../../utils/Tool';
 import Futu from '../../api/Futu';
 
 export default {

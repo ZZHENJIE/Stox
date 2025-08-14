@@ -3,6 +3,7 @@ import { type PropType } from 'vue';
 import StockNews from '../Futu/StockNews.vue';
 import Futu from '../Futu'
 import type { FinvizScreenerItem } from '../../api/Type';
+import Discrete from '../Discrete';
 
 const PAGE_SIZE = 12;
 
@@ -77,6 +78,13 @@ export default {
         add_ignore(symbol: string) {
             this.$Config().finviz.ignore.push(symbol);
             this.ignore_value();
+        },
+        async futu_news(item: FinvizScreenerItem) {
+            const content = await Futu.StockNews(item.Symbol);
+            Discrete.Modal(config, {
+                title: () => item.Company,
+                content: () => content
+            })
         }
     },
     mounted() {
@@ -104,7 +112,7 @@ export default {
         <n-space justify="center">
             <NCard v-for="item in currentPageData" :key="item.Symbol">
                 <n-skeleton v-if="!loadedImages[item.Symbol]" height="180px" :width="widths[interval]" :sharp="false" />
-                <n-image @contextmenu.prevent="StockNews($Config(), item)" v-show="loadedImages[item.Symbol]"
+                <n-image @contextmenu.prevent="futu_news(item)" v-show="loadedImages[item.Symbol]"
                     :src="thumbnail(item.Symbol)" @load="handleImageLoad(item.Symbol)"
                     @error="handleImageError(item.Symbol)" />
 

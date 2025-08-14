@@ -1,5 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import Tool from "./Tool";
+import Tool from "../utils/Tool";
 import { type FinvizScreenerItem, type FinvizCandlestickParams } from './Type'
 async function Export_Screener(parameter: string, token: string) {
     const VolumeFormat = (volume: number): string => {

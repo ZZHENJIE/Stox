@@ -1,3 +1,4 @@
+import { fetch } from "@tauri-apps/plugin-http";
 async function Akamai_Timestamp() {
     const url = 'https://time.akamai.com';
     return fetch(url, { method: 'GET' }).then(response => {
@@ -16,7 +17,7 @@ function Url_Params_Insert(url: string, params: object) {
     return Url;
 }
 
-export function Format_Time(timestamp: number, format: string, timezone: number = 8) {
+function Format_Time(timestamp: number, format: string, timezone: number = 8) {
     const ts = timestamp < 10000000000 ? timestamp * 1000 : timestamp;
 
     const date = new Date(ts);

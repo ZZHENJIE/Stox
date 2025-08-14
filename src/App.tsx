@@ -1,20 +1,46 @@
-import { darkTheme, lightTheme, NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu } from "naive-ui";
-import { defineComponent, getCurrentInstance, h, ref } from "vue";
+import { darkTheme, lightTheme, NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, type MenuOption } from "naive-ui";
+import { defineComponent, h, ref } from 'vue';
 import Config from "./utils/Config";
 import { ArrowBackCircle, Home, SettingsSharp } from "@vicons/ionicons5";
-import { Menu } from "./plugins/Router";
-import { RouterView } from "vue-router";
+import { RouterView, useRoute, useRouter } from "vue-router";
+import Router from "./plugins/Router";
+import { useI18n } from "vue-i18n";
+
+const menu_options: MenuOption[] = [
+    {
+        label: () => useI18n().t('finviz'),
+        key: 'Finviz',
+        children: Router.Finviz.filter(r => r.meta?.menu_enable)
+            .map(r => ({
+                label: r.meta?.title as () => string,
+                key: r.name as string,
+                path: r.path,
+                standalone: r.meta?.standalone
+            }))
+    },
+    {
+        label: () => useI18n().t('calendar'),
+        key: 'Calendar',
+        children: Router.Calendar.filter(r => r.meta?.menu_enable)
+            .map(r => ({
+                label: r.meta?.title as () => string,
+                key: r.name as string,
+                path: r.path,
+                standalone: r.meta?.standalone
+            }))
+    },
+    ...Router.Viewer.filter(r => r.meta?.menu_enable)
+        .map(r => ({
+            label: r.meta?.title as () => string,
+            key: r.name as string,
+            path: r.path,
+            standalone: r.meta?.standalone
+        }))
+];
 
 export default defineComponent(() => {
-    const properties = getCurrentInstance()?.appContext.config.globalProperties;
-
-    const route = properties?.$route;
-    const router = properties?.$router;
-    if (!router || !route) {
-        console.error("Router or Route is not available");
-        return () => h("div", "Router not initialized");
-    }
-
+    const route = useRoute();
+    const router = useRouter();
     const config = ref(Config.Get_Config());
 
     const layout_sider = () => {
@@ -38,7 +64,8 @@ export default defineComponent(() => {
             })
 
             const menu = () => h(NMenu, {
-                options: Menu(),
+                options: menu_options,
+                value: route.name as string,
                 'onUpdate:value': (value) => router.push({ name: value })
             })
 

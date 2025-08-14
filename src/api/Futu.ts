@@ -1,5 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import Tool from './Tool';
+import Tool from '../utils/Tool';
 import { Generate_Token } from '../utils/FutuQuoteToken'
 
 async function Search(symbol: string) {

@@ -1,11 +1,10 @@
-import type { MenuMixedOption } from 'naive-ui/es/menu/src/interface';
 import { useI18n } from 'vue-i18n';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
 const Finviz: RouteRecordRaw[] = [
     {
         path: '/finviz_screener',
-        name: 'Screener',
+        name: 'FinvizScreener',
         meta: {
             title: () => useI18n().t('screener'),
             menu_enable: true,
@@ -15,46 +14,46 @@ const Finviz: RouteRecordRaw[] = [
     },
     {
         path: '/finviz_analysis',
-        name: 'Analysis',
+        name: 'FinvizAnalysis',
         meta: {
             title: () => useI18n().t('analysis'),
             menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/FinvizAnalysis.vue')
+        component: () => import('../views/FinvizAnalysis.tsx')
     }
 ];
 
 const Calendar: RouteRecordRaw[] = [
     {
         path: '/macro_calendar',
-        name: 'Macro',
+        name: 'MacroCalendar',
         meta: {
             title: () => useI18n().t('macro'),
             menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/MacroCalendar.vue')
+        component: () => import('../views/MacroCalendar.tsx')
     },
     {
         path: '/spac_calendar',
-        name: 'SPAC',
+        name: 'SPACCalendar',
         meta: {
             title: () => useI18n().t('spac'),
             menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/SPACCalendar.vue')
+        component: () => import('../views/SPACCalendar.tsx')
     },
     {
         path: '/ipo_calendar',
-        name: 'IPO',
+        name: 'IPOCalendar',
         meta: {
             title: () => useI18n().t('ipo'),
             menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/IPOCalendar.vue')
+        component: () => import('../views/IPOCalendar.tsx')
     },
 ];
 
@@ -67,17 +66,17 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import('../views/Home.vue')
+        component: () => import('../views/Home.tsx')
     },
     {
         path: '/cboe_book_viewer',
-        name: 'Cboe_Book_Viewer',
+        name: 'CboeBookViewer',
         meta: {
             title: () => useI18n().t('cboe_book_viewer'),
             menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/CboeBookViewer.vue')
+        component: () => import('../views/CboeBookViewer.tsx')
     },
     {
         path: '/about',
@@ -87,7 +86,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import('../views/About.vue')
+        component: () => import('../views/About.tsx')
     },
     {
         path: '/settings',
@@ -97,7 +96,7 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: false
         },
-        component: () => import('../views/Settings.vue')
+        component: () => import('../views/Settings.tsx')
     },
     {
         path: '/time',
@@ -107,57 +106,22 @@ const Viewer: RouteRecordRaw[] = [
             menu_enable: false,
             standalone: true
         },
-        component: () => import('../views/Time.vue')
+        component: () => import('../views/Time.tsx')
     },
 ];
 
-const Routers: RouteRecordRaw[] = [
-    ...Viewer,
-    ...Finviz,
-    // ...Calendar
-];
-
-export function Menu() {
-    const Result: MenuMixedOption[] = [
-        {
-            label: () => useI18n().t('finviz'),
-            key: 'finviz',
-            children: Finviz.filter(r => r.meta?.menu_enable)
-                .map(r => ({
-                    label: r.meta?.title as () => string,
-                    key: r.name as string,
-                    path: r.path,
-                    standalone: r.meta?.standalone
-                }))
-        },
-        {
-            label: () => useI18n().t('calendar'),
-            key: 'calendar',
-            children: Calendar.filter(r => r.meta?.menu_enable)
-                .map(r => ({
-                    label: r.meta?.title as () => string,
-                    key: r.name as string,
-                    path: r.path,
-                    standalone: r.meta?.standalone
-                }))
-        },
-        ...Viewer.filter(r => r.meta?.menu_enable)
-            .map(r => ({
-                label: r.meta?.title as () => string,
-                key: r.name as string,
-                path: r.path,
-                standalone: r.meta?.standalone
-            }))
-    ];
-    return Result
-}
-
-export const router = createRouter({
+export const Router = createRouter({
     history: createWebHistory(),
-    routes: Routers
+    routes: [
+        ...Viewer,
+        ...Finviz,
+        ...Calendar
+    ]
 });
 
 export default {
-    Menu,
-    router,
+    Router,
+    Finviz,
+    Calendar,
+    Viewer
 };
