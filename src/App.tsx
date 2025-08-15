@@ -1,14 +1,16 @@
 import { darkTheme, lightTheme, NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, type MenuOption } from "naive-ui";
-import { defineComponent, h, ref } from 'vue';
+import { defineComponent, h, onMounted, ref } from 'vue';
 import Config from "./utils/Config";
 import { ArrowBackCircle, Home, SettingsSharp } from "@vicons/ionicons5";
 import { RouterView, useRoute, useRouter } from "vue-router";
 import Router from "./plugins/Router";
 import { useI18n } from "vue-i18n";
+import Discrete from "./components/Discrete";
+import DTBox from "./plugins/DTBox";
 
 const menu_options: MenuOption[] = [
     {
-        label: () => useI18n().t('finviz'),
+        label: () => useI18n().t('Finviz'),
         key: 'Finviz',
         children: Router.Finviz.filter(r => r.meta?.menu_enable)
             .map(r => ({
@@ -19,7 +21,7 @@ const menu_options: MenuOption[] = [
             }))
     },
     {
-        label: () => useI18n().t('calendar'),
+        label: () => useI18n().t('Calendar'),
         key: 'Calendar',
         children: Router.Calendar.filter(r => r.meta?.menu_enable)
             .map(r => ({
@@ -41,7 +43,10 @@ const menu_options: MenuOption[] = [
 export default defineComponent(() => {
     const route = useRoute();
     const router = useRouter();
-    const config = ref(Config.Get_Config());
+    const config = ref(Config.Get());
+
+    useI18n().locale.value = 'zh-CN';
+    // useI18n().locale.value = 'en-US';
 
     const layout_sider = () => {
         if (!route?.meta.standalone) {
@@ -72,12 +77,13 @@ export default defineComponent(() => {
             return h(NLayoutSider, {
                 nativeScrollbar: false,
                 width: '200px',
+                collapsedWidth: 15,
                 collapsed: config.value.main_menu_collapsed,
                 onUpdateCollapsed: (collapsed: boolean) => config.value.main_menu_collapsed = collapsed,
                 showTrigger: true,
-                style: {
+                contentStyle: {
                     'padding-top': '5px'
-                }
+                },
             }, () => h(NFlex, {
                 justify: 'center'
             }, () => [home_button(), back_button(), settings_button(), menu()]))
@@ -104,6 +110,15 @@ export default defineComponent(() => {
     const render = () => h(NConfigProvider, {
         theme: config.value.is_dark_theme ? darkTheme : lightTheme,
     }, () => main_layout())
+
+    onMounted(() => {
+        const init_notification = Discrete.Notification().create({
+            closable: false,
+            title: '正在初始化...',
+        });
+
+        DTBox.Init().then(() => init_notification.destroy());
+    })
 
     return render;
 });

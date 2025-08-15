@@ -1,6 +1,6 @@
 import type { AppConfig } from "./ConfigType";
 
-export const DEFAULT_CONFIG: AppConfig = {
+export const DEFAULT: AppConfig = {
     is_dark_theme: true,
     main_menu_collapsed: false,
     keywords: [],
@@ -38,28 +38,28 @@ export const DEFAULT_CONFIG: AppConfig = {
     }
 };
 
-const CONFIG_KEY = `DTBox_config`;
+const CONFIG_KEY = `DTBoxConfig`;
 
-function Get_Config(): AppConfig {
+function Get(): AppConfig {
     try {
         const configStr = localStorage.getItem(CONFIG_KEY);
         if (!configStr) {
-            Save_Config(DEFAULT_CONFIG); // 同步保存默认配置
-            return { ...DEFAULT_CONFIG };
+            Save(DEFAULT); // 同步保存默认配置
+            return { ...DEFAULT };
         }
 
         const parsed = JSON.parse(configStr);
         return {
-            ...DEFAULT_CONFIG,
+            ...DEFAULT,
             ...parsed, // 合并默认值和存储值
         };
     } catch (error) {
         console.error('Failed to get config:', error);
-        return { ...DEFAULT_CONFIG };
+        return { ...DEFAULT };
     }
 }
 
-function Save_Config(config: AppConfig): boolean {
+function Save(config: AppConfig): boolean {
     try {
         localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
         return true;
@@ -70,7 +70,7 @@ function Save_Config(config: AppConfig): boolean {
 }
 
 export default {
-    DEFAULT_CONFIG,
-    Get_Config,
-    Save_Config
+    DEFAULT,
+    Get,
+    Save
 };

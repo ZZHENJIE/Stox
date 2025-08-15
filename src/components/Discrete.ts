@@ -1,7 +1,15 @@
 
 import { createDiscreteApi, darkTheme, lightTheme, type ModalOptions } from "naive-ui";
-import type { AppConfig } from "../utils/ConfigType";
-function Modal(config: AppConfig, options?: ModalOptions) {
+import Config from "../utils/Config";
+function Modal(options?: ModalOptions) {
+    const config = Config.Get();
+
+    const DiscreteApi = createDiscreteApi(['modal'], {
+        configProviderProps: {
+            theme: config.is_dark_theme ? darkTheme : lightTheme
+        }
+    });
+
     const merged_options: ModalOptions = {
         preset: 'card',
         style: {
@@ -11,16 +19,28 @@ function Modal(config: AppConfig, options?: ModalOptions) {
         ...options
     };
 
-    const DiscreteApi = createDiscreteApi(['modal'], {
+    return DiscreteApi.modal.create(merged_options);
+}
+
+function LoadingBar() {
+    const DiscreteApi = createDiscreteApi(['loadingBar']);
+    return DiscreteApi.loadingBar;
+}
+
+function Notification() {
+    const config = Config.Get();
+
+    const DiscreteApi = createDiscreteApi(['notification'], {
         configProviderProps: {
             theme: config.is_dark_theme ? darkTheme : lightTheme
         }
     });
-
-    return DiscreteApi.modal.create(merged_options);
+    return DiscreteApi.notification;
 }
 
 export default {
-    Modal
+    Modal,
+    LoadingBar,
+    Notification
 }
 

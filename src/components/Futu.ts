@@ -1,12 +1,12 @@
-import { NAlert, NCard, NEllipsis, NFlex, NHighlight, NList, NListItem, NScrollbar } from "naive-ui";
-import Futu from "../api/Futu";
+import { NAlert, NCard, NEllipsis, NFlex, NHighlight, NScrollbar } from "naive-ui";
+import FutuApi from "../api/Futu";
 import { defineComponent, h, onMounted, onUnmounted, ref, type VNode } from "vue";
 import Tool from "../utils/Tool";
 import { invoke } from "@tauri-apps/api/core";
 
 async function StockNews(symbol: string, patterns: string[] = []) {
     const stock_id = await invoke('get_id_by_symbol', { symbol });
-    const stock_news = await Futu.Stock_News(stock_id as string);
+    const stock_news = await FutuApi.Stock_News(stock_id as string);
     const items: VNode[] = [];
 
     for (const item of stock_news.data.list) {
@@ -18,18 +18,18 @@ async function StockNews(symbol: string, patterns: string[] = []) {
             patterns: patterns
         }));
 
-        const card = h(NCard, {
+        items.push(h(NCard, {
             action: () => `${item.source} ${Tool.Format_Time(item.time, 'yyyy-mm-dd hh:MM:ss')}`
-        }, () => ellipsis);
-
-        items.push(h(NListItem, null, () => card));
+        }, () => ellipsis));
     }
 
     return h(NScrollbar, {
         style: {
             'max-height': '500px'
         }
-    }, () => h(NList, null, () => items))
+    }, () => h(NFlex, {
+        vertical: true
+    }, () => items))
 }
 
 function FlashNews() {
@@ -43,7 +43,7 @@ function FlashNews() {
             const level: Array<'default' | 'warning' | 'error' | 'info' | 'success'> = ['default', 'warning', 'error'];
 
             const update_data = () => {
-                Futu.Flash_News().then(object => {
+                FutuApi.Flash_News().then(object => {
                     data.value = object.data.data.news;
                     setTimeout(() => is_mounted.value ? update_data() : {}, 10000);
                 });

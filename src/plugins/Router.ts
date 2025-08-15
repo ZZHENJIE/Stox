@@ -6,7 +6,7 @@ const Finviz: RouteRecordRaw[] = [
         path: '/finviz_screener',
         name: 'FinvizScreener',
         meta: {
-            title: () => useI18n().t('screener'),
+            title: () => useI18n().t('Screener'),
             menu_enable: true,
             standalone: false
         },
@@ -16,7 +16,7 @@ const Finviz: RouteRecordRaw[] = [
         path: '/finviz_analysis',
         name: 'FinvizAnalysis',
         meta: {
-            title: () => useI18n().t('analysis'),
+            title: () => useI18n().t('Analysis'),
             menu_enable: true,
             standalone: false
         },
@@ -29,7 +29,7 @@ const Calendar: RouteRecordRaw[] = [
         path: '/macro_calendar',
         name: 'MacroCalendar',
         meta: {
-            title: () => useI18n().t('macro'),
+            title: () => useI18n().t('Macro'),
             menu_enable: true,
             standalone: false
         },
@@ -39,7 +39,7 @@ const Calendar: RouteRecordRaw[] = [
         path: '/spac_calendar',
         name: 'SPACCalendar',
         meta: {
-            title: () => useI18n().t('spac'),
+            title: () => useI18n().t('SPAC'),
             menu_enable: true,
             standalone: false
         },
@@ -49,7 +49,7 @@ const Calendar: RouteRecordRaw[] = [
         path: '/ipo_calendar',
         name: 'IPOCalendar',
         meta: {
-            title: () => useI18n().t('ipo'),
+            title: () => useI18n().t('IPO'),
             menu_enable: true,
             standalone: false
         },
@@ -62,7 +62,7 @@ const Viewer: RouteRecordRaw[] = [
         path: '/',
         name: 'Home',
         meta: {
-            title: () => useI18n().t('home'),
+            title: () => useI18n().t('Home'),
             menu_enable: false,
             standalone: false
         },
@@ -72,7 +72,7 @@ const Viewer: RouteRecordRaw[] = [
         path: '/cboe_book_viewer',
         name: 'CboeBookViewer',
         meta: {
-            title: () => useI18n().t('cboe_book_viewer'),
+            title: () => useI18n().t('Cboe_Book_Viewer'),
             menu_enable: true,
             standalone: false
         },
@@ -82,7 +82,7 @@ const Viewer: RouteRecordRaw[] = [
         path: '/about',
         name: 'About',
         meta: {
-            title: () => useI18n().t('about'),
+            title: () => useI18n().t('About'),
             menu_enable: false,
             standalone: false
         },
@@ -92,7 +92,7 @@ const Viewer: RouteRecordRaw[] = [
         path: '/settings',
         name: 'Settings',
         meta: {
-            title: () => useI18n().t('settings'),
+            title: () => useI18n().t('Settings'),
             menu_enable: false,
             standalone: false
         },
@@ -102,7 +102,7 @@ const Viewer: RouteRecordRaw[] = [
         path: '/time',
         name: 'Time',
         meta: {
-            title: () => useI18n().t('time'),
+            title: () => useI18n().t('Time'),
             menu_enable: false,
             standalone: true
         },

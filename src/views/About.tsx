@@ -1,7 +1,8 @@
-import { defineComponent } from 'vue';
+
+import { defineComponent, h } from 'vue';
 
 export default defineComponent(() => {
-    const render = () => { };
+    const render = () => { }
 
     return render;
 });
