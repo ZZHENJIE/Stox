@@ -38,9 +38,21 @@ function Notification() {
     return DiscreteApi.notification;
 }
 
+function Message() {
+    const config = Config.Get();
+
+    const DiscreteApi = createDiscreteApi(['message'], {
+        configProviderProps: {
+            theme: config.is_dark_theme ? darkTheme : lightTheme
+        }
+    });
+    return DiscreteApi.message;
+}
+
 export default {
     Modal,
     LoadingBar,
-    Notification
+    Notification,
+    Message
 }
 

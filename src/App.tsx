@@ -1,52 +1,48 @@
-import { darkTheme, lightTheme, NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, type MenuOption } from "naive-ui";
-import { defineComponent, h, onMounted, ref } from 'vue';
-import Config from "./utils/Config";
+import { darkTheme, lightTheme, NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, NText, type MenuOption } from "naive-ui";
+import { defineComponent, h, onMounted } from 'vue';
 import { ArrowBackCircle, Home, SettingsSharp } from "@vicons/ionicons5";
 import { RouterView, useRoute, useRouter } from "vue-router";
 import Router from "./plugins/Router";
 import { useI18n } from "vue-i18n";
 import Discrete from "./components/Discrete";
-import DTBox from "./plugins/DTBox";
-
-const menu_options: MenuOption[] = [
-    {
-        label: () => useI18n().t('Finviz'),
-        key: 'Finviz',
-        children: Router.Finviz.filter(r => r.meta?.menu_enable)
-            .map(r => ({
-                label: r.meta?.title as () => string,
-                key: r.name as string,
-                path: r.path,
-                standalone: r.meta?.standalone
-            }))
-    },
-    {
-        label: () => useI18n().t('Calendar'),
-        key: 'Calendar',
-        children: Router.Calendar.filter(r => r.meta?.menu_enable)
-            .map(r => ({
-                label: r.meta?.title as () => string,
-                key: r.name as string,
-                path: r.path,
-                standalone: r.meta?.standalone
-            }))
-    },
-    ...Router.Viewer.filter(r => r.meta?.menu_enable)
-        .map(r => ({
-            label: r.meta?.title as () => string,
-            key: r.name as string,
-            path: r.path,
-            standalone: r.meta?.standalone
-        }))
-];
+import { Init, useConfig } from "./plugins/DTBox";
 
 export default defineComponent(() => {
     const route = useRoute();
     const router = useRouter();
-    const config = ref(Config.Get());
+    const { t } = useI18n();
 
-    useI18n().locale.value = 'zh-CN';
-    // useI18n().locale.value = 'en-US';
+    const menu_options: MenuOption[] = [
+        {
+            label: () => t('Finviz'),
+            key: 'Finviz',
+            children: Router.Finviz.filter(r => r.meta?.menu_enable)
+                .map(r => ({
+                    label: r.meta?.title as () => string,
+                    key: r.name as string,
+                    path: r.path,
+                    standalone: r.meta?.standalone
+                }))
+        },
+        {
+            label: () => t('Calendar'),
+            key: 'Calendar',
+            children: Router.Calendar.filter(r => r.meta?.menu_enable)
+                .map(r => ({
+                    label: r.meta?.title as () => string,
+                    key: r.name as string,
+                    path: r.path,
+                    standalone: r.meta?.standalone
+                }))
+        },
+        ...Router.Viewer.filter(r => r.meta?.menu_enable)
+            .map(r => ({
+                label: r.meta?.title as () => string,
+                key: r.name as string,
+                path: r.path,
+                standalone: r.meta?.standalone
+            }))
+    ];
 
     const layout_sider = () => {
         if (!route?.meta.standalone) {
@@ -71,15 +67,13 @@ export default defineComponent(() => {
             const menu = () => h(NMenu, {
                 options: menu_options,
                 value: route.name as string,
-                'onUpdate:value': (value) => router.push({ name: value })
+                onUpdateValue: (value) => router.push({ name: value })
             })
 
             return h(NLayoutSider, {
                 nativeScrollbar: false,
                 width: '200px',
                 collapsedWidth: 15,
-                collapsed: config.value.main_menu_collapsed,
-                onUpdateCollapsed: (collapsed: boolean) => config.value.main_menu_collapsed = collapsed,
                 showTrigger: true,
                 contentStyle: {
                     'padding-top': '5px'
@@ -108,16 +102,18 @@ export default defineComponent(() => {
     }, () => [layout_sider(), layout_content()])
 
     const render = () => h(NConfigProvider, {
-        theme: config.value.is_dark_theme ? darkTheme : lightTheme,
+        inlineThemeDisabled: true,
+        theme: useConfig().value.is_dark_theme ? darkTheme : lightTheme,
     }, () => main_layout())
 
     onMounted(() => {
-        const init_notification = Discrete.Notification().create({
-            closable: false,
-            title: '正在初始化...',
-        });
-
-        DTBox.Init().then(() => init_notification.destroy());
+        // const init_message = Discrete.Message().loading(() => {
+        //     return h(NText, null, () => `${t('Initializing')}...`)
+        // }, {
+        //     duration: 0
+        // });
+        // DTBox.Init().then(() => init_message.destroy());
+        useI18n().locale.value = useConfig().value.language;
     })
 
     return render;

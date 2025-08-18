@@ -1,13 +1,11 @@
-import type { AppConfig } from "./ConfigType";
+import type { AppConfig } from "./Config.d";
 
 export const DEFAULT: AppConfig = {
     is_dark_theme: true,
-    main_menu_collapsed: false,
     keywords: [],
     language: 'en-US',
     finviz: {
         token: '1e3ab083-4d40-48cd-9218-ea042376b56e',
-        refresh_time: 10000,
         ignore: [],
         screener_parameter_list: [
             {
@@ -32,7 +30,7 @@ export const DEFAULT: AppConfig = {
         is_show_button: false,
         login_status: null
     },
-    macro_small: {
+    time_window: {
         time_font_size: 30,
         time_font_color: '#6495ED'
     }
@@ -44,14 +42,14 @@ function Get(): AppConfig {
     try {
         const configStr = localStorage.getItem(CONFIG_KEY);
         if (!configStr) {
-            Save(DEFAULT); // 同步保存默认配置
+            Save(DEFAULT);
             return { ...DEFAULT };
         }
 
         const parsed = JSON.parse(configStr);
         return {
             ...DEFAULT,
-            ...parsed, // 合并默认值和存储值
+            ...parsed,
         };
     } catch (error) {
         console.error('Failed to get config:', error);
@@ -72,5 +70,5 @@ function Save(config: AppConfig): boolean {
 export default {
     DEFAULT,
     Get,
-    Save
+    Save,
 };

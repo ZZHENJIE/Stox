@@ -79,14 +79,14 @@ const Viewer: RouteRecordRaw[] = [
         component: () => import('../views/CboeBookViewer.tsx')
     },
     {
-        path: '/about',
-        name: 'About',
+        path: '/charts',
+        name: 'Charts',
         meta: {
-            title: () => useI18n().t('About'),
-            menu_enable: false,
+            title: () => useI18n().t('Charts'),
+            menu_enable: true,
             standalone: false
         },
-        component: () => import('../views/About.tsx')
+        component: () => import('../views/Charts.tsx')
     },
     {
         path: '/settings',
@@ -102,11 +102,11 @@ const Viewer: RouteRecordRaw[] = [
         path: '/time',
         name: 'Time',
         meta: {
-            title: () => useI18n().t('Time'),
+            title: () => useI18n().t('TimeWindow'),
             menu_enable: false,
             standalone: true
         },
-        component: () => import('../views/Time.tsx')
+        component: () => import('../views/TimeWindow.tsx')
     },
 ];
 

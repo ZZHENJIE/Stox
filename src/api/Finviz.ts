@@ -48,7 +48,39 @@ async function Candlestick(params: FinvizCandlestickParams) {
     })
 }
 
+const FinvizThumbnails = {
+    D: 'd',
+    I1: 'i1',
+    I3: 'i3',
+    I5: 'i5',
+} as const;
+
+export type ThumbnailType = typeof FinvizThumbnails[keyof typeof FinvizThumbnails];
+
+type ThumbnailDimensions = {
+    width: number;
+    height: number;
+};
+
+const ThumbnailDimensions: Record<ThumbnailType, ThumbnailDimensions> = {
+    [FinvizThumbnails.D]: { width: 324, height: 180 },
+    [FinvizThumbnails.I1]: { width: 844, height: 180 },
+    [FinvizThumbnails.I3]: { width: 584, height: 180 },
+    [FinvizThumbnails.I5]: { width: 376, height: 180 },
+};
+
+function Thumbnail_Image_Url(symbol: string, type: ThumbnailType = FinvizThumbnails.D) {
+    return `https://charts-node.finviz.com/chart.ashx?&t=${symbol}&tf=${type}&ct=candle_stick`;
+}
+
+function Get_Thumbnail_Image_Dimensions(type: ThumbnailType) {
+    return ThumbnailDimensions[type];
+}
+
 export default {
     Export_Screener,
     Candlestick,
+    Thumbnail_Image_Url,
+    Get_Thumbnail_Image_Dimensions,
+    FinvizThumbnails,
 }

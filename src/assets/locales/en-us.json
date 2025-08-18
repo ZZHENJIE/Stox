@@ -23,5 +23,10 @@
     "PriceEarningsRatio": "P/E",
     "Price": "Price",
     "Change": "Change",
-    "Volume": "Volume"
+    "Volume": "Volume",
+    "Initializing": "Initializing",
+    "Time_Window": "TimeWindow",
+    "Global": "Global",
+    "Theme": "Theme",
+    "Language": "Language"
 }

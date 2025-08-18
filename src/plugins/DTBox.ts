@@ -1,19 +1,9 @@
-import { type App } from 'vue'
+import { ref, type App } from 'vue'
 import FutuApi from '../api/Futu'
 import { invoke } from '@tauri-apps/api/core'
-import { error } from 'naive-ui/es/_utils/naive/warn'
+import Config from '../utils/Config';
 
-declare module 'vue' {
-    interface ComponentCustomProperties {
-
-    }
-}
-
-function install(app: App) {
-
-}
-
-function Init() {
+export function Init() {
     return new Promise((resolve, reject) => {
         FutuApi.Stock_Id_CSV().then(csv => {
             invoke('update_stock_id_csv', { csvText: csv });
@@ -22,7 +12,19 @@ function Init() {
     })
 }
 
+declare module 'vue' {
+    interface ComponentCustomProperties {
+
+    }
+}
+
+const config_ref = ref(Config.Get());
+export function useConfig() {
+    return config_ref;
+}
+
 export default {
-    install,
-    Init
+    install(app: App) {
+
+    }
 }

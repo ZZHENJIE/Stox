@@ -23,5 +23,10 @@
     "PriceEarningsRatio": "​​市盈率",
     "Price": "价格",
     "Change": "变化",
-    "Volume": "成交量"
+    "Volume": "成交量",
+    "Initializing": "初始化",
+    "Time_Window": "时间窗口",
+    "Global": "全局",
+    "Theme": "主题",
+    "Language": "语言"
 }

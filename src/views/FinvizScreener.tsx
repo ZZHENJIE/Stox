@@ -1,17 +1,24 @@
 import { defineComponent, h, onUnmounted, ref } from 'vue';
 import Discrete from '../components/Discrete';
-import { NFlex, NFloatButton, NIcon, NSelect, NTabPane, NTabs } from 'naive-ui';
+import { NBackTop, NFlex, NFloatButton, NIcon, NSelect, NTabPane, NTabs } from 'naive-ui';
 import { PlayCircle, StopCircle } from '@vicons/ionicons5';
 import { useI18n } from 'vue-i18n';
-import Config from '../utils/Config';
 import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
-import FinvizApi from '../api/Finviz';
+import FinvizApi, { type ThumbnailType } from '../api/Finviz';
 import type { FinvizScreenerItem } from '../api/Type';
-import FinvizComponent from '../components/Finviz';
+import ScreenerTable from '../components/Finviz/ScreenerTable';
+import ScreenerCharts from '../components/Finviz/ScreenerCharts';
+import { useConfig } from '../plugins/DTBox';
 
 interface ScreenerParameter {
     parameter: string,
-    auto_refresh: number
+    auto_refresh: number,
+    thumbnail_type: string
+}
+
+const filter_screener = (array: FinvizScreenerItem[]) => {
+    const ignoreList = useConfig().value.finviz.ignore;
+    return array.filter(item => !ignoreList.includes(item.Symbol));
 }
 
 export default defineComponent(() => {
@@ -19,7 +26,6 @@ export default defineComponent(() => {
     const { t } = useI18n();
     const loadingbar = Discrete.LoadingBar();
     const is_runing = ref(false);
-    const config = Config.Get();
     const screener_parameter = ref<ScreenerParameter>();
     const screener_data = ref<FinvizScreenerItem[]>([]);
     const refresh_time_id = ref<number>();
@@ -27,7 +33,7 @@ export default defineComponent(() => {
     const parameter_form = () => {
         return new Promise<ScreenerParameter>((resolve, _) => {
 
-            const parameter_list = config.finviz.screener_parameter_list;
+            const parameter_list = useConfig().value.finviz.screener_parameter_list;
             const parameter = ref(parameter_list[0].value);
             const parameter_select = () => h(NSelect, {
                 placeholder: t('Please_Select'),
@@ -61,16 +67,35 @@ export default defineComponent(() => {
                 options: auto_refresh_list as SelectMixedOption[],
                 value: auto_refresh.value,
                 onUpdateValue: (value) => auto_refresh.value = value,
+            });
+
+            const thumbnail_type_list: {
+                label: string;
+                value: typeof FinvizApi.FinvizThumbnails[keyof typeof FinvizApi.FinvizThumbnails];
+            }[] = [
+                    { label: "Day", value: FinvizApi.FinvizThumbnails.D },
+                    { label: "1 Minute", value: FinvizApi.FinvizThumbnails.I1 },
+                    { label: "3 Minute", value: FinvizApi.FinvizThumbnails.I3 },
+                    { label: "5 Minute", value: FinvizApi.FinvizThumbnails.I5 },
+                ];
+
+            const thumbnail_type = ref(thumbnail_type_list[0].value);
+
+            const thumbnail_type_select = () => h(NSelect, {
+                placeholder: t('Please_Select'),
+                options: thumbnail_type_list,
+                value: thumbnail_type.value,
+                onUpdateValue: (value) => thumbnail_type.value = value
             })
 
             const content = () => h(NFlex, {
                 vertical: true
-            }, () => [parameter_select(), auto_refresh_select()])
+            }, () => [parameter_select(), auto_refresh_select(), thumbnail_type_select()])
 
             Discrete.Modal({
                 title: t('Parameter_Form'),
                 style: {
-                    height: '200px'
+                    height: '240px'
                 },
                 preset: 'dialog',
                 showIcon: false,
@@ -79,7 +104,8 @@ export default defineComponent(() => {
                 onPositiveClick: () => {
                     resolve({
                         parameter: parameter.value,
-                        auto_refresh: auto_refresh.value
+                        auto_refresh: auto_refresh.value,
+                        thumbnail_type: thumbnail_type.value
                     });
                 }
             })
@@ -103,8 +129,8 @@ export default defineComponent(() => {
         const parameter = screener_parameter.value;
         if (parameter) {
             loadingbar.start();
-            FinvizApi.Export_Screener(parameter.parameter, config.finviz.token).then((data) => {
-                screener_data.value = data;
+            FinvizApi.Export_Screener(parameter.parameter, useConfig().value.finviz.token).then((data) => {
+                screener_data.value = filter_screener(data);
                 loadingbar.finish();
                 refresh_time_id.value = setTimeout(() => screener_data_update(), parameter.auto_refresh);
             })
@@ -128,12 +154,17 @@ export default defineComponent(() => {
     const screener_table = () => h(NTabPane, {
         name: 'table',
         tab: t('Table')
-    }, () => FinvizComponent.ScreenerTable(screener_data.value));
+    }, () => ScreenerTable(screener_data.value, screener_parameter.value?.thumbnail_type as ThumbnailType));
 
     const screener_charts = () => h(NTabPane, {
         name: 'charts',
         tab: t('Charts')
-    }, () => FinvizComponent.ScreenerCharts(screener_data.value));
+    }, () => ScreenerCharts(screener_data.value, screener_parameter.value?.thumbnail_type as ThumbnailType));
+
+    const back_top_button = () => h(NBackTop, {
+        bottom: '50px',
+        right: '50px'
+    });
 
     const content = () => h(NTabs, {
         type: 'segment',
@@ -142,7 +173,7 @@ export default defineComponent(() => {
     }, () => [screener_table(), screener_charts()])
     const render = () => h(NFlex, {
         vertical: true
-    }, () => [content(), manager_button()]);
+    }, () => [content(), back_top_button(), manager_button()]);
 
     return render;
 });
