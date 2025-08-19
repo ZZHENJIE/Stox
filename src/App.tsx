@@ -1,11 +1,10 @@
-import { darkTheme, lightTheme, NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, NText, type MenuOption } from "naive-ui";
+import { NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, NText, type MenuOption } from "naive-ui";
 import { defineComponent, h, onMounted } from 'vue';
 import { ArrowBackCircle, Home, SettingsSharp } from "@vicons/ionicons5";
 import { RouterView, useRoute, useRouter } from "vue-router";
 import Router from "./plugins/Router";
 import { useI18n } from "vue-i18n";
-import Discrete from "./components/Discrete";
-import { Init, useConfig } from "./plugins/DTBox";
+import { Init, provider_props_ref, useConfig, useDiscreteApi } from "./plugins/DTBox";
 
 export default defineComponent(() => {
     const route = useRoute();
@@ -103,17 +102,20 @@ export default defineComponent(() => {
 
     const render = () => h(NConfigProvider, {
         inlineThemeDisabled: true,
-        theme: useConfig().value.is_dark_theme ? darkTheme : lightTheme,
+        theme: provider_props_ref.value.theme,
     }, () => main_layout())
 
     onMounted(() => {
-        // const init_message = Discrete.Message().loading(() => {
-        //     return h(NText, null, () => `${t('Initializing')}...`)
-        // }, {
-        //     duration: 0
-        // });
-        // DTBox.Init().then(() => init_message.destroy());
         useI18n().locale.value = useConfig().value.language;
+        const init_message = useDiscreteApi().message.loading(`${t('Initializing')}...`, {
+            duration: 0
+        });
+        Init()
+            .then(() => init_message.destroy())
+            .catch((error) => {
+                init_message.destroy();
+                useDiscreteApi().message.error(`Init: ${error}`);
+            });
     })
 
     return render;

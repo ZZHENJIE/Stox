@@ -3,7 +3,6 @@ import { type PropType } from 'vue';
 import StockNews from '../Futu/StockNews.vue';
 import Futu from '../Futu'
 import type { FinvizScreenerItem } from '../../api/Type';
-import Discrete from '../Discrete';
 
 const PAGE_SIZE = 12;
 

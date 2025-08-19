@@ -1,4 +1,22 @@
-import { fetch } from "@tauri-apps/plugin-http";
+import { fetch, type ClientOptions } from "@tauri-apps/plugin-http";
+import { useDiscreteApi } from "../plugins/DTBox";
+export function MFetch(input: URL | Request | string, init?: RequestInit & ClientOptions): Promise<Response> {
+    return new Promise((resolve, reject) => fetch(input, init)
+        .then(response => {
+            if (!response.ok) {
+                useDiscreteApi().message.error(`Status: ${response.status}`, {
+                    duration: 3000
+                });
+            }
+            resolve(response);
+        })
+        .catch(error => {
+            useDiscreteApi().message.error(`MFetch: ${error}`, {
+                duration: 3000
+            });
+            reject(error);
+        }));
+}
 async function Akamai_Timestamp() {
     const url = 'https://time.akamai.com';
     return fetch(url, { method: 'GET' }).then(response => {

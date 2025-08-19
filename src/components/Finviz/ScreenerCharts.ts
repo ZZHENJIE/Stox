@@ -27,9 +27,9 @@ export default (array: FinvizScreenerItem[], thumbnail_type: ThumbnailType = 'd'
                     src: FinvizApi.Thumbnail_Image_Url(item.Symbol, thumbnail_type)
                 })),
                 footer: () => h(NEllipsis, { lineClamp: 1 }, () => item.Company),
-                action: () => h('div', null, () => [h(NButton, {
-
-                })])
+                action: () => [h(NButton, {
+                    onClick: () => console.log(item.Symbol)
+                }, () => item.Company)]
             }))
         }
 

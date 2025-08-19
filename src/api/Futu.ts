@@ -1,25 +1,18 @@
-import { fetch } from "@tauri-apps/plugin-http";
-import Tool from '../utils/Tool';
+import Tool, { MFetch } from '../utils/Tool';
 import { Generate_Token } from '../utils/FutuQuoteToken'
 
 async function Search(symbol: string) {
     const url = `https://www.futunn.com/search-stock/predict?keyword=${symbol}`;
-    return fetch(url, { method: 'GET' }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    });
+    return MFetch(url, { method: 'GET' })
+        .then(response => response.json())
+        .catch(error => error);
 }
 
 async function Stock_Id_CSV() {
     const url = 'https://raw.githubusercontent.com/ZZHENJIE/FutuStockId/main/stock_id.csv';
-    return fetch(url, { method: 'GET' }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-    });
+    return MFetch(url, { method: 'GET' })
+        .then(response => response.text())
+        .catch(error => error);
 }
 
 async function Stock_News(stock_id: string, lang: string = 'en-us') {
@@ -32,17 +25,13 @@ async function Stock_News(stock_id: string, lang: string = 'en-us') {
     };
     const url = Tool.Url_Params_Insert('https://www.futunn.com/quote-api/quote-v2/get-news-list', params);
     const token = Generate_Token(params);
-    return fetch(url, {
+    return MFetch(url, {
         method: 'GET',
         headers: {
             'quote-token': token,
         }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    });
+    }).then(response => response.json())
+        .catch(error => error);
 }
 
 async function Financial_Calendar(timestamp: number) {
@@ -57,32 +46,24 @@ async function Financial_Calendar(timestamp: number) {
     };
     const url = Tool.Url_Params_Insert('https://www.futunn.com/quote-api/quote-v2/get-financial-list', params);
     const token = Generate_Token(params);
-    return fetch(url, {
+    return MFetch(url, {
         method: 'GET',
         headers: {
             'quote-token': token,
         }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    });
+    }).then(response => response.json())
+        .catch(error => error);
 }
 
 async function Flash_News(lang: string = 'en-us') {
     const url = 'https://news.futunn.com/news-site-api/main/get-flash-list?pageSize=30';
-    return fetch(url, {
+    return MFetch(url, {
         method: 'GET',
         headers: {
             'Cookie': `locale=${lang};`
         }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    });
+    }).then(response => response.json())
+        .catch(error => error);
 }
 
 export default {

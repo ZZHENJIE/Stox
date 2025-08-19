@@ -1,8 +1,8 @@
-import { fetch } from "@tauri-apps/plugin-http";
+import { MFetch } from "../utils/Tool";
 import { type IPOItem } from "./Type";
 async function Calendar() {
     const url = 'https://www.iposcoop.com/ipo-calendar/';
-    const response = await fetch(url, { method: 'GET' });
+    const response = await MFetch(url, { method: 'GET' });
     const html = await response.text();
     const parser = new DOMParser();
     const result: IPOItem[] = [];

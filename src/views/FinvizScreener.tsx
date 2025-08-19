@@ -1,5 +1,4 @@
 import { defineComponent, h, onUnmounted, ref } from 'vue';
-import Discrete from '../components/Discrete';
 import { NBackTop, NFlex, NFloatButton, NIcon, NSelect, NTabPane, NTabs } from 'naive-ui';
 import { PlayCircle, StopCircle } from '@vicons/ionicons5';
 import { useI18n } from 'vue-i18n';
@@ -8,7 +7,7 @@ import FinvizApi, { type ThumbnailType } from '../api/Finviz';
 import type { FinvizScreenerItem } from '../api/Type';
 import ScreenerTable from '../components/Finviz/ScreenerTable';
 import ScreenerCharts from '../components/Finviz/ScreenerCharts';
-import { useConfig } from '../plugins/DTBox';
+import { useConfig, useDiscreteApi } from '../plugins/DTBox';
 
 interface ScreenerParameter {
     parameter: string,
@@ -24,7 +23,7 @@ const filter_screener = (array: FinvizScreenerItem[]) => {
 export default defineComponent(() => {
 
     const { t } = useI18n();
-    const loadingbar = Discrete.LoadingBar();
+    const loadingbar = useDiscreteApi().loadingBar;
     const is_runing = ref(false);
     const screener_parameter = ref<ScreenerParameter>();
     const screener_data = ref<FinvizScreenerItem[]>([]);
@@ -92,9 +91,10 @@ export default defineComponent(() => {
                 vertical: true
             }, () => [parameter_select(), auto_refresh_select(), thumbnail_type_select()])
 
-            Discrete.Modal({
+            useDiscreteApi().modal.create({
                 title: t('Parameter_Form'),
                 style: {
+                    width: '400px',
                     height: '240px'
                 },
                 preset: 'dialog',

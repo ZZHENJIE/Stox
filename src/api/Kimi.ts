@@ -1,28 +1,22 @@
-import { fetch } from "@tauri-apps/plugin-http";
+import { MFetch } from "../utils/Tool";
 
 async function Create_QRCode() {
     const url = 'https://www.kimi.com/api/user/wx/register_login';
-    return fetch(url, { method: 'POST' }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    return MFetch(url, { method: 'POST' })
+        .then(response => response.json())
+        .catch(error => error);
 }
 
 async function QRCode_Status(id: string) {
     const url = `https://www.kimi.com/api/user/wx/register_login/${id}`;
-    return fetch(url, { method: 'GET' }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    return MFetch(url, { method: 'GET' })
+        .then(response => response.json())
+        .catch(error => error);
 }
 
 async function Chat_List(token: string, offset: number = 0, size: number = 5) {
     const url = 'https://www.kimi.com/api/chat/list';
-    return fetch(url, {
+    return MFetch(url, {
         method: 'POST',
         headers: {
             'authorization': `Bearer ${token}`,
@@ -32,17 +26,13 @@ async function Chat_List(token: string, offset: number = 0, size: number = 5) {
             "offset": offset,
             "size": size
         })
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    }).then(response => response.json())
+        .catch(error => error);
 }
 
 async function Chat_Content(chat_id: string, token: string, last: number = 50) {
     const url = `https://www.kimi.com/api/chat/${chat_id}/segment/scroll`;
-    return fetch(url, {
+    return MFetch(url, {
         method: 'POST',
         headers: {
             'authorization': `Bearer ${token}`,
@@ -51,17 +41,13 @@ async function Chat_Content(chat_id: string, token: string, last: number = 50) {
         body: JSON.stringify({
             'last': last
         })
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    }).then(response => response.json())
+        .catch(error => error);
 }
 
 async function Create_Chat(token: string, chat_name: string = 'new chat') {
     const url = 'https://www.kimi.com/api/chat';
-    return fetch(url, {
+    return MFetch(url, {
         method: 'POST',
         headers: {
             'authorization': `Bearer ${token}`,
@@ -75,12 +61,8 @@ async function Create_Chat(token: string, chat_name: string = 'new chat') {
             "source": "web",
             "tags": []
         })
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    }).then(response => response.json())
+        .catch(error => error);
 }
 
 export default {

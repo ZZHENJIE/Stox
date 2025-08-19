@@ -1,5 +1,4 @@
-import { fetch } from "@tauri-apps/plugin-http";
-import Tool from "../utils/Tool";
+import Tool, { MFetch } from "../utils/Tool";
 import { type FinvizScreenerItem, type FinvizCandlestickParams } from './Type'
 async function Export_Screener(parameter: string, token: string) {
     const VolumeFormat = (volume: number): string => {
@@ -12,10 +11,7 @@ async function Export_Screener(parameter: string, token: string) {
         }
     };
     const url = `https://elite.finviz.com/export.ashx?v=111&${parameter}&auth=${token}`;
-    return fetch(url, { method: 'GET' }).then(async response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    return MFetch(url, { method: 'GET' }).then(async response => {
         const CSV = await response.text();
         const Lines = CSV.split('\n');
         const Result: FinvizScreenerItem[] = [];
@@ -40,12 +36,9 @@ async function Export_Screener(parameter: string, token: string) {
 
 async function Candlestick(params: FinvizCandlestickParams) {
     const url = Tool.Url_Params_Insert('https://api.finviz.com/api/quote.ashx', params);
-    return fetch(url, { method: 'GET' }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    return MFetch(url, { method: 'GET' })
+        .then(response => response.json())
+        .catch(error => error);
 }
 
 const FinvizThumbnails = {
