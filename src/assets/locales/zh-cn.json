@@ -28,5 +28,11 @@
     "Time_Window": "时间窗口",
     "Global": "全局",
     "Theme": "主题",
-    "Language": "语言"
+    "Language": "语言",
+    "Ignore": "忽略",
+    "Managers": "管理者",
+    "Shares": "股数",
+    "Millions": "百万",
+    "Estimated": "预计",
+    "Date": "日期"
 }

@@ -1,21 +1,21 @@
-import { NDataTable, NEllipsis, NPopover, type DataTableColumns } from "naive-ui";
+import { NDataTable, NPopover, NText, type DataTableColumns } from "naive-ui";
 import type { FinvizScreenerItem } from "../../api/Type";
 import { h, reactive } from "vue";
 import { useI18n } from "vue-i18n";
-import Components from "../Components";
 import FinvizApi, { type ThumbnailType } from "../../api/Finviz";
+import MImage from "../MImage";
+import MEllipsis from "../MEllipsis";
 
 export default (array: FinvizScreenerItem[], thumbnail_type: ThumbnailType = 'd') => {
 
-    const Ellipsis = (text: string) => h(NEllipsis, { lineClamp: 1 }, () => text);
+    const { t } = useI18n();
 
     const renderChange = (value: number) => {
         const color = value > 0 ? '#90EE90' : '#DB7093';
-        return h(NEllipsis, {
+        return h(NText, {
             style: {
                 color: color
             },
-            lineClamp: 1
         }, () => value + '%');
     };
 
@@ -23,7 +23,7 @@ export default (array: FinvizScreenerItem[], thumbnail_type: ThumbnailType = 'd'
 
     const columns: DataTableColumns<FinvizScreenerItem> = [
         {
-            title: () => Ellipsis(useI18n().t('Symbol')),
+            title: () => MEllipsis(t('Symbol')),
             key: 'Symbol',
             width: '80px',
             render: (row) => h(NPopover, {
@@ -31,7 +31,7 @@ export default (array: FinvizScreenerItem[], thumbnail_type: ThumbnailType = 'd'
                 placement: 'bottom-start',
             }, {
                 trigger: () => row.Symbol,
-                default: () => h(Components.LoadImage({
+                default: () => h(MImage({
                     width: thumbnail_dimensions.width,
                     height: thumbnail_dimensions.height,
                     previewDisabled: true,
@@ -40,44 +40,44 @@ export default (array: FinvizScreenerItem[], thumbnail_type: ThumbnailType = 'd'
             })
         },
         {
-            title: () => Ellipsis(useI18n().t('Company')),
+            title: () => MEllipsis(t('Company')),
             key: 'Company',
-            render: (row) => Ellipsis(row.Company)
+            render: (row) => MEllipsis(row.Company)
         },
         {
-            title: () => Ellipsis(`${useI18n().t('Sector')}/${useI18n().t('Industry')}`),
+            title: () => MEllipsis(`${t('Sector')}/${t('Industry')}`),
             key: 'SectorIndustry',
-            render: (row) => Ellipsis(`${row.Sector} / ${row.Industry}`)
+            render: (row) => MEllipsis(`${row.Sector} / ${row.Industry}`)
         },
         {
-            title: () => Ellipsis(useI18n().t('Market_Cap')),
+            title: () => MEllipsis(t('Market_Cap')),
             key: 'MarketCap',
             width: '100px',
-            render: (row) => Ellipsis(row.MarketCap || 'N/A'),
+            render: (row) => MEllipsis(row.MarketCap || 'N/A'),
         },
         {
-            title: () => Ellipsis(useI18n().t('PriceEarningsRatio')),
+            title: () => MEllipsis(t('PriceEarningsRatio')),
             key: 'PriceEarningsRatio',
             width: '100px',
-            render: (row) => Ellipsis(row.PriceEarningsRatio || 'N/A'),
+            render: (row) => MEllipsis(row.PriceEarningsRatio || 'N/A'),
         },
         {
-            title: () => Ellipsis(useI18n().t('Price')),
+            title: () => MEllipsis(t('Price')),
             key: 'Price',
             width: '100px',
-            render: (row) => Ellipsis(row.Price),
+            render: (row) => MEllipsis(row.Price),
         },
         {
-            title: () => Ellipsis(useI18n().t('Change')),
+            title: () => MEllipsis(t('Change')),
             key: 'Change',
             width: '100px',
             render: (row) => renderChange(parseFloat(row.Change)),
         },
         {
-            title: () => Ellipsis(useI18n().t('Volume')),
+            title: () => MEllipsis(t('Volume')),
             key: 'Volume',
             width: '100px',
-            render: (row) => Ellipsis(row.Volume)
+            render: (row) => MEllipsis(row.Volume)
         }
     ];
 

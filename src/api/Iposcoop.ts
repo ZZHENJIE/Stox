@@ -18,14 +18,13 @@ async function Calendar() {
     trElements.forEach((tr) => {
         const tds = tr.querySelectorAll("td");
         const item: IPOItem = {
-            Company: tds[0].textContent?.trim() || "", // 公司名称
-            Symbol: tds[1].textContent?.trim() || "", // 股票代码
-            Managers: tds[2].textContent?.trim() || "", // 承销商
-            Shares_Millions: tds[3].textContent?.trim() || "", // 发行股数（百万）
-            Price_Low: tds[4].textContent?.trim() || "", // 最低发行价
-            Price_High: tds[5].textContent?.trim() || "", // 最高发行价
-            Estimated_Dollar_Volume: tds[6].textContent?.trim() || "", // 预计募资额
-            Expected_Date: tds[7].textContent?.trim() || "", // 预计日期
+            Company: tds[0].textContent?.trim() || "",
+            Symbol: tds[1].textContent?.trim() || "",
+            Managers: tds[2].textContent?.trim() || "",
+            Shares_Millions: tds[3].textContent?.trim() || "",
+            Price: `${tds[4].textContent?.trim()}-${tds[5].textContent?.trim()}` || "",
+            Estimated_Dollar_Volume: tds[6].textContent?.trim() || "",
+            Estimated_Date: tds[7].textContent?.trim() || "",
         };
         result.push(item);
     });

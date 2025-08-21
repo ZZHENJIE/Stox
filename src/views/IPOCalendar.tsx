@@ -1,28 +1,69 @@
-import { NLayout, NLayoutContent, NLayoutFooter, NLayoutHeader } from 'naive-ui';
-import { defineComponent, h, type VNode } from 'vue';
+
+import { defineComponent, h, onUnmounted, ref } from 'vue';
+import { useDiscreteApi } from '../plugins/DTBox';
+import IposcoopApi from '../api/Iposcoop';
+import type { IPOItem } from '../api/Type';
+import { NDataTable, type DataTableColumns } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+import MEllipsis from '../components/MEllipsis';
 
 export default defineComponent(() => {
+    const { t } = useI18n();
+    const calendar_data = ref<IPOItem[]>();
 
-    const header = () => {
-        return h(NLayoutHeader, null, () => "Header")
-    };
-    const test = () => {
-        const result: VNode[] = [];
+    const loadingbar = useDiscreteApi().loadingBar;
+    loadingbar.start();
+    IposcoopApi.Calendar().then((data) => {
+        calendar_data.value = data;
+        loadingbar.finish();
+    })
+    onUnmounted(() => loadingbar.finish())
 
-        for (let i = 0; i < 100; i++) {
-            result.push(h('div', null, i))
+    const columns: DataTableColumns<IPOItem> = [
+        {
+            title: () => MEllipsis(t('Symbol')),
+            key: 'Symbol',
+            width: 80,
+            render: (row) => MEllipsis(row.Symbol)
+        },
+        {
+            title: () => MEllipsis(t('Company')),
+            key: 'Company',
+            render: (row) => MEllipsis(row.Company)
+        },
+        {
+            title: () => MEllipsis(t('Managers')),
+            key: 'Managers',
+            render: (row) => MEllipsis(row.Managers)
+        },
+        {
+            title: () => MEllipsis(`${t('Shares')}(${t('Millions')})`),
+            key: 'Shares_Millions',
+            width: 80,
+            render: (row) => MEllipsis(row.Shares_Millions)
+        },
+        {
+            title: () => MEllipsis(t('Price')),
+            key: 'Price',
+            width: 100,
+            render: (row) => MEllipsis(row.Price)
+        },
+        {
+            title: () => MEllipsis(`${t('Estimated')}${t('Volume')}`),
+            key: 'Estimated_Dollar_Volume',
+            width: 100,
+            render: (row) => MEllipsis(row.Estimated_Dollar_Volume)
+        },
+        {
+            title: () => MEllipsis(`${t('Estimated')}${t('Date')}`),
+            key: 'Estimated_Date',
+            width: 120,
+            render: (row) => MEllipsis(row.Estimated_Date)
         }
+    ];
 
-        return result;
-    }
-    const content = () => {
-        return h(NLayoutContent, null, () => test());
-    };
-    const footer = () => {
-        return h(NLayoutFooter, null, () => "Footer")
-    };
-
-    const render = () => h(NLayout, null, () => [header(), content(), footer()]);
-
-    return render;
+    return () => h(NDataTable, {
+        columns: columns,
+        data: calendar_data.value
+    });
 });

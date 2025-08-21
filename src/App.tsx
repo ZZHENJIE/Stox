@@ -1,4 +1,4 @@
-import { NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, NText, type MenuOption } from "naive-ui";
+import { NButton, NConfigProvider, NFlex, NIcon, NLayout, NLayoutContent, NLayoutSider, NMenu, type MenuOption } from "naive-ui";
 import { defineComponent, h, onMounted } from 'vue';
 import { ArrowBackCircle, Home, SettingsSharp } from "@vicons/ionicons5";
 import { RouterView, useRoute, useRouter } from "vue-router";

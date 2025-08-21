@@ -1,12 +1,11 @@
 export interface IPOItem {
-    Company: string,
     Symbol: string,
+    Company: string,
     Managers: string,
     Shares_Millions: string,
-    Price_Low: string,
-    Price_High: string,
+    Price: string,
     Estimated_Dollar_Volume: string,
-    Expected_Date: string,
+    Estimated_Date: string,
 };
 
 export interface SpacResearchItem {

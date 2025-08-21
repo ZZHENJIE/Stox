@@ -28,5 +28,11 @@
     "Time_Window": "TimeWindow",
     "Global": "Global",
     "Theme": "Theme",
-    "Language": "Language"
+    "Language": "Language",
+    "Ignore": "Ignore",
+    "Managers": "Managers",
+    "Shares": "Shares",
+    "Millions": "Millions",
+    "Estimated": "Estimated",
+    "Date": "Date"
 }

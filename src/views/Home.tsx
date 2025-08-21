@@ -1,9 +1,9 @@
 import { h } from 'vue';
 import { defineComponent } from 'vue';
-import Futu from '../components/Futu';
+import FlashNews from '../components/Futu/FlashNews';
 
 export default defineComponent(() => {
-    const render = () => h(Futu.FlashNews());
+    const render = () => h(FlashNews());
 
     return render;
 });
