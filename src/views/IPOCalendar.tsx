@@ -11,13 +11,12 @@ export default defineComponent(() => {
     const { t } = useI18n();
     const calendar_data = ref<IPOItem[]>();
 
-    const loadingbar = useDiscreteApi().loadingBar;
-    loadingbar.start();
+    useDiscreteApi().loadingBar.start();
     IposcoopApi.Calendar().then((data) => {
         calendar_data.value = data;
-        loadingbar.finish();
+        useDiscreteApi().loadingBar.finish();
     })
-    onUnmounted(() => loadingbar.finish())
+    onUnmounted(() => useDiscreteApi().loadingBar.finish())
 
     const columns: DataTableColumns<IPOItem> = [
         {
@@ -39,7 +38,6 @@ export default defineComponent(() => {
         {
             title: () => MEllipsis(`${t('Shares')}(${t('Millions')})`),
             key: 'Shares_Millions',
-            width: 80,
             render: (row) => MEllipsis(row.Shares_Millions)
         },
         {

@@ -8,10 +8,11 @@ export interface IPOItem {
     Estimated_Date: string,
 };
 
+export type SpacResearchEvent = 'amendment-vote' | 'approval-vote' | 'ipo-date' | 'liq-deadline';
 export interface SpacResearchItem {
-    Date: string | undefined,
-    EventType: string | undefined,
-    Symbol: string | undefined
+    Date: string,
+    Event: SpacResearchEvent,
+    Symbol: string
 };
 
 export interface FinvizScreenerItem {

@@ -1,5 +1,5 @@
 import { MFetch } from '../utils/Tool';
-import { type SpacResearchItem } from './Type'
+import { type SpacResearchItem, type SpacResearchEvent } from './Type'
 async function Calendar() {
     const url = 'https://www.spacresearch.com/calendar';
     const response = await MFetch(url, { method: 'GET' });
@@ -14,6 +14,8 @@ async function Calendar() {
     };
 
     const days = calendar.querySelectorAll('.days .day');
+    const now = new Date();
+    const month = now.getMonth() + 1;
 
     days.forEach(day => {
         if (day.className != 'day other-month ') {
@@ -36,9 +38,9 @@ async function Calendar() {
                 const href = link.getAttribute('href');
 
                 result.push({
-                    Date: date,
-                    EventType: eventType,
-                    Symbol: href?.split('/').pop()
+                    Date: month + '-' + date,
+                    Event: eventType as SpacResearchEvent,
+                    Symbol: href?.split('/').pop() || ''
                 });
             });
         }

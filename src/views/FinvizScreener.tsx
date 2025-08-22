@@ -23,7 +23,6 @@ const filter_screener = (array: FinvizScreenerItem[]) => {
 export default defineComponent(() => {
 
     const { t } = useI18n();
-    const loadingbar = useDiscreteApi().loadingBar;
     const is_runing = ref(false);
     const screener_parameter = ref<ScreenerParameter>();
     const screener_data = ref<FinvizScreenerItem[]>([]);
@@ -128,17 +127,17 @@ export default defineComponent(() => {
     const screener_data_update = () => {
         const parameter = screener_parameter.value;
         if (parameter) {
-            loadingbar.start();
+            useDiscreteApi().loadingBar.start();
             FinvizApi.Export_Screener(parameter.parameter, useConfig().value.finviz.token).then((data) => {
                 screener_data.value = filter_screener(data);
-                loadingbar.finish();
+                useDiscreteApi().loadingBar.finish();
                 refresh_time_id.value = setTimeout(() => screener_data_update(), parameter.auto_refresh);
             })
         }
     };
 
     onUnmounted(() => {
-        loadingbar.finish();
+        useDiscreteApi().loadingBar.finish();
         clearTimeout(refresh_time_id.value);
     });
 

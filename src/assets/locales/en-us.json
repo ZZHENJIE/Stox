@@ -34,5 +34,16 @@
     "Shares": "Shares",
     "Millions": "Millions",
     "Estimated": "Estimated",
-    "Date": "Date"
+    "Date": "Date",
+    "Country": "Country",
+    "Event": "Event",
+    "Importance": "Importance",
+    "Actual": "Actual",
+    "Forecast": "Forecast",
+    "Previous": "Previous",
+    "Undetermined": "Undetermined",
+    "Amendment_Vote": "Amendment Vote",
+    "Approval_Vote": "Approval Vote",
+    "IPO_Date": "IPO Date",
+    "Liquidation_Deadline": "Liquidation Deadline"
 }

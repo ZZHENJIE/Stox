@@ -2,6 +2,7 @@ import { defineComponent, h, onMounted, onUnmounted, ref, type VNode } from "vue
 import FutuApi from "../../api/Futu";
 import { NAlert, NCard, NFlex } from "naive-ui";
 import Tool from "../../utils/Tool";
+import { useConfig } from "../../plugins/DTBox";
 
 export default () => {
     return defineComponent({
@@ -14,7 +15,7 @@ export default () => {
             const level: Array<'default' | 'warning' | 'error' | 'info' | 'success'> = ['default', 'warning', 'error'];
 
             const update_data = () => {
-                FutuApi.Flash_News().then(object => {
+                FutuApi.Flash_News(useConfig().value.language).then(object => {
                     data.value = object.data.data.news;
                     setTimeout(() => is_mounted.value ? update_data() : {}, 10000);
                 });

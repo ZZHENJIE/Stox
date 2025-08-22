@@ -3,6 +3,7 @@ import FutuApi from "../../api/Futu";
 import { defineComponent, h, ref, type VNode } from "vue";
 import { NCard, NEllipsis, NFlex, NHighlight, NScrollbar, NSpin } from "naive-ui";
 import Tool from "../../utils/Tool";
+import { useConfig } from "../../plugins/DTBox";
 
 export default (symbol: string, patterns: string[] = []) => {
     return defineComponent(() => {
@@ -10,7 +11,7 @@ export default (symbol: string, patterns: string[] = []) => {
         const is_loading = ref(true);
         const items: VNode[] = [];
         invoke('get_id_by_symbol', { symbol }).then((id) => {
-            FutuApi.Stock_News(id as string).then(obj => {
+            FutuApi.Stock_News(id as string, useConfig().value.language).then(obj => {
                 is_loading.value = false;
                 for (const item of obj.data.list) {
                     const ellipsis = h(NEllipsis, {

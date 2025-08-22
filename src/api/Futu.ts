@@ -1,5 +1,6 @@
 import Tool, { MFetch } from '../utils/Tool';
 import { Generate_Token } from '../utils/FutuQuoteToken'
+import type { Language } from '../utils/Config.d';
 
 async function Search(symbol: string) {
     const url = `https://www.futunn.com/search-stock/predict?keyword=${symbol}`;
@@ -15,7 +16,7 @@ async function Stock_Id_CSV() {
         .catch(error => error);
 }
 
-async function Stock_News(stock_id: string, lang: string = 'en-us') {
+async function Stock_News(stock_id: string, lang: Language = 'en-US') {
     const params = {
         stock_id: stock_id,
         market_type: 2,
@@ -55,7 +56,7 @@ async function Financial_Calendar(timestamp: number) {
         .catch(error => error);
 }
 
-async function Flash_News(lang: string = 'en-us') {
+async function Flash_News(lang: Language = 'en-US') {
     const url = 'https://news.futunn.com/news-site-api/main/get-flash-list?pageSize=30';
     return MFetch(url, {
         method: 'GET',
